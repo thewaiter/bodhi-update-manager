@@ -42,3 +42,6 @@ reinstall.sh
 # Local-only dev utilities
 dev-*.sh
 *.local.sh
+
+po/*.po~
+*.mo
