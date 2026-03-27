@@ -4,7 +4,8 @@
 	dh $@ --with python3
 
 override_dh_auto_build:
-	: # nothing to build — pure Python, no compilation step
+	VERSION=$$(dpkg-parsechangelog -S Version | cut -d- -f1-2); \
+	echo "__version__ = \"$$VERSION\"" > src/bodhi_update/_version.py;
 
 override_dh_auto_install:
 	# Install the application package tree under /usr/lib/bodhi-update-manager/.
