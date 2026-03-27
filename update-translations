@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+#
+# update-translations:
+#    This script updates bodhi-update-manager's localization files.
+#    Specifically, it uses the file po/POTFILES.in to determine
+#    which source files should be scanned for translatable strings.
+#    It then generates/updates the POT template using xgettext,
+#    merges changes into existing .po files with msgmerge,
+#    and creates new .po files for any languages listed in
+#    po/LINGUAS that do not yet have one.
+#
+# Copyright 2026 ylee@bodhilinux.com
+#
+# This script is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as published
+# by the Free Software Foundation; either version 3 of the License, or (at
+# your option) any later version.
+#
+# This script is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this script; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+set -euo pipefail
+
+TRANSLATION_DIR="po"
+POT_FILE="$TRANSLATION_DIR/bodhi-update-manager.pot"
+FILE_LIST="$TRANSLATION_DIR/POTFILES.in"
+VERSION=$(PYTHONPATH=src python3 -c 'from bodhi_update._version import __version__; print(__version__)')
+
+check_command() {
+    if ! command -v "$1" >/dev/null 2>&1; then
+        echo "$1 could not be found."
+        echo "You can install it with: sudo apt install gettext"
+        exit 255
+    fi
+}
+
+check_command xgettext
+check_command msgmerge
+check_command msginit
+
+if [[ ! -f "$TRANSLATION_DIR/LINGUAS" ]]; then
+    echo "Missing $TRANSLATION_DIR/LINGUAS"
+    exit 1
+fi
+
+if [[ ! -f "$FILE_LIST" ]]; then
+    echo "Missing $FILE_LIST"
+    exit 1
+fi
+
+mapfile -t langs < <(grep -vE '^\s*($|#)' "$TRANSLATION_DIR/LINGUAS")
+
+echo "Updating POT file"
+
+xgettext \
+  --language=Python \
+  --from-code=UTF-8 \
+  --keyword=_ \
+  --keyword=N_ \
+  --keyword=ngettext:1,2 \
+  --package-name="bodhi-update-manager" \
+  --package-version="$VERSION" \
+  --msgid-bugs-address="https://github.com/flux-abyss/bodhi-update-manager/issues" \
+  -o "$POT_FILE" \
+  --files-from="$FILE_LIST"
+
+sed -i 's/^# Copyright (C) YEAR THE PACKAGE'\''S COPYRIGHT HOLDER/# Copyright (C) 2026 Bodhi Linux Team/' "$POT_FILE"
+
+for lang in "${langs[@]}"; do
+    po_file="$TRANSLATION_DIR/$lang.po"
+
+    if [[ -f "$po_file" ]]; then
+        echo "Updating $lang.po"
+        msgmerge --update "$po_file" "$POT_FILE"
+    else
+        echo "Creating $lang.po"
+        msginit \
+            --input="$POT_FILE" \
+            --locale="$lang" \
+            --output-file="$po_file" \
+            --no-translator
+        # Set Language-Team
+        sed -i "s/^\"Language-Team:.*\"/\"Language-Team: Bodhi Team\\\\n\"/" "$po_file"
+    fi
+done
