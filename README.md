@@ -10,7 +10,7 @@ A lightweight graphical update manager for **Bodhi Linux**.
 
 Built with **Python**, **GTK3**, and **VTE**, the application provides a unified interface for managing updates across supported package systems while preserving terminal output during install operations.
 
-> Status: **v1.1.0 — Debian-packaged release (post-refactor)**
+> Status: **v1.2.0 — Localization/Debian Trixie support**
 
 ---
 
