@@ -335,7 +335,7 @@ msgstr "Zrestartowanie nieudane: %(exc)s"
 
 #: src/bodhi_update/app.py:1105
 msgid "This may take a few minutes."
-msgstr "Instalowanie... Może to potrwać kilka minut."
+msgstr "Może to potrwać kilka minut."
 
 #: src/bodhi_update/app.py:1179
 msgid "Checking for updates..."
