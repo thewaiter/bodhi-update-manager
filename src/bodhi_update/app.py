@@ -21,6 +21,7 @@ gi.require_version("Gtk", "3.0")
 gi.require_version("Vte", "2.91")
 from gi.repository import Gio, GLib, Gtk, Pango, Vte  # noqa: E402
 
+from bodhi_update._version import __version__  # noqa: E402
 from bodhi_update.backends import get_registry, initialize_registry  # noqa: E402
 from bodhi_update.install_commands import build_deb_install_argv  # noqa: E402
 from bodhi_update.models import UpdateItem  # noqa: E402
@@ -44,6 +45,28 @@ gettext.bindtextdomain(APP_NAME, "/usr/share/locale")
 gettext.textdomain(APP_NAME)
 _ = gettext.gettext
 ngettext = gettext.ngettext
+
+ABOUT_TEXT = _(
+    """Update Manager
+
+A lightweight graphical update manager for Debian based distros."""
+)
+
+GPL_SHORT = _(
+    """This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>."""
+)
+
 
 class UpdateManagerWindow(Gtk.Window):
     COL_SELECTED = 0
@@ -473,67 +496,113 @@ class UpdateManagerWindow(Gtk.Window):
         dialog.destroy()
 
     def _show_about_dialog(self) -> None:
+        # pylint: disable=too-many-locals
+        """Display About Dialog"""
         dialog = Gtk.Dialog(
-            title=_("About Update Manager"),
+            title=_("About"),
             transient_for=self,
-            modal=True,
+            flags=Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
         )
-        dialog.add_button(_("Close"), Gtk.ResponseType.CLOSE)
-        dialog.set_default_size(420, 260)
-        dialog.set_resizable(False)
+        dialog.set_border_width(10)
+        dialog.set_default_size(600, 400)
+        dialog.add_button(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE)
 
-        box = dialog.get_content_area()
-        box.set_spacing(12)
-        box.set_border_width(12)
+        content = dialog.get_content_area()
 
-        outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
-        box.add(outer)
+        outer_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        content.pack_start(outer_box, True, True, 0)
 
-        title = Gtk.Label()
-        title.set_markup("<b>%s</b>" % _("Update Manager"))
-        title.set_justify(Gtk.Justification.CENTER)
-        title.set_xalign(0.5)
-        outer.pack_start(title, False, False, 0)
+        # Left side
+        left_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        left_box.set_size_request(160, -1)
+        outer_box.pack_start(left_box, False, False, 0)
 
-        subtitle = Gtk.Label(label=_("A lightweight system update tool for Debian-based Linux distributions."))
-        subtitle.set_justify(Gtk.Justification.CENTER)
-        subtitle.set_xalign(0.5)
-        outer.pack_start(subtitle, False, False, 0)
+        icon = Gtk.Image.new_from_icon_name(
+            "bodhi-update-manager", Gtk.IconSize.DIALOG
+        )
+        icon.set_pixel_size(200)
+        left_box.pack_start(icon, False, False, 0)
 
-        frame = Gtk.Frame()
-        frame.set_shadow_type(Gtk.ShadowType.IN)
-        outer.pack_start(frame, True, True, 0)
+        version_label = Gtk.Label()
+        version_label.set_markup(f"<b>{_('Version:')}</b> {__version__}")
+        version_label.set_justify(Gtk.Justification.CENTER)
+        left_box.pack_start(version_label, False, False, 0)
 
-        # Use an EventBox with the "view" class to match the package list background
-        event_box = Gtk.EventBox()
-        event_box.get_style_context().add_class("view")
-        frame.add(event_box)
+        spacer = Gtk.Box()
+        spacer.set_size_request(-1, 10)
+        left_box.pack_start(spacer, False, False, 0)
 
-        credits_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        credits_box.set_border_width(16)
-        event_box.add(credits_box)
+        # Right side
+        right_frame = Gtk.Frame()
+        outer_box.pack_start(right_frame, True, True, 0)
 
-        credits_label = Gtk.Label()
-        credits_label.set_markup(
-            "<b>%s</b> %s\n" % (_("Created by:"), "Joseph Wiley (Flux-Abyss)"))
-        
-        credits_label.set_justify(Gtk.Justification.CENTER)
-        credits_label.set_xalign(0.5)
-        credits_label.set_yalign(0.5)
-        credits_box.pack_start(credits_label, True, True, 0)
+        scrolled = Gtk.ScrolledWindow()
+        scrolled.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        right_frame.add(scrolled)
 
-        link = Gtk.Button(label=_("GitHub Repository"))
-        link.connect(
-            "clicked",
-            lambda _: Gtk.show_uri_on_window(
-                dialog, "https://github.com/flux-abyss/bodhi-update-manager", 0
+        textview = Gtk.TextView()
+        textview.set_editable(False)
+        textview.set_cursor_visible(False)
+        textview.set_monospace(False)
+        textview.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
+        textview.set_left_margin(10)
+        textview.set_right_margin(10)
+        textview.set_top_margin(10)
+        textview.set_bottom_margin(10)
+        scrolled.add(textview)
+
+        pages = {
+            "update": ABOUT_TEXT,
+            "website": _(
+                """Website
+
+    https://github.com/flux-abyss/bodhi-update-manager"""
             ),
-        )
-        outer.pack_start(link, False, False, 0)
+            "credits": _(
+                """Credits
+
+    Lead Developer:
+        Joseph “flux.abyss” Wiley
+
+    Contributors:
+        Robert “ylee” Wiley
+        Diego “diekrz2” K."""
+            ),
+            "license": _(
+                """Copyright © 2026 Joseph “flux.abyss” Wiley
+
+    """
+            ) + GPL_SHORT,
+        }
+
+        buttons = [
+            ("update", _("Update Manager")),
+            ("website", _("Website")),
+            ("credits", _("Credits")),
+            ("license", _("License")),
+        ]
+
+        def set_text(text: str) -> None:
+            buffer_ = textview.get_buffer()
+            buffer_.set_text(text)
+
+        def on_about_button_clicked(_button, key: str) -> None:
+            set_text(pages[key])
+
+        for key, label in buttons:
+            btn = Gtk.Button(label=label)
+            btn.set_hexpand(False)
+            btn.connect("clicked", on_about_button_clicked, key)
+            left_box.pack_start(btn, False, False, 0)
+
+        left_box.pack_start(Gtk.Box(), True, True, 0)
+
+        set_text(pages["update"])
 
         dialog.show_all()
         dialog.run()
         dialog.destroy()
+
 
     def _on_show_descriptions_toggled(self, check: Gtk.CheckButton) -> None:
         """Prefs dialog checkbox — delegate to the shared helper."""
