@@ -1,5 +1,5 @@
 [Unit]
-Description=Bodhi Update Manager — background APT cache refresh
+Description=Update Manager — background APT cache refresh
 Documentation=https://github.com/BodhiLinux/bodhi-update-manager
 # Only run when a network connection is available.
 After=network-online.target

@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=Bodhi Update Manager
+Name=Update Manager
 Name[it]=Update Manager
 Name[pl]=Menedżer Aktualizacji
 Comment=Install system updates and local packages for Bodhi Linux

@@ -1,5 +1,5 @@
 [Unit]
-Description=Bodhi Update Manager — hourly APT cache refresh timer
+Description=Update Manager — hourly APT cache refresh timer
 Documentation=https://github.com/BodhiLinux/bodhi-update-manager
 
 [Timer]
