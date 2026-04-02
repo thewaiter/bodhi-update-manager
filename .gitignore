@@ -45,3 +45,7 @@ dev-*.sh
 
 po/*.po~
 *.mo
+
+scripts/
+
+scripts/

@@ -6,8 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bodhi-update-manager 0.1-3\n"
-"Report-Msgid-Bugs-To: https://github.com/flux-abyss/bodhi-update-manager/"
-"issues\n"
+"Report-Msgid-Bugs-To: https://github.com/flux-abyss/bodhi-update-manager/issues\n"
 "POT-Creation-Date: 2026-03-31 16:39-0400\n"
 "PO-Revision-Date: 2026-03-27 14:13-0400\n"
 "Last-Translator: Automatically generated\n"
@@ -24,6 +23,9 @@ msgid ""
 "\n"
 "A lightweight graphical update manager for Debian based distros."
 msgstr ""
+"Gestor de actualizaciones\n"
+"\n"
+"Un gestor de actualizaciones gráfico ligero para distribuciones basadas en Debian."
 
 #: src/bodhi_update/app.py:56
 msgid ""
@@ -40,150 +42,162 @@ msgid ""
 "You should have received a copy of the GNU General Public License\n"
 "along with this program.  If not, see <https://www.gnu.org/licenses/>."
 msgstr ""
+"Este programa es software libre: puedes redistribuirlo y/o modificarlo\n"
+"bajo los términos de la Licencia Pública General GNU publicada por\n"
+"la Free Software Foundation, ya sea la versión 3 de la Licencia, o\n"
+"(a tu elección) cualquier versión posterior.\n"
+"\n"
+"Este programa se distribuye con la esperanza de que sea útil,\n"
+"pero SIN NINGUNA GARANTÍA; sin siquiera la garantía implícita de\n"
+"COMERCIALIZACIÓN o IDONEIDAD PARA UN PROPÓSITO PARTICULAR. Consulta la\n"
+"Licencia Pública General GNU para más detalles.\n"
+"\n"
+"Deberías haber recibido una copia de la Licencia Pública General GNU\n"
+"along con este programa. Si no es así, consulta <https://www.gnu.org/licenses/>."
 
 #: src/bodhi_update/app.py:86 src/bodhi_update/app.py:579
 msgid "Update Manager"
-msgstr ""
+msgstr "Gestor de actualizaciones"
 
 #: src/bodhi_update/app.py:160
 msgid "File"
-msgstr ""
+msgstr "Archivo"
 
 #: src/bodhi_update/app.py:163 src/bodhi_update/app.py:235
 msgid "Refresh"
-msgstr ""
+msgstr "Actualizar"
 
 #: src/bodhi_update/app.py:167 src/bodhi_update/app.py:239
 msgid "Install Selected"
-msgstr ""
+msgstr "Instalar seleccionados"
 
 #: src/bodhi_update/app.py:173 src/bodhi_update/app.py:231
 msgid "Select All"
-msgstr ""
+msgstr "Seleccionar todo"
 
 #: src/bodhi_update/app.py:177 src/bodhi_update/app.py:227
 msgid "Clear"
-msgstr ""
+msgstr "Limpiar"
 
 #: src/bodhi_update/app.py:183
 msgid "Quit"
-msgstr ""
+msgstr "Salir"
 
 #: src/bodhi_update/app.py:191
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: src/bodhi_update/app.py:194 src/bodhi_update/app.py:448
 msgid "Preferences"
-msgstr ""
+msgstr "Preferencias"
 
 #: src/bodhi_update/app.py:202
 msgid "View"
-msgstr ""
+msgstr "Ver"
 
 #: src/bodhi_update/app.py:205
 msgid "Show Descriptions"
-msgstr ""
+msgstr "Mostrar descripciones"
 
 #: src/bodhi_update/app.py:214
 msgid "Help"
-msgstr ""
+msgstr "Ayuda"
 
 #: src/bodhi_update/app.py:217 src/bodhi_update/app.py:502
 msgid "About"
-msgstr ""
+msgstr "Acerca de"
 
 #: src/bodhi_update/app.py:247
 msgid "All"
-msgstr ""
+msgstr "Todo"
 
 #: src/bodhi_update/app.py:248
 msgid "Security"
-msgstr ""
+msgstr "Seguridad"
 
 #: src/bodhi_update/app.py:249
 msgid "Kernel"
-msgstr ""
+msgstr "Kernel"
 
 #: src/bodhi_update/app.py:250
 msgid "System"
-msgstr ""
+msgstr "Sistema"
 
 #: src/bodhi_update/app.py:271
 msgid "A system restart is required to complete the update."
-msgstr ""
+msgstr "Se requiere reiniciar el sistema para completar la actualización."
 
 #: src/bodhi_update/app.py:275
 msgid "Restart Now"
-msgstr ""
+msgstr "Reiniciar ahora"
 
 #: src/bodhi_update/app.py:320
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #: src/bodhi_update/app.py:333
 msgid "Upgrade"
-msgstr ""
+msgstr "Actualización"
 
 #: src/bodhi_update/app.py:344
 msgid "Package"
-msgstr ""
+msgstr "Paquete"
 
 #: src/bodhi_update/app.py:354
 msgid "Installed"
-msgstr ""
+msgstr "Instalado"
 
 #: src/bodhi_update/app.py:359
 msgid "New"
-msgstr ""
+msgstr "Nuevo"
 
 #: src/bodhi_update/app.py:364
 msgid "Size"
-msgstr ""
+msgstr "Tamaño"
 
 #: src/bodhi_update/app.py:369
 msgid "Repository"
-msgstr ""
+msgstr "Repositorio"
 
 #: src/bodhi_update/app.py:383 src/bodhi_update/app.py:1086
 #: src/bodhi_update/app.py:1087
 msgid "Installing updates..."
-msgstr ""
+msgstr "Instalando actualizaciones..."
 
 #: src/bodhi_update/app.py:388 src/bodhi_update/app.py:395
 #: src/bodhi_update/app.py:1053 src/bodhi_update/app.py:1056
 #: src/bodhi_update/app.py:1163
 msgid "Waiting for authentication..."
-msgstr ""
+msgstr "Esperando autenticación..."
 
 #: src/bodhi_update/app.py:401 src/bodhi_update/app.py:1061
 #: src/bodhi_update/app.py:1446
 msgid "Show Details"
-msgstr ""
+msgstr "Mostrar detalles"
 
 #: src/bodhi_update/app.py:405
 msgid "Back to Updates"
-msgstr ""
+msgstr "Volver a actualizaciones"
 
 #: src/bodhi_update/app.py:452
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: src/bodhi_update/app.py:453
 msgid "Apply"
-msgstr ""
+msgstr "Aplicar"
 
 #: src/bodhi_update/app.py:466
 msgid "Show Snap updates"
-msgstr ""
+msgstr "Mostrar actualizaciones de Snap"
 
 #: src/bodhi_update/app.py:471
 msgid "Show Flatpak updates"
-msgstr ""
+msgstr "Mostrar actualizaciones de Flatpak"
 
 #: src/bodhi_update/app.py:494
 msgid "Preferences saved."
-msgstr ""
+msgstr "Preferencias guardadas."
 
 #: src/bodhi_update/app.py:557
 msgid ""
@@ -191,6 +205,9 @@ msgid ""
 "\n"
 "    https://github.com/flux-abyss/bodhi-update-manager"
 msgstr ""
+"Sitio web\n"
+"\n"
+"    https://github.com/flux-abyss/bodhi-update-manager"
 
 #: src/bodhi_update/app.py:562
 msgid ""
@@ -203,6 +220,14 @@ msgid ""
 "        Robert “ylee” Wiley\n"
 "        Diego “diekrz2” K."
 msgstr ""
+"Créditos\n"
+"\n"
+"    Desarrollador principal:\n"
+"        Joseph “flux.abyss” Wiley\n"
+"\n"
+"    Colaboradores:\n"
+"        Robert “ylee” Wiley\n"
+"        Diego “diekrz2” K."
 
 #: src/bodhi_update/app.py:572
 msgid ""
@@ -210,226 +235,241 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"Copyright © 2026 Joseph “flux.abyss” Wiley\n"
+"\n"
+"    "
 
 #: src/bodhi_update/app.py:580
 msgid "Website"
-msgstr ""
+msgstr "Sitio web"
 
 #: src/bodhi_update/app.py:581
 msgid "Credits"
-msgstr ""
+msgstr "Créditos"
 
 #: src/bodhi_update/app.py:582
 msgid "License"
-msgstr ""
+msgstr "Licencia"
 
 #: src/bodhi_update/app.py:703
 msgid "Restart required."
-msgstr ""
+msgstr "Reinicio requerido."
 
 #: src/bodhi_update/app.py:703 src/bodhi_update/app.py:1057
 #: src/bodhi_update/app.py:1164 src/bodhi_update/app.py:1261
 msgid "Ready"
-msgstr ""
+msgstr "Listo"
 
 #: src/bodhi_update/app.py:737
 #, python-format
 msgid "%(message)s  Restart required."
-msgstr ""
+msgstr "%(message)s  Reinicio requerido."
 
 #: src/bodhi_update/app.py:746
 msgid "System is up to date. Cached package data shown."
-msgstr ""
+msgstr "El sistema está actualizado. Se muestran datos de paquetes en caché."
 
 #: src/bodhi_update/app.py:748
 msgid "System is up to date."
-msgstr ""
+msgstr "El sistema está actualizado."
 
 #: src/bodhi_update/app.py:757 src/bodhi_update/app.py:827
 msgid "Unknown"
-msgstr ""
+msgstr "Desconocido"
 
 #: src/bodhi_update/app.py:762
 #, python-format
 msgid "%(count)d update available · Download: %(size)s"
 msgid_plural "%(count)d updates available · Download: %(size)s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d actualización disponible · Descarga: %(size)s"
+msgstr[1] "%(count)d actualizaciones disponibles · Descarga: %(size)s"
 
 #: src/bodhi_update/app.py:770
 #, python-format
 msgid "%(message)s · Cached package data"
-msgstr ""
+msgstr "%(message)s · Datos de paquetes en caché"
 
 #: src/bodhi_update/app.py:782
 #, python-format
 msgid "%(message)s (includes %(extras)s)"
-msgstr ""
+msgstr "%(message)s (incluye %(extras)s)"
 
 #: src/bodhi_update/app.py:830
 #, python-format
 msgid "%(count)d update selected · Download: %(size)s"
 msgid_plural "%(count)d updates selected · Download: %(size)s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d actualización seleccionada · Descarga: %(size)s"
+msgstr[1] "%(count)d actualizaciones seleccionadas · Descarga: %(size)s"
 
 #: src/bodhi_update/app.py:887 src/bodhi_update/app.py:919
 msgid "System package"
-msgstr ""
+msgstr "Paquete del sistema"
 
 #: src/bodhi_update/app.py:902
 msgid "N/A"
-msgstr ""
+msgstr "N/D"
 
 #: src/bodhi_update/app.py:951
 msgid "Failed to read cached package information."
-msgstr ""
+msgstr "Error al leer la información de paquetes en caché."
 
 #: src/bodhi_update/app.py:968
 #, python-format
 msgid "Refresh finished. %d updates. Success: %s"
-msgstr ""
+msgstr "Actualización finalizada. %d actualizaciones. Éxito: %s"
 
 #: src/bodhi_update/app.py:981
 #, python-format
 msgid "%(current_status)s — Warning: %(message)s"
-msgstr ""
+msgstr "%(current_status)s — Advertencia: %(message)s"
 
 #: src/bodhi_update/app.py:1015
 msgid "Package lists refreshed."
-msgstr ""
+msgstr "Listas de paquetes actualizadas."
 
 #: src/bodhi_update/app.py:1019
 #, python-format
 msgid "Finished querying backends. Total updates: %d"
-msgstr ""
+msgstr "Consulta de backends finalizada. Actualizaciones totales: %d"
 
 #: src/bodhi_update/app.py:1084
 msgid "This may take a few minutes."
-msgstr ""
+msgstr "Esto puede tardar unos minutos."
 
 #: src/bodhi_update/app.py:1091 src/bodhi_update/app.py:1119
 #: src/bodhi_update/app.py:1160 src/bodhi_update/app.py:1281
 #: src/bodhi_update/app.py:1446
 msgid "Hide Details"
-msgstr ""
+msgstr "Ocultar detalles"
 
 #: src/bodhi_update/app.py:1108
 #, python-format
 msgid "Spawn failed: %s"
-msgstr ""
+msgstr "Error al ejecutar: %s"
 
 #: src/bodhi_update/app.py:1113 src/bodhi_update/app.py:1244
 #: src/bodhi_update/app.py:1273
 msgid "Failed"
-msgstr ""
+msgstr "Fallido"
 
 #: src/bodhi_update/app.py:1115
 msgid "Failed to start installation. See Details below."
 msgstr ""
+"Error al iniciar la instalación. Consulte los detalles a continuación."
 
 #: src/bodhi_update/app.py:1120
 msgid "Failed to start installation."
-msgstr ""
+msgstr "Error al iniciar la instalación."
 
 #: src/bodhi_update/app.py:1123
 #, python-format
 msgid "Install process spawned (pid %s)."
-msgstr ""
+msgstr "Proceso de instalación iniciado (pid %s)."
 
 #: src/bodhi_update/app.py:1152
 msgid ""
-"Enter your password in the terminal below. For security, nothing will appear "
-"while typing."
+"Enter your password in the terminal below. For security, nothing will appear"
+" while typing."
 msgstr ""
+"Ingrese su contraseña en la terminal a continuación. Por seguridad, no se "
+"mostrará nada mientras escribe."
 
 #: src/bodhi_update/app.py:1156
 msgid "Terminal auth in use — revealing VTE for password entry."
 msgstr ""
+"Autenticación de terminal en uso — revelando VTE para ingresar la "
+"contraseña."
 
 #: src/bodhi_update/app.py:1207
 #, python-format
 msgid "Starting installation: %s"
-msgstr ""
+msgstr "Iniciando instalación: %s"
 
 #: src/bodhi_update/app.py:1208
 #, python-format
 msgid "Command: %s"
-msgstr ""
+msgstr "Comando: %s"
 
 #: src/bodhi_update/app.py:1240 src/bodhi_update/app.py:1250
 #, python-format
 msgid "Installing %(deb_name)s..."
-msgstr ""
+msgstr "Instalando %(deb_name)s..."
 
 #: src/bodhi_update/app.py:1246
 #, python-format
 msgid "Validation failed: %(exc)s"
-msgstr ""
+msgstr "Validación fallida: %(exc)s"
 
 #: src/bodhi_update/app.py:1254
 msgid "Installation completed successfully."
-msgstr ""
+msgstr "Instalación completada con éxito."
 
 #: src/bodhi_update/app.py:1259
 msgid "Complete"
-msgstr ""
+msgstr "Completado"
 
 #: src/bodhi_update/app.py:1260
 msgid "Updates installed successfully."
-msgstr ""
+msgstr "Actualizaciones instaladas correctamente."
 
 #: src/bodhi_update/app.py:1268
 #, python-format
 msgid "Installation failed with exit code: %s"
-msgstr ""
+msgstr "La instalación falló con el código de salida: %s"
 
 #: src/bodhi_update/app.py:1275
 #, python-format
 msgid "Update failed. Exit code: %(exit_code)s. See Details below."
 msgstr ""
+"Actualización fallida. Código de salida: %(exit_code)s. Consulte los "
+"detalles a continuación."
 
 #: src/bodhi_update/app.py:1282
 #, python-format
 msgid "Update failed. Exit code: %(exit_code)s"
-msgstr ""
+msgstr "Actualización fallida. Código de salida: %(exit_code)s"
 
 #: src/bodhi_update/app.py:1308
 msgid "No privilege tool found. Please reboot manually."
 msgstr ""
+"No se encontró la herramienta de privilegios. Por favor, reinicie "
+"manualmente."
 
 #: src/bodhi_update/app.py:1315
 #, python-format
 msgid "Failed to initiate reboot: %(exc)s"
-msgstr ""
+msgstr "Error al iniciar el reinicio: %(exc)s"
 
 #: src/bodhi_update/app.py:1387
 msgid "Checking for updates..."
-msgstr ""
+msgstr "Buscando actualizaciones..."
 
 #: src/bodhi_update/app.py:1388
 msgid "Starting background refresh for updates."
-msgstr ""
+msgstr "Iniciando actualización en segundo plano."
 
 #: src/bodhi_update/app.py:1407
 msgid "Primary backend (APT) is not configured."
-msgstr ""
+msgstr "El backend principal (APT) no está configurado."
 
 #: src/bodhi_update/app.py:1411
 msgid ""
 "Installing from multiple package sources simultaneously is not yet "
 "supported. Please select packages from one source type only."
 msgstr ""
+"La instalación desde múltiples fuentes de paquetes simultáneamente aún no es"
+" compatible. Seleccione paquetes de un solo tipo de fuente."
 
 #: src/bodhi_update/app.py:1421
 #, python-format
 msgid "Requested installation for unknown backend: %(backend_id)s"
 msgstr ""
+"Se solicitó la instalación para un backend desconocido: %(backend_id)s"
 
 #: src/bodhi_update/app.py:1432
 msgid "No packages selected."
-msgstr ""
+msgstr "No se seleccionaron paquetes."
 
 #: src/bodhi_update/app.py:1441
 msgid "Installing selected updates..."
-msgstr ""
+msgstr "Instalando actualizaciones seleccionadas..."

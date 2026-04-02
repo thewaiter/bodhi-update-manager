@@ -6,8 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bodhi-update-manager 0.1-3\n"
-"Report-Msgid-Bugs-To: https://github.com/flux-abyss/bodhi-update-manager/"
-"issues\n"
+"Report-Msgid-Bugs-To: https://github.com/flux-abyss/bodhi-update-manager/issues\n"
 "POT-Creation-Date: 2026-03-31 16:39-0400\n"
 "PO-Revision-Date: 2026-03-27 14:13-0400\n"
 "Last-Translator: Automatically generated\n"
@@ -24,6 +23,9 @@ msgid ""
 "\n"
 "A lightweight graphical update manager for Debian based distros."
 msgstr ""
+"Správce aktualizací\n"
+"\n"
+"Lehký grafický správce aktualizací pro distribuce založené na Debianu."
 
 #: src/bodhi_update/app.py:56
 msgid ""
@@ -40,6 +42,18 @@ msgid ""
 "You should have received a copy of the GNU General Public License\n"
 "along with this program.  If not, see <https://www.gnu.org/licenses/>."
 msgstr ""
+"Tento program je svobodný software: můžete jej šířit a/nebo upravovat\n"
+"podle podmínek GNU General Public License, jak ji vydala\n"
+"Free Software Foundation, buď verze 3 této licence, nebo\n"
+"(podle vašeho uvážení) jakékoli pozdější verze.\n"
+"\n"
+"Tento program je šířen v naději, že bude užitečný,\n"
+"ale BEZ JAKÉKOLIV ZÁRUKY; dokonce i bez předpokládané záruky\n"
+"PRODEJNOSTI nebo VHODNOSTI PRO KONKRÉTNÍ ÚČEL.  Více podrobností\n"
+"naleznete v GNU General Public License.\n"
+"\n"
+"Kopii GNU General Public License byste měli obdržet spolu s tímto programem.\n"
+"Pokud se tak nestalo, viz <https://www.gnu.org/licenses/>."
 
 #: src/bodhi_update/app.py:86 src/bodhi_update/app.py:579
 #, fuzzy
@@ -192,6 +206,9 @@ msgid ""
 "\n"
 "    https://github.com/flux-abyss/bodhi-update-manager"
 msgstr ""
+"Webové stránky\n"
+"\n"
+"    https://github.com/flux-abyss/bodhi-update-manager"
 
 #: src/bodhi_update/app.py:562
 msgid ""
@@ -204,6 +221,14 @@ msgid ""
 "        Robert “ylee” Wiley\n"
 "        Diego “diekrz2” K."
 msgstr ""
+"Autoři\n"
+"\n"
+"    Hlavní vývojář:\n"
+"        Joseph „flux.abyss“ Wiley\n"
+"\n"
+"    Přispěvatelé:\n"
+"        Robert „ylee“ Wiley\n"
+"        Diego „diekrz2“ K."
 
 #: src/bodhi_update/app.py:572
 msgid ""
@@ -211,18 +236,21 @@ msgid ""
 "\n"
 "    "
 msgstr ""
+"Copyright © 2026 Joseph „flux.abyss“ Wiley\n"
+"\n"
+"    "
 
 #: src/bodhi_update/app.py:580
 msgid "Website"
-msgstr ""
+msgstr "Webové stránky"
 
 #: src/bodhi_update/app.py:581
 msgid "Credits"
-msgstr ""
+msgstr "Autoři"
 
 #: src/bodhi_update/app.py:582
 msgid "License"
-msgstr ""
+msgstr "Licence"
 
 #: src/bodhi_update/app.py:703
 msgid "Restart required."
@@ -329,7 +357,7 @@ msgstr "Selhalo"
 
 #: src/bodhi_update/app.py:1115
 msgid "Failed to start installation. See Details below."
-msgstr ""
+msgstr "Spuštění instalace selhalo. Viz podrobnosti níže."
 
 #: src/bodhi_update/app.py:1120
 #, fuzzy
@@ -339,17 +367,19 @@ msgstr "Spouští se instalace: %s"
 #: src/bodhi_update/app.py:1123
 #, python-format
 msgid "Install process spawned (pid %s)."
-msgstr ""
+msgstr "Proces instalace spuštěn (pid %s)."
 
 #: src/bodhi_update/app.py:1152
 msgid ""
-"Enter your password in the terminal below. For security, nothing will appear "
-"while typing."
+"Enter your password in the terminal below. For security, nothing will appear"
+" while typing."
 msgstr ""
+"Zadejte své heslo do terminálu níže. Z bezpečnostních důvodů se při psaní "
+"nic nezobrazí."
 
 #: src/bodhi_update/app.py:1156
 msgid "Terminal auth in use — revealing VTE for password entry."
-msgstr ""
+msgstr "Používá se terminálové ověření — zobrazení VTE pro zadání hesla."
 
 #: src/bodhi_update/app.py:1207
 #, python-format
