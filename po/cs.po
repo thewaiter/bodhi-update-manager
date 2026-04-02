@@ -2,7 +2,8 @@
 # Copyright (C) 2026 Bodhi Linux Team
 # This file is distributed under the same license as the bodhi-update-manager package.
 # Automatically generated, 2026.
-#
+# Last translator Štefan <the_waiter> Uram, 2026
+
 msgid ""
 msgstr ""
 "Project-Id-Version: bodhi-update-manager 0.1-3\n"
@@ -56,9 +57,8 @@ msgstr ""
 "Pokud se tak nestalo, viz <https://www.gnu.org/licenses/>."
 
 #: src/bodhi_update/app.py:86 src/bodhi_update/app.py:579
-#, fuzzy
 msgid "Update Manager"
-msgstr "Bodhi Správce aktualizací"
+msgstr "Správce aktualizací Bodhi"
 
 #: src/bodhi_update/app.py:160
 msgid "File"
@@ -346,9 +346,8 @@ msgid "Hide Details"
 msgstr "Skrýt podrobnosti"
 
 #: src/bodhi_update/app.py:1108
-#, fuzzy, python-format
 msgid "Spawn failed: %s"
-msgstr "Ověření selhalo: %(exc)s"
+msgstr "Spuštění procesu selhalo: %(exc)s"
 
 #: src/bodhi_update/app.py:1113 src/bodhi_update/app.py:1244
 #: src/bodhi_update/app.py:1273
@@ -360,9 +359,8 @@ msgid "Failed to start installation. See Details below."
 msgstr "Spuštění instalace selhalo. Viz podrobnosti níže."
 
 #: src/bodhi_update/app.py:1120
-#, fuzzy
 msgid "Failed to start installation."
-msgstr "Spouští se instalace: %s"
+msgstr "Instalace se nespustila."
 
 #: src/bodhi_update/app.py:1123
 #, python-format
@@ -470,20 +468,3 @@ msgstr "Nebyly vybrány žádné balíčky."
 msgid "Installing selected updates..."
 msgstr "Instalují se vybrané aktualizace..."
 
-#~ msgid "About Bodhi Update Manager"
-#~ msgstr "O Správci aktualizací Bodhi"
-
-#~ msgid "Close"
-#~ msgstr "Zavřít"
-
-#~ msgid "A lightweight system update tool for Bodhi Linux."
-#~ msgstr "Lehký nástroj pro aktualizaci systému pro Bodhi Linux."
-
-#~ msgid "Created by:"
-#~ msgstr "Vytvořil:"
-
-#~ msgid "GitHub Repository"
-#~ msgstr "GitHub repozitář"
-
-#~ msgid "Installation started."
-#~ msgstr "Instalace zahájena."
