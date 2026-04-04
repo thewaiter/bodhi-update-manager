@@ -360,7 +360,7 @@ class AptBackend(UpdateBackend):
 
         return False, ""
 
-    def refresh(self) -> Tuple[bool, str]:
+    def refresh(self, sentinel_path: str | None = None) -> Tuple[bool, str]:
         """Run a privileged ``apt-get update`` via the root helper and return ``(success,
         message)``."""
         privilege_tool = find_privilege_tool()
@@ -368,6 +368,11 @@ class AptBackend(UpdateBackend):
             return False, "No privilege tool found (pkexec / sudo / doas)."
 
         command = [privilege_tool, get_helper_path(), "refresh"]
+        if sentinel_path:
+            # Insert --sentinel before the subcommand so the root helper can
+            # signal auth success to the GUI.
+            command = [privilege_tool, get_helper_path(),
+                       "--sentinel", sentinel_path, "refresh"]
 
         try:
             result = subprocess.run(

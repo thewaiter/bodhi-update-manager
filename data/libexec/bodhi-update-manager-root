@@ -180,6 +180,7 @@ def _cmd_hold(args: list[str], sentinel_path: str | None) -> int:
     except ValueError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
+    _signal_auth_success(sentinel_path)
     result = subprocess.run(["apt-mark", "hold", args[0]], check=False)
     return result.returncode
 
@@ -194,6 +195,7 @@ def _cmd_unhold(args: list[str], sentinel_path: str | None) -> int:
     except ValueError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
+    _signal_auth_success(sentinel_path)
     result = subprocess.run(["apt-mark", "unhold", args[0]], check=False)
     return result.returncode
 

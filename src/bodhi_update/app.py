@@ -91,9 +91,15 @@ class UpdateManagerWindow(Gtk.Window):
         self.install_in_progress = False
         self.install_output_started = False
         self.install_pulse_source_id: int | None = None
-        # Sentinel file + poller for pkexec auth handshake.
+        # Sentinel file + poller for pkexec auth handshake (install).
         self._auth_sentinel_path: str | None = None
         self._auth_poll_source_id: int | None = None
+        # Sentinel file + poller for pkexec auth handshake (hold/unhold).
+        self._hold_sentinel_path: str | None = None
+        self._hold_poll_source_id: int | None = None
+        # Sentinel file + poller for pkexec auth handshake (refresh).
+        self._refresh_sentinel_path: str | None = None
+        self._refresh_poll_source_id: int | None = None
         # Explicit install/auth state machine.
         # Valid transitions: IDLE → AUTH_PENDING → RUNNING → COMPLETE | FAILED
         self.install_state: str = "IDLE"
@@ -1122,14 +1128,44 @@ class UpdateManagerWindow(Gtk.Window):
         if self.refresh_in_progress or self.install_in_progress:
             return
 
+        running_msg = _(
+            "Locking package...") if hold else _("Unlocking package...")
+
+        # Use a sentinel file (same pattern as the install flow) so we can
+        # distinguish "waiting for pkexec auth" from "command is running".
+        sentinel = (
+            f"/tmp/bodup-hold-{os.getpid()}-{random.randint(0, 0xFFFFFF):06x}.ok"
+        )
+        self._hold_sentinel_path: str | None = sentinel
+        self._hold_poll_source_id: int | None = GLib.timeout_add(
+            100, self._poll_hold_sentinel, running_msg
+        )
+
+        self._set_status(_("Waiting for authorization..."))
+
         def _worker() -> None:
             import subprocess  # noqa: PLC0415
             try:
-                argv = build_hold_argv(pkg_name, hold=hold)
+                argv = build_hold_argv(pkg_name, hold=hold, sentinel_path=sentinel)
             except RuntimeError as exc:
+                # Command can't be built — no subprocess will run, so the
+                # sentinel will never be written.  Cancel everything.
+                self._cancel_hold_sentinel()
                 GLib.idle_add(self._set_status, str(exc))
                 return
             result = subprocess.run(argv, capture_output=True, check=False)
+            # If the sentinel file still exists the poller never got to consume
+            # it (apt-mark finished within a single 100ms poll interval).
+            # Emit the running message now before posting success/failure.
+            _sentinel_path = self._hold_sentinel_path
+            if _sentinel_path and os.path.exists(_sentinel_path):
+                try:
+                    os.unlink(_sentinel_path)
+                except OSError:
+                    pass
+                self._hold_sentinel_path = None
+                GLib.idle_add(self._set_status, running_msg)
+            self._cancel_hold_sentinel()
             if result.returncode != 0:
                 err = (result.stderr or
                        b"").decode(errors="replace").strip().splitlines()
@@ -1145,6 +1181,79 @@ class UpdateManagerWindow(Gtk.Window):
                 GLib.timeout_add_seconds(3, self._restore_current_update_status)
 
         threading.Thread(target=_worker, daemon=True).start()
+
+    def _poll_hold_sentinel(self, running_msg: str) -> bool:
+        """GLib timeout: fires every 100 ms while waiting for hold/unhold pkexec auth.
+
+        When the root helper writes the sentinel file, auth has succeeded and
+        the command is now running — update the status bar and stop polling.
+        """
+        path = self._hold_sentinel_path
+        if path is None:
+            return False  # already cancelled
+        if os.path.exists(path):
+            try:
+                os.unlink(path)
+            except OSError:
+                pass
+            self._hold_sentinel_path = None
+            self._hold_poll_source_id = None
+            GLib.idle_add(self._set_status, running_msg)
+            return False
+        return True
+
+    def _stop_hold_poller(self) -> None:
+        """Stop the hold sentinel GLib poller without touching the sentinel file.
+
+        Called by the worker after subprocess returns so the GTK poller
+        can still observe (and consume) the sentinel file on its next tick.
+        """
+        src = getattr(self, "_hold_poll_source_id", None)
+        if src is not None:
+            GLib.source_remove(src)
+            self._hold_poll_source_id = None
+
+    def _cancel_hold_sentinel(self) -> None:
+        """Stop the hold sentinel poller AND clean up any leftover file.
+
+        Called only when the sentinel will never be written (e.g. command
+        could not be built, or the user cancelled pkexec before auth).
+        """
+        self._stop_hold_poller()
+        path = getattr(self, "_hold_sentinel_path", None)
+        if path:
+            self._hold_sentinel_path = None
+            try:
+                os.unlink(path)
+            except OSError:
+                pass
+
+    def _poll_refresh_sentinel(self) -> bool:
+        """GLib timeout: fires every 100 ms while waiting for refresh pkexec auth.
+
+        When the root helper writes the sentinel file, auth has succeeded and
+        apt-get update is now running — update the status bar and stop polling.
+        """
+        path = self._refresh_sentinel_path
+        if path is None:
+            return False  # already cancelled or consumed
+        if os.path.exists(path):
+            try:
+                os.unlink(path)
+            except OSError:
+                pass
+            self._refresh_sentinel_path = None
+            self._refresh_poll_source_id = None
+            GLib.idle_add(self._set_status, _("Loading updates..."))
+            return False
+        return True
+
+    def _stop_refresh_poller(self) -> None:
+        """Stop the refresh sentinel GLib poller (does not touch the file)."""
+        src = getattr(self, "_refresh_poll_source_id", None)
+        if src is not None:
+            GLib.source_remove(src)
+            self._refresh_poll_source_id = None
 
     # ------------------------------------------------------------------ #
     # Store / data helpers                                                 #
@@ -1374,10 +1483,29 @@ class UpdateManagerWindow(Gtk.Window):
         # Track which backends fully succeeded
         successful_backends = 0
 
+        sentinel = self._refresh_sentinel_path
+
         for backend in backends:
-            ok, msg = backend.refresh()
+            if backend.backend_id == "apt":
+                ok, msg = backend.refresh(sentinel_path=sentinel)
+            else:
+                ok, msg = backend.refresh()
             if not ok and msg:
                 messages.append(msg)
+
+        # Stop the poller before the final sentinel-consume check so it cannot
+        # fire and double-post after we handle the file below.
+        self._stop_refresh_poller()
+
+        # Fallback consume: if the sentinel still exists the poller never got
+        # a chance to observe it (apt-get update finished in < 100 ms).
+        if sentinel and os.path.exists(sentinel):
+            try:
+                os.unlink(sentinel)
+            except OSError:
+                pass
+            GLib.idle_add(self._set_status, _("Loading updates..."))
+        self._refresh_sentinel_path = None
 
         updates: List[UpdateItem] = []
         total_bytes = 0
@@ -1437,7 +1565,7 @@ class UpdateManagerWindow(Gtk.Window):
         self.install_progress.set_fraction(0.0)
         self.install_progress.set_show_text(True)
         self.install_progress.set_text(_("Waiting for authentication..."))
-        self._set_status(_("Ready"))
+        self._set_status(_("Waiting for authorization..."))
 
         self.install_details_revealer.set_reveal_child(False)
         self.show_details_button.set_active(False)
@@ -1542,7 +1670,7 @@ class UpdateManagerWindow(Gtk.Window):
 
         self.install_phase_label.set_text(msg)
         self.install_progress.set_text(_("Waiting for authentication..."))
-        self._set_status(_("Ready"))
+        self._set_status(_("Waiting for authorization..."))
 
         self.install_terminal.grab_focus()
 
@@ -1771,7 +1899,21 @@ class UpdateManagerWindow(Gtk.Window):
                 return
 
         self._set_refresh_busy(True)
-        self._set_updates_loading(True)
+        # Show the loading stack + spinner immediately but keep the status as
+        # "Waiting for authorization..." until auth actually succeeds.
+        self.updates_stack.set_visible_child_name("loading")
+        self._loading_spinner.start()
+        self._updates_loading = True
+        self._update_action_sensitivity()
+        self._set_status(_("Waiting for authorization..."))
+        # Generate a fresh sentinel for this refresh run and start a poller
+        # so "Loading updates..." appears as soon as auth succeeds.
+        self._refresh_sentinel_path = (
+            f"/tmp/bodup-refresh-{os.getpid()}-{random.randint(0, 0xFFFFFF):06x}.ok"
+        )
+        self._refresh_poll_source_id = GLib.timeout_add(
+            100, self._poll_refresh_sentinel
+        )
         log.info(_("Starting background refresh for updates."))
 
         worker = threading.Thread(target=self._refresh_worker, daemon=True)

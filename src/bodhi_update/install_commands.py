@@ -99,14 +99,21 @@ def build_deb_install_argv(deb_path: str) -> list[str]:
     return [tool, helper, "install-deb", norm_path]
 
 
-def build_hold_argv(package: str, *, hold: bool) -> list[str]:
+def build_hold_argv(
+    package: str, *, hold: bool, sentinel_path: str | None = None
+) -> list[str]:
     """Return the argv for hold or unhold of a single APT package via the helper.
 
     Args:
         package: Debian package name to act on.
         hold: True to place the package on hold; False to remove the hold.
+        sentinel_path: Optional path for the auth-success sentinel file.
+            When provided, ``--sentinel <path>`` is inserted after the helper
+            path so the root helper can signal auth success to the GUI.
     """
     tool = _privilege_tool()
     helper = get_helper_path()
     action = "hold" if hold else "unhold"
+    if sentinel_path:
+        return [tool, helper, "--sentinel", sentinel_path, action, package]
     return [tool, helper, action, package]
