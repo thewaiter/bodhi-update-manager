@@ -37,8 +37,12 @@ import subprocess
 # ---------------------------------------------------------------------------
 
 # Debian/Ubuntu package names: alphanumeric + '.', '+', '-'; 1-128 chars long;
-# must start with a letter or digit.
-_PACKAGE_RE = re.compile(r"^[a-zA-Z0-9][a-zA-Z0-9.+\-]{0,127}$")
+# must start with a letter or digit.  An optional multiarch suffix of the form
+# :<arch> (e.g. :i386, :amd64) is allowed after the base name.
+_PACKAGE_RE = re.compile(
+    r"^[a-z0-9][a-z0-9.+\-]{0,127}"
+    r"(?::[a-z0-9][a-z0-9-]*)?$"
+)
 
 
 def _validate_package_name(name: str) -> None:

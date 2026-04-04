@@ -11,7 +11,12 @@ import apt
 
 from bodhi_update.backends import UpdateBackend
 from bodhi_update.install_commands import build_upgrade_argv, get_helper_path
-from bodhi_update.models import UpdateItem
+from bodhi_update.models import (
+    CONSTRAINT_BLOCKED,
+    CONSTRAINT_HELD,
+    CONSTRAINT_NORMAL,
+    UpdateItem,
+)
 from bodhi_update.utils import find_privilege_tool
 
 
@@ -127,6 +132,139 @@ def _determine_category(pkg_name: str, origin: str) -> str:
 def _sort_key(item: UpdateItem) -> tuple[int, str]:
     """Sort security updates first, then alphabetically by name."""
     return (0 if _is_security_update(item.origin) else 1, item.name.lower())
+
+
+# ------------------------------------------------------------------ #
+# APT constraint helpers                                               #
+# ------------------------------------------------------------------ #
+
+def _get_held_packages() -> set[str]:
+    """Return the set of package names pinned via ``apt-mark hold``.
+
+    Runs ``apt-mark showhold`` without a shell.  Returns an empty set
+    on any error so callers can proceed gracefully.
+    """
+    try:
+        result = subprocess.run(
+            ["apt-mark", "showhold"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            text=True,
+            timeout=10,
+            check=False,
+        )
+        return set(result.stdout.split())
+    except Exception:  # pylint: disable=broad-except
+        return set()
+
+
+def _get_kept_back_packages() -> set[str]:
+    """Return packages that APT would keep back during a full upgrade.
+
+    Runs ``apt-get --simulate full-upgrade`` (no root required for simulation)
+    and parses the "The following packages have been kept back:" stanza.
+    Handles multi-line package lists and multiarch names (e.g. ``libc6:i386``).
+    Returns an empty set on any error.
+
+    ``full-upgrade`` is used intentionally — it matches the command the root
+    helper runs at install time.  Using plain ``upgrade`` would misclassify
+    packages that need a full-upgrade step (e.g. Wine after unholding
+    winehq-staging) as permanently blocked even when no hold is active.
+    """
+    try:
+        result = subprocess.run(
+            ["apt-get", "--simulate", "full-upgrade"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+    except Exception:  # pylint: disable=broad-except
+        return set()
+
+    kept_back: set[str] = set()
+    in_kept_section = False
+
+    for line in result.stdout.splitlines():
+        stripped = line.strip()
+        if stripped == "The following packages have been kept back:":
+            in_kept_section = True
+            continue
+        if in_kept_section:
+            # A blank line or a new capitalised section header ends the stanza.
+            if not stripped or stripped[0].isupper():
+                break
+            kept_back.update(stripped.split())
+
+    return kept_back
+
+
+def _apt_cache_depends(held_pkg: str) -> set[str]:
+    """Return the set of package names that *held_pkg* depends on.
+
+    Uses ``apt-cache depends`` without a shell.  Returns an empty set on any
+    error.  Results are intentionally *not* cached here — the caller is
+    responsible for caching if repeated calls are expected.
+    """
+    try:
+        result = subprocess.run(
+            ["apt-cache", "depends", held_pkg],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            text=True,
+            timeout=10,
+            check=False,
+        )
+    except Exception:  # pylint: disable=broad-except
+        return set()
+
+    deps: set[str] = set()
+    for line in result.stdout.splitlines():
+        # Lines look like:  "  Depends: libfoo" or "  |Depends: libbar"
+        # Strip leading whitespace, optional '|', and the relation keyword.
+        stripped = line.strip().lstrip("|").strip()
+        if ":" in stripped:
+            _relation, _, dep_name = stripped.partition(":")
+            dep_name = dep_name.strip()
+            # Skip virtual / alternative markers (<foo>, |foo)
+            if dep_name and not dep_name.startswith("<"):
+                deps.add(dep_name)
+
+    return deps
+
+
+def _guess_blocking_held_package(
+    pkg_name: str,
+    held_names: set[str],
+    depends_cache: dict[str, set[str]] | None = None,
+) -> str | None:
+    """Return the single held package most likely blocking *pkg_name*, or None.
+
+    Heuristic (intentionally simple):
+      For each held package, run ``apt-cache depends`` and check whether
+      *pkg_name* appears in its dependency list.  If exactly one held package
+      matches, return its name.  If zero or more than one match, return None
+      so the caller can fall back to the generic message.
+
+    *depends_cache* may be supplied by the caller as a shared mutable dict so
+    that ``apt-cache depends`` is invoked at most once per held package across
+    many blocked-package lookups in a single pass (e.g. ``get_updates()``).
+    """
+    if not held_names:
+        return None
+
+    if depends_cache is None:
+        depends_cache = {}
+
+    matched: list[str] = []
+    for held in held_names:
+        if held not in depends_cache:
+            depends_cache[held] = _apt_cache_depends(held)
+        if pkg_name in depends_cache[held]:
+            matched.append(held)
+
+    return matched[0] if len(matched) == 1 else None
 
 
 def _stderr_mentions_lock(text: str) -> bool:
@@ -265,17 +403,23 @@ class AptBackend(UpdateBackend):
         return False, f"Failed to refresh package lists. ({first_err})"
 
     def get_updates(self) -> Tuple[List[UpdateItem], int]:
-        """Read the local APT cache and return ``(updates, total_download_bytes)``."""
-        # Query the real persistent hold state once for the whole call.
-        try:
-            _result = subprocess.run(
-                ["apt-mark", "showhold"],
-                stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
-                text=True, timeout=10, check=False,
-            )
-            held_names: set[str] = set(_result.stdout.split())
-        except Exception:  # pylint: disable=broad-except
-            held_names = set()
+        """Read the local APT cache and return ``(updates, total_download_bytes)``.
+
+        Each ``UpdateItem`` receives one of three constraint states:
+
+        * ``CONSTRAINT_HELD``    – pinned via ``apt-mark hold``
+        * ``CONSTRAINT_BLOCKED`` – kept back by APT because of a held dependency
+        * ``CONSTRAINT_NORMAL``  – eligible for upgrade
+
+        Held packages are excluded from the ``total_bytes`` download total
+        (preserving previous behaviour).
+
+        Blocked packages always use a generic description string; no dependency
+        resolution is attempted.
+        """
+        # Query APT constraint state once for the whole call.
+        held_names = _get_held_packages()
+        kept_back_names = _get_kept_back_packages()
 
         cache = apt.Cache()
         cache.open()
@@ -292,7 +436,16 @@ class AptBackend(UpdateBackend):
             size = pkg.candidate.size if pkg.candidate else 0
             origin = _get_origin_name(pkg)
             summary = pkg.candidate.summary if pkg.candidate else ""
-            is_held = pkg.name in held_names
+
+            if pkg.name in held_names:
+                constraint = CONSTRAINT_HELD
+                description = summary
+            elif pkg.name in kept_back_names:
+                constraint = CONSTRAINT_BLOCKED
+                description = "Blocked by held package or dependency constraints"
+            else:
+                constraint = CONSTRAINT_NORMAL
+                description = summary
 
             category = _determine_category(pkg.name, origin)
 
@@ -304,13 +457,14 @@ class AptBackend(UpdateBackend):
                 origin=origin,
                 backend="apt",
                 category=category,
-                description=summary,
-                held=is_held,
+                description=description,
+                constraint=constraint,
             )
 
             updates.append(item)
-            if not is_held:
+            if constraint != CONSTRAINT_HELD:
                 total_bytes += size
 
         updates.sort(key=_sort_key)
         return updates, total_bytes
+

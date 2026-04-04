@@ -24,7 +24,9 @@ from gi.repository import Gdk, Gio, GLib, Gtk, Pango, Vte  # noqa: E402
 from bodhi_update._version import __version__  # noqa: E402
 from bodhi_update.backends import get_registry, initialize_registry  # noqa: E402
 from bodhi_update.install_commands import build_deb_install_argv, build_hold_argv  # noqa: E402
-from bodhi_update.models import UpdateItem  # noqa: E402
+from bodhi_update.models import (  # noqa: E402
+    CONSTRAINT_BLOCKED, CONSTRAINT_HELD, CONSTRAINT_NORMAL, UpdateItem,
+)
 from bodhi_update.utils import (  # noqa: E402
     find_privilege_tool, format_size, reboot_required,
 )
@@ -77,7 +79,7 @@ class UpdateManagerWindow(Gtk.Window):
     COL_ICON = 9  # GTK icon-name (symbolic)
     COL_RAW_SIZE = 10  # Raw byte count for exact size summation
     COL_DESC = 11  # Raw description text (for reliable toggle of pkg markup)
-    COL_HELD = 12  # bool — True when the APT package is on hold
+    COL_HELD = 12  # str — constraint state: 'held', 'blocked_by_hold', or 'normal'
 
     def __init__(self, deb_path: str | None = None) -> None:
         super().__init__(title=_("Update Manager"))
@@ -129,7 +131,7 @@ class UpdateManagerWindow(Gtk.Window):
             str,  # icon
             int,  # raw_size
             str,  # description
-            bool,  # held
+            str,  # constraint (held / blocked_by_hold / normal)
         )
         self.filter_model = self.store.filter_new()
         self.filter_model.set_visible_func(self._category_filter_func)
@@ -354,6 +356,10 @@ class UpdateManagerWindow(Gtk.Window):
         toggle_column = Gtk.TreeViewColumn(_("Upgrade"), toggle_renderer, active=self.COL_SELECTED)
         toggle_column.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
         toggle_column.set_fixed_width(90)
+        # Hide the checkbox for held/blocked rows — they are non-actionable.
+        toggle_column.set_cell_data_func(
+            toggle_renderer, self._toggle_cell_data_func
+        )
         self.tree.append_column(toggle_column)
 
         # Package column — always uses Pango markup so the name stays bold.
@@ -492,7 +498,7 @@ class UpdateManagerWindow(Gtk.Window):
         notif_check.set_active(self.prefs.get("show_notifications", True))
         box.pack_start(notif_check, False, False, 0)
 
-        held_check = Gtk.CheckButton(label=_("Show held packages"))
+        held_check = Gtk.CheckButton(label=_("Show held/blocked packages"))
         held_check.set_active(self.prefs.get("show_held_packages", False))
         box.pack_start(held_check, False, False, 0)
 
@@ -543,7 +549,11 @@ class UpdateManagerWindow(Gtk.Window):
             if changed:
                 self._save_prefs()
                 self.filter_model.refilter()
+                # Recompute the real status first so the restore is accurate,
+                # then flash "Preferences saved." and revert after 3 seconds.
+                self._restore_current_update_status()
                 self._set_status(_("Preferences saved."))
+                GLib.timeout_add_seconds(3, self._restore_current_update_status)
 
         dialog.destroy()
 
@@ -687,9 +697,9 @@ class UpdateManagerWindow(Gtk.Window):
             for row in self.store:
                 name = row[self.COL_RAW_NAME]
                 desc = row[self.COL_DESC]
-                held = row[self.COL_HELD]
+                constraint = row[self.COL_HELD]
                 row[self.COL_PACKAGE] = self._build_pkg_markup(
-                    name, desc, show_desc, held)
+                    name, desc, show_desc, constraint)
         finally:
             self.store.thaw_notify()
 
@@ -888,6 +898,19 @@ class UpdateManagerWindow(Gtk.Window):
                 "message": message,
                 "extras": ", ".join(extras)
             }
+        # Append a hint when held/blocked rows are hidden.
+        if not self.prefs.get("show_held_packages", False):
+            hidden = sum(
+                1 for row in self.store
+                if row[self.COL_HELD] in (CONSTRAINT_HELD, CONSTRAINT_BLOCKED)
+            )
+            if hidden:
+                hint = ngettext(
+                    "%(n)d held/blocked package hidden",
+                    "%(n)d held/blocked packages hidden",
+                    hidden,
+                ) % {"n": hidden}
+                message = f"{message} · {hint}"
         self._set_status(message)
         # Derive badge severity from the already-populated store (highest wins).
         # Held packages are excluded — they are non-actionable.
@@ -895,7 +918,7 @@ class UpdateManagerWindow(Gtk.Window):
         severity = "low"
         actionable_count = 0
         for row in self.store:
-            if row[self.COL_HELD]:
+            if row[self.COL_HELD] in (CONSTRAINT_HELD, CONSTRAINT_BLOCKED):
                 continue
             actionable_count += 1
             s = _pkg_severity(row[self.COL_RAW_NAME], row[self.COL_CATEGORY],
@@ -977,7 +1000,10 @@ class UpdateManagerWindow(Gtk.Window):
         row = self.filter_model[f_iter]
         if row[self.COL_BACKEND] != "apt":
             return False
-        self._show_hold_menu(event, row[self.COL_RAW_NAME], row[self.COL_HELD])
+        self._show_hold_menu(
+            event, row[self.COL_RAW_NAME],
+            row[self.COL_HELD] == CONSTRAINT_HELD,
+        )
         return True
 
     def _show_hold_menu(self, event: object, pkg_name: str,
@@ -1023,17 +1049,17 @@ class UpdateManagerWindow(Gtk.Window):
                 self.store.append(row)
             # Insert fresh APT rows.
             for update in apt_updates:
-                held = update.held
+                constraint = update.constraint
                 icon = self._category_icon(update.category, update.backend,
-                                           held)
+                                           constraint)
                 pkg_markup = self._build_pkg_markup(update.name,
                                                     update.description,
-                                                    show_desc, held)
+                                                    show_desc, constraint)
                 size_str = format_size(update.size)
                 self.store.append([
                     False, pkg_markup, update.installed_version, update.candidate_version,
                     size_str, update.origin, update.name, update.category, update.backend,
-                    icon, update.size, update.description or _("System package"), held,
+                    icon, update.size, update.description or _("System package"), constraint,
                 ])
         finally:
             self.store.thaw_notify()
@@ -1041,7 +1067,10 @@ class UpdateManagerWindow(Gtk.Window):
         non_apt_bytes = sum(row[self.COL_RAW_SIZE]
                             for row in self.store
                             if row[self.COL_BACKEND] != "apt")
-        actionable = sum(1 for row in self.store if not row[self.COL_HELD])
+        actionable = sum(
+            1 for row in self.store
+            if row[self.COL_HELD] == CONSTRAINT_NORMAL
+        )
         self._update_count_status(actionable,
                                   apt_bytes + non_apt_bytes,
                                   cached=True)
@@ -1085,8 +1114,11 @@ class UpdateManagerWindow(Gtk.Window):
             return False  # user made a selection; leave their status line alone
         total_bytes = sum(row[self.COL_RAW_SIZE]
                           for row in self.store
-                          if not row[self.COL_HELD])
-        actionable = sum(1 for row in self.store if not row[self.COL_HELD])
+                          if row[self.COL_HELD] == CONSTRAINT_NORMAL)
+        actionable = sum(
+            1 for row in self.store
+            if row[self.COL_HELD] == CONSTRAINT_NORMAL
+        )
         self._update_count_status(actionable, total_bytes, cached=True)
         return False  # one-shot: remove the timeout source
 
@@ -1099,9 +1131,9 @@ class UpdateManagerWindow(Gtk.Window):
         if row_backend == "flatpak" and not self.prefs.get(
                 "show_flatpak", True):
             return False
-        # Hide held APT packages unless show_held_packages is enabled.
-        if model[iter_][self.COL_HELD] and not self.prefs.get(
-                "show_held_packages", False):
+        # Hide held/blocked APT packages unless show_held_packages is enabled.
+        if (model[iter_][self.COL_HELD] in (CONSTRAINT_HELD, CONSTRAINT_BLOCKED)
+                and not self.prefs.get("show_held_packages", False)):
             return False
         category_id = self.category_combo.get_active_id()
         if not category_id or category_id == "all":
@@ -1109,14 +1141,32 @@ class UpdateManagerWindow(Gtk.Window):
         row_category = model[iter_][self.COL_CATEGORY]
         return row_category == category_id
 
+    @staticmethod
+    def _toggle_cell_data_func(
+        _column: Gtk.TreeViewColumn,
+        cell: Gtk.CellRenderer,
+        model: Gtk.TreeModel,
+        iter_: Gtk.TreeIter,
+        _data: object,
+    ) -> None:
+        """Hide the checkbox for held/blocked rows — they are non-actionable."""
+        constraint = model[iter_][UpdateManagerWindow.COL_HELD]
+        cell.set_property(
+            "visible",
+            constraint not in (CONSTRAINT_HELD, CONSTRAINT_BLOCKED),
+        )
+
     def _clear_store(self) -> None:
         self.store.clear()
 
     @staticmethod
-    def _category_icon(category: str, backend: str, held: bool = False) -> str:
-        """Return GTK symbolic icon name for category/backend."""
-        if held:
+    def _category_icon(category: str, backend: str,
+                       constraint: str = CONSTRAINT_NORMAL) -> str:
+        """Return GTK symbolic icon name for category/backend/constraint."""
+        if constraint == CONSTRAINT_HELD:
             return "changes-prevent-symbolic"
+        if constraint == CONSTRAINT_BLOCKED:
+            return "dialog-warning-symbolic"
         if category == "security":
             return "security-high-symbolic"
         if category == "kernel":
@@ -1131,17 +1181,28 @@ class UpdateManagerWindow(Gtk.Window):
     def _build_pkg_markup(name: str,
                           description: str,
                           show_desc: bool,
-                          held: bool = False) -> str:
+                          constraint: str = CONSTRAINT_NORMAL) -> str:
         """Return Pango markup for the Package column."""
         name_esc = GLib.markup_escape_text(name)
         markup = f"<b>{name_esc}</b>"
-        if show_desc:
-            hint = _("Held package") if held else (description or _("System package"))
-            desc_esc = GLib.markup_escape_text(hint)
-            markup += f"\n<small>{desc_esc}</small>"
-        elif held:
-            held_esc = GLib.markup_escape_text(_("Held package"))
-            markup += f"\n<small>{held_esc}</small>"
+        if constraint == CONSTRAINT_HELD:
+            hint = _("Held package")
+            if show_desc:
+                desc_esc = GLib.markup_escape_text(hint)
+                markup += f"\n<small>{desc_esc}</small>"
+            else:
+                held_esc = GLib.markup_escape_text(hint)
+                markup += f"\n<small>{held_esc}</small>"
+        elif constraint == CONSTRAINT_BLOCKED:
+            hint_esc = GLib.markup_escape_text(
+                _("Blocked by held package or dependency constraints")
+            )
+            markup += f"\n<small>{hint_esc}</small>"
+        else:
+            if show_desc:
+                desc_esc = GLib.markup_escape_text(
+                    description or _("System package"))
+                markup += f"\n<small>{desc_esc}</small>"
         return markup
 
     def _populate_store(self, updates: List[UpdateItem]) -> None:
@@ -1150,12 +1211,12 @@ class UpdateManagerWindow(Gtk.Window):
             self.store.clear()
             show_desc = self.prefs.get("show_descriptions", True)
             for update in updates:
-                held = getattr(update, "held", False)
+                constraint = getattr(update, "constraint", CONSTRAINT_NORMAL)
                 icon = self._category_icon(update.category, update.backend,
-                                           held)
+                                           constraint)
                 pkg_markup = self._build_pkg_markup(update.name,
                                                     update.description,
-                                                    show_desc, held)
+                                                    show_desc, constraint)
                 size_str = (
                     _("N/A")
                     if update.size == 0 and update.backend != "apt"
@@ -1163,19 +1224,19 @@ class UpdateManagerWindow(Gtk.Window):
                 )
                 self.store.append(
                     [
-                        False,  # COL_SELECTED
-                        pkg_markup,  # COL_PACKAGE
-                        update.installed_version,  # COL_INSTALLED
-                        update.candidate_version,  # COL_NEW
-                        size_str,  # COL_SIZE
-                        update.origin,  # COL_REPO
-                        update.name,  # COL_RAW_NAME
-                        update.category,  # COL_CATEGORY
-                        update.backend,  # COL_BACKEND
-                        icon,  # COL_ICON
-                        update.size,  # COL_RAW_SIZE
+                        False,         # COL_SELECTED
+                        pkg_markup,    # COL_PACKAGE
+                        update.installed_version,   # COL_INSTALLED
+                        update.candidate_version,   # COL_NEW
+                        size_str,      # COL_SIZE
+                        update.origin,              # COL_REPO
+                        update.name,                # COL_RAW_NAME
+                        update.category,            # COL_CATEGORY
+                        update.backend,             # COL_BACKEND
+                        icon,          # COL_ICON
+                        update.size,   # COL_RAW_SIZE
                         update.description or _("System package"),  # COL_DESC
-                        held,  # COL_HELD
+                        constraint,    # COL_HELD (constraint state string)
                     ]
                 )
         finally:
@@ -1211,7 +1272,10 @@ class UpdateManagerWindow(Gtk.Window):
             return
 
         self._populate_store(updates)
-        actionable = sum(1 for u in updates if not getattr(u, "held", False))
+        actionable = sum(
+            1 for u in updates
+            if getattr(u, "constraint", CONSTRAINT_NORMAL) == CONSTRAINT_NORMAL
+        )
         self._update_count_status(actionable, total_bytes, cached=True)
 
     # ------------------------------------------------------------------ #
@@ -1233,7 +1297,10 @@ class UpdateManagerWindow(Gtk.Window):
 
         # Always update the count status so the total "N updates available" is shown.
         # If the refresh failed the displayed data comes from the prior cache.
-        actionable = sum(1 for u in updates if not getattr(u, "held", False))
+        actionable = sum(
+            1 for u in updates
+            if getattr(u, "constraint", CONSTRAINT_NORMAL) == CONSTRAINT_NORMAL
+        )
         self._update_count_status(actionable, total_bytes, cached=(not ok))
 
         if not ok and message:
@@ -1591,8 +1658,8 @@ class UpdateManagerWindow(Gtk.Window):
         filter_iter = self.filter_model.get_iter(path)
         child_iter = self.filter_model.convert_iter_to_child_iter(filter_iter)
 
-        # Do not allow selecting held packages — they cannot be installed.
-        if self.store[child_iter][self.COL_HELD]:
+        # Do not allow selecting held or blocked packages — non-actionable.
+        if self.store[child_iter][self.COL_HELD] in (CONSTRAINT_HELD, CONSTRAINT_BLOCKED):
             return
 
         current = self.store[child_iter][self.COL_SELECTED]
@@ -1618,7 +1685,7 @@ class UpdateManagerWindow(Gtk.Window):
         for path in paths:
             f_iter = self.filter_model.get_iter(path)
             c_iter = self.filter_model.convert_iter_to_child_iter(f_iter)
-            if not self.store[c_iter][self.COL_HELD]:
+            if self.store[c_iter][self.COL_HELD] == CONSTRAINT_NORMAL:
                 self.store[c_iter][self.COL_SELECTED] = True
 
         self._refresh_selection_status()
@@ -1696,6 +1763,7 @@ class UpdateManagerWindow(Gtk.Window):
         grouped_packages = self._selected_package_names()
         if not any(pkgs for pkgs in grouped_packages.values()):
             self._set_status(_("No packages selected."))
+            GLib.timeout_add_seconds(3, self._restore_current_update_status)
             return
 
         try:
