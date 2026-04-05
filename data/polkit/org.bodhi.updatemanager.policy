@@ -16,8 +16,8 @@
   <vendor_url>https://www.bodhilinux.com</vendor_url>
 
   <action id="org.bodhi.updatemanager.run">
-    <_description>Run the Update Manager privileged helper</_description>
-    <_message>Authentication is required to install or update packages.</_message>
+    <description>Run the Update Manager privileged helper</description>
+    <message>Authentication is required to install or update packages.</message>
     <icon_name>system-software-update</icon_name>
 
     <defaults>

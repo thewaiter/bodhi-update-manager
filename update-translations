@@ -27,15 +27,6 @@
 
 set -euo pipefail
 
-TMP_STUB=""          # path to generated C stub (set later, if needed)
-TMP_STUB_LIST=""     # path to temp file-list containing the stub (set later)
-
-cleanup() {
-    [[ -n "$TMP_STUB" && -f "$TMP_STUB" ]]      && rm -f "$TMP_STUB"
-    [[ -n "$TMP_STUB_LIST" && -f "$TMP_STUB_LIST" ]] && rm -f "$TMP_STUB_LIST"
-}
-trap cleanup EXIT
-
 TRANSLATION_DIR="po"
 POT_FILE="$TRANSLATION_DIR/bodhi-update-manager.pot"
 FILE_LIST="$TRANSLATION_DIR/POTFILES.in"
@@ -65,52 +56,8 @@ fi
 
 mapfile -t langs < <(grep -vE '^\s*($|#)' "$TRANSLATION_DIR/LINGUAS")
 
-# ---------------------------------------------------------------------------
-# Pre-process .policy files: extract <_description> / <_message> text into a
-# temporary C stub so xgettext can pick them up without intltool.
-# ---------------------------------------------------------------------------
-POLICY_FILES=()
-while IFS= read -r line; do
-    [[ "$line" =~ ^[[:space:]]*(#|$) ]] && continue
-    [[ "$line" == *.policy ]] && POLICY_FILES+=("$line")
-done < "$FILE_LIST"
-
-EXTRA_XGETTEXT_ARGS=()
-if [[ ${#POLICY_FILES[@]} -gt 0 ]]; then
-    TMP_STUB=$(mktemp /tmp/policy_stub_XXXXXX.c)
-    TMP_STUB_LIST=$(mktemp /tmp/policy_stub_list_XXXXXX)
-
-    for policy in "${POLICY_FILES[@]}"; do
-        if [[ ! -f "$policy" ]]; then
-            echo "Warning: $policy listed in POTFILES.in but not found — skipping."
-            continue
-        fi
-        # Extract text inside <_description>...</_description> and <_message>...</_message>
-        # Handles single-line elements only (polkit convention).
-        grep -oP '(?<=<_description>)[^<]+(?=</_description>)|(?<=<_message>)[^<]+(?=</_message>)' "$policy" \
-            | while IFS= read -r str; do
-                  # Escape backslashes and double-quotes for C string literal
-                  escaped=$(printf '%s' "$str" | sed 's/\\/\\\\/g; s/"/\\"/g')
-                  printf '/* Translators: from %s */\n_("'"$escaped"'");\n' "$policy"
-              done >> "$TMP_STUB"
-    done
-
-    if [[ -s "$TMP_STUB" ]]; then
-        echo "$TMP_STUB" > "$TMP_STUB_LIST"
-        EXTRA_XGETTEXT_ARGS=(--language=C --files-from="$TMP_STUB_LIST")
-        echo "Extracted policy strings from: ${POLICY_FILES[*]}"
-    fi
-fi
-
-# Build a POTFILES.in that excludes .policy files (they are handled above).
-TMP_PY_LIST=$(mktemp /tmp/potfiles_py_XXXXXX)
-trap 'cleanup; rm -f "$TMP_PY_LIST"' EXIT
-grep -vE '\.policy$' "$FILE_LIST" > "$TMP_PY_LIST" || true
-
-# ---------------------------------------------------------------------------
 echo "Updating POT file"
 
-# First pass: Python sources
 xgettext \
   --language=Python \
   --from-code=UTF-8 \
@@ -121,17 +68,7 @@ xgettext \
   --package-version="$VERSION" \
   --msgid-bugs-address="https://github.com/flux-abyss/bodhi-update-manager/issues" \
   -o "$POT_FILE" \
-  --files-from="$TMP_PY_LIST"
-
-# Second pass: C stub with polkit strings (joined into an existing POT)
-if [[ ${#EXTRA_XGETTEXT_ARGS[@]} -gt 0 ]]; then
-    xgettext \
-      --from-code=UTF-8 \
-      --keyword=_ \
-      --join-existing \
-      -o "$POT_FILE" \
-      "${EXTRA_XGETTEXT_ARGS[@]}"
-fi
+  --files-from="$FILE_LIST"
 
 sed -i 's/^# Copyright (C) YEAR THE PACKAGE'\''S COPYRIGHT HOLDER/# Copyright (C) 2026 Bodhi Linux Team/' "$POT_FILE"
 

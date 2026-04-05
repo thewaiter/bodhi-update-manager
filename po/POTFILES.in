@@ -1,2 +1,1 @@
 src/bodhi_update/app.py
-data/polkit/org.bodhi.updatemanager.policy
