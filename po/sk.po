@@ -7,10 +7,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bodhi-update-manager 0.1-3\n"
-"Report-Msgid-Bugs-To: https://github.com/flux-abyss/bodhi-update-manager ssues\n"
+"Report-Msgid-Bugs-To: https://github.com/flux-abyss/bodhi-update-manager/"
+"issues\n"
 "POT-Creation-Date: 2026-03-31 16:39-0400\n"
 "PO-Revision-Date: 2026-03-27 14:13-0400\n"
-"Last-Translator: Štefan Uram <the_waiter@bodhilinux.com>\n"
+"Last-Translator: Automatically generated\n"
 "Language-Team: Bodhi Team\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
@@ -24,9 +25,6 @@ msgid ""
 "\n"
 "A lightweight graphical update manager for Debian based distros."
 msgstr ""
-"Správca aktualizácií\n"
-"\n"
-"Ľahký grafický správca aktualizácií pre distribúcie založené na Debiane."
 
 #: src/bodhi_update/app.py:56
 msgid ""
@@ -46,7 +44,7 @@ msgstr ""
 
 #: src/bodhi_update/app.py:86 src/bodhi_update/app.py:579
 msgid "Update Manager"
-msgstr "Správca aktualizácií Bodhi"
+msgstr "Správca Aktualizácií Bodhi"
 
 #: src/bodhi_update/app.py:160
 msgid "File"
