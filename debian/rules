@@ -5,7 +5,7 @@
 
 override_dh_auto_build:
 	VERSION=$$(dpkg-parsechangelog -S Version | cut -d- -f1-2); \
-	echo "__version__ = \"$$VERSION\"" > src/bodhi_update/_version.py;
+	printf '"""Version information for the Update Manager."""\n\n__version__ = "%s"\n' "$$VERSION" > src/bodhi_update/_version.py;
 
 override_dh_auto_install:
 	# Install the application package tree under /usr/lib/bodhi-update-manager/.
@@ -21,7 +21,7 @@ override_dh_auto_install:
 	install -m 755 data/bin/bodhi-update-manager \
 	    debian/bodhi-update-manager/usr/bin/bodhi-update-manager
 	install -m 755 data/bin/bodhi-update-manager-tray \
-	    debian/bodhi-update-manager//usr/lib/bodhi-update-manager/bodhi-update-manager-tray
+	    debian/bodhi-update-manager/usr/lib/bodhi-update-manager/bodhi-update-manager-tray
 
 	# Compile gettext translations (.po → .mo) into the staged package tree.
 	for po in po/*.po; do \

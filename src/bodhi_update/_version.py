@@ -1,3 +1,3 @@
-"""Version information for the Bodhi Update Manager."""
+"""Version information for the Update Manager."""
 
-__version__ = "0.1-4"
+__version__ = "0.1-3"
