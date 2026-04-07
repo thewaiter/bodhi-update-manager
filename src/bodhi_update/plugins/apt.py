@@ -105,9 +105,11 @@ def _matches_apt_keyword(comm: str, cmdline: str) -> bool:
 def _get_origin_name(pkg: apt.package.Package) -> str:
     """Return a compact archive/origin label for a candidate package."""
     if pkg.candidate and pkg.candidate.origins:
-        archive = pkg.candidate.origins[0].archive
-        if archive:
-            return archive
+        for origin in pkg.candidate.origins:
+            for attr in ("archive", "origin", "label", "site", "component"):
+                value = getattr(origin, attr, "")
+                if value:
+                    return value
     return "unknown"
 
 
