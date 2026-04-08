@@ -30,9 +30,6 @@ Built with **Python**, **GTK3**, and **VTE**, the application provides a unified
 - **Dynamic plugin discovery**  
   Backends are discovered at runtime by scanning `bodhi_update/plugins/`.
 
-- **No hardcoded backend imports**  
-  Backend registration is handled dynamically.
-
 - **UI is backend-agnostic**  
   Aggregates updates from all active backends into one interface.
 
