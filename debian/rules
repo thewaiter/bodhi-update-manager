@@ -1,49 +1,16 @@
 #!/usr/bin/make -f
 
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
 %:
 	dh $@ --with python3
 
 override_dh_auto_build:
-	VERSION=$$(dpkg-parsechangelog -S Version | cut -d- -f1-2); \
-	printf '"""Version information for the Update Manager."""\n\n__version__ = "%s"\n' "$$VERSION" > src/bodhi_update/_version.py;
-	# Generate translated desktop files  from desktop.in files
-	msgfmt \
-	  --desktop \
-	  --template=data/applications/bodhi-update-manager.in \
-	  -d po \
-	  -o data/applications/bodhi-update-manager.desktop
-	msgfmt \
-	  --desktop \
-	  --template="data/applications/bodhi-update-manager-tray.in" \
-	  -d po \
-	  -o data/applications/bodhi-update-manager-tray.desktop
-	# Generate translated policykit file  from policy.in file
-	msgfmt \
-	  --xml \
-	  --template="data/polkit/org.bodhi.updatemanager.policy.in" \
-	  -d po \
-	  -o "data/polkit/org.bodhi.updatemanager.policy"
-
-	intltool-merge -x po \
-		"data/polkit/org.bodhi.updatemanager.policy.in" \
-		"data/polkit/org.bodhi.updatemanager.policy"
+	debian/update_version
+	debian/unify_locales
 
 override_dh_auto_install:
-	# Install the application package tree under /usr/lib/bodhi-update-manager/.
-	# Exclude __pycache__ directories (dh_python3 generates correct ones at install time).
-	install -d debian/bodhi-update-manager/usr/lib/bodhi-update-manager
-	cp -r src/bodhi_update \
-	    debian/bodhi-update-manager/usr/lib/bodhi-update-manager/
-	find debian/bodhi-update-manager/usr/lib/bodhi-update-manager \
-	    -name __pycache__ -type d -exec rm -rf {} + 2>/dev/null || true
-
-	# Install the launcher scripts with the executable bit set.
-	install -d debian/bodhi-update-manager/usr/bin
-	install -m 755 data/bin/bodhi-update-manager \
-	    debian/bodhi-update-manager/usr/bin/bodhi-update-manager
-	install -m 755 data/bin/bodhi-update-manager-tray \
-	    debian/bodhi-update-manager/usr/lib/bodhi-update-manager/bodhi-update-manager-tray
-
 	# Compile gettext translations (.po → .mo) into the staged package tree.
 	for po in po/*.po; do \
 	    [ -f "$$po" ] || continue; \
