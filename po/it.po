@@ -1,5 +1,5 @@
 # Italian translations for bodhi-update-manager.
-# Copyright (C) 2026 Bodhi Linux Team 
+# Copyright (C) 2026 Bodhi Linux Team
 # This file is distributed under the same license as the bodhi-update-manager.
 # diekrz2, 2026.
 #
@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-08 04:34-0400\n"
-"PO-Revision-Date: 2026-04-01 10:03+0200\n"
+"POT-Creation-Date: 2026-04-08 17:32+0200\n"
+"PO-Revision-Date: 2026-04-08 17:34+0200\n"
 "Last-Translator: diekrz2 <diekrz2@bodhilinux.com>\n"
 "Language-Team: Bodhi Team\n"
 "Language: it\n"
@@ -59,8 +59,8 @@ msgstr ""
 "licenses/>."
 
 #: src/bodhi_update/app.py:83 src/bodhi_update/app.py:666
-#: data/applications//bodhi-update-manager.in:5
-#: data/applications//bodhi-update-manager-tray.in:5
+#: data/applications//bodhi-update-manager.in:4
+#: data/applications//bodhi-update-manager-tray.in:4
 msgid "Update Manager"
 msgstr "Update Manager"
 
@@ -164,6 +164,11 @@ msgstr "Dimensione"
 msgid "Repository"
 msgstr "Repository"
 
+#: src/bodhi_update/app.py:440 src/bodhi_update/app.py:1585
+#: src/bodhi_update/app.py:1586
+msgid "Installing updates..."
+msgstr "Installo gli aggiornamenti..."
+
 #: src/bodhi_update/app.py:445 src/bodhi_update/app.py:452
 #: src/bodhi_update/app.py:1552 src/bodhi_update/app.py:1555
 #: src/bodhi_update/app.py:1660
@@ -188,13 +193,12 @@ msgid "Apply"
 msgstr "Applica"
 
 #: src/bodhi_update/app.py:524
-#, fuzzy
 msgid "Show notifications"
-msgstr "Mostra descrizioni"
+msgstr "Mostra notifiche"
 
 #: src/bodhi_update/app.py:528
 msgid "Show held/blocked packages"
-msgstr ""
+msgstr "Mostra pacchetti trattenuti/bloccati"
 
 #: src/bodhi_update/app.py:536
 msgid "Show Snap updates"
@@ -207,6 +211,10 @@ msgstr "Mostra aggiornamenti Flatpak"
 #: src/bodhi_update/app.py:581
 msgid "Preferences saved."
 msgstr "Preferenze salvate."
+
+#: src/bodhi_update/app.py:614
+msgid "Version:"
+msgstr "Versione:"
 
 #: src/bodhi_update/app.py:644
 msgid ""
@@ -270,9 +278,8 @@ msgstr "Pronto"
 
 #: src/bodhi_update/app.py:867 src/bodhi_update/app.py:1239
 #: src/bodhi_update/app.py:1495
-#, fuzzy
 msgid "Loading updates..."
-msgstr "Installo gli aggiornamenti..."
+msgstr "Carico gli aggiornamenti..."
 
 #: src/bodhi_update/app.py:891
 #, python-format
@@ -280,9 +287,10 @@ msgid "%(message)s  Restart required."
 msgstr "%(message)s  Riavvio richiesto."
 
 #: src/bodhi_update/app.py:904
-#, fuzzy
 msgid "System is up to date. No pending updates in cached package data."
-msgstr "Il sistema è aggiornato. Dati dei pacchetti in cache mostrati."
+msgstr ""
+"Il sistema è aggiornato. Non ci sono aggiornamenti sospesi tra i dati in "
+"cache."
 
 #: src/bodhi_update/app.py:906
 msgid "System is up to date."
@@ -301,9 +309,10 @@ msgstr[1] "%(count)d aggiornamenti disponibili · Da scaricare: %(size)s"
 
 #: src/bodhi_update/app.py:927
 #, python-format
-msgid ""
-"%(message)s \\u00b7 Cached data \\u2014 refresh to check for newer updates"
+msgid "%(message)s · Cached data — refresh to check for newer updates"
 msgstr ""
+"%(message)s · Dati in cache — aggiorna per verificare nuovi "
+"aggiornamenti"
 
 #: src/bodhi_update/app.py:940
 #, python-format
@@ -314,8 +323,8 @@ msgstr "%(message)s (include %(extras)s)"
 #, python-format
 msgid "%(n)d held/blocked package hidden"
 msgid_plural "%(n)d held/blocked packages hidden"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(n)d pacchetto trattenuto/bloccato nascosto"
+msgstr[1] "%(n)d pacchetti trattenuti/bloccati nascosti"
 
 #: src/bodhi_update/app.py:1018
 #, python-format
@@ -326,12 +335,11 @@ msgstr[1] "%(count)d aggiornamenti selezionati · Da scaricare: %(size)s"
 
 #: src/bodhi_update/app.py:1053
 msgid "Unhold package"
-msgstr ""
+msgstr "Libera pacchetto"
 
 #: src/bodhi_update/app.py:1053
-#, fuzzy
 msgid "Hold package"
-msgstr "Pacchetto"
+msgstr "Trattieni pacchetto"
 
 #: src/bodhi_update/app.py:1104 src/bodhi_update/app.py:1344
 #: src/bodhi_update/app.py:1378
@@ -340,40 +348,38 @@ msgstr "Pacchetto sistema"
 
 #: src/bodhi_update/app.py:1124
 msgid "Locking package..."
-msgstr ""
+msgstr "Blocco il pacchetto..."
 
 #: src/bodhi_update/app.py:1124
 msgid "Unlocking package..."
-msgstr ""
+msgstr "Sblocco il pacchetto..."
 
 #: src/bodhi_update/app.py:1135 src/bodhi_update/app.py:1556
 #: src/bodhi_update/app.py:1661 src/bodhi_update/app.py:1900
-#, fuzzy
 msgid "Waiting for authorization..."
 msgstr "In attesa dell'autenticazione..."
 
 #: src/bodhi_update/app.py:1164
 msgid "apt-mark failed (unknown error)"
-msgstr ""
+msgstr "contrassegna apt fallita (errore sconosciuto)"
 
 #: src/bodhi_update/app.py:1168
 #, python-format
 msgid "Package '%(name)s' is now held."
-msgstr ""
+msgstr "Il pacchetto '%(name)s' è ora trattenuto."
 
 #: src/bodhi_update/app.py:1170
 #, python-format
 msgid "Package '%(name)s' is no longer held."
-msgstr ""
+msgstr "Il pacchetto '%(name)s' non è più trattenuto."
 
 #: src/bodhi_update/app.py:1329
-#, fuzzy
 msgid "Held package"
-msgstr "Pacchetto sistema"
+msgstr "Pacchetto trattenuto"
 
 #: src/bodhi_update/app.py:1338
 msgid "Blocked by held package or dependency constraints"
-msgstr ""
+msgstr "Bloccato da un pacchetto trattenuto o da una dipendenza"
 
 #: src/bodhi_update/app.py:1361
 msgid "N/A"
@@ -405,10 +411,6 @@ msgstr "Interrogazione backend terminata. Totale aggiornamenti: %d"
 #: src/bodhi_update/app.py:1583
 msgid "This may take a few minutes."
 msgstr "Potrebbe volerci del tempo."
-
-#: src/bodhi_update/app.py:1585 src/bodhi_update/app.py:1586
-msgid "Installing updates..."
-msgstr "Installo gli aggiornamenti..."
 
 #: src/bodhi_update/app.py:1590 src/bodhi_update/app.py:1617
 #: src/bodhi_update/app.py:1657 src/bodhi_update/app.py:1776
@@ -511,7 +513,7 @@ msgstr "Riavvio fallito: %(exc)s"
 
 #: src/bodhi_update/app.py:1908
 msgid "Starting background refresh for updates."
-msgstr "Avvio ricarica aggiornamenti in sottofondo."
+msgstr "Avvio ricarica aggiornamenti in background."
 
 #: src/bodhi_update/app.py:1926
 msgid "Primary backend (APT) is not configured."
@@ -538,22 +540,15 @@ msgstr "Nessun pacchetto selezionato."
 msgid "Installing selected updates..."
 msgstr "Installo pacchetti selezionati..."
 
-#: data/applications//bodhi-update-manager.in:6
-#: data/applications//bodhi-update-manager-tray.in:6
+#: data/applications//bodhi-update-manager.in:5
+#: data/applications//bodhi-update-manager-tray.in:5
 msgid "Install system updates and local packages for Bodhi Linux"
 msgstr "Installa gli aggiornamenti e pacchetti locali per Bodhi Linux"
 
 #: data/polkit/org.bodhi.updatemanager.policy.in.h:1
 msgid "Run the Update Manager privileged helper"
-msgstr "Esegui l'aiutante privilegiato Update Manager"
+msgstr "Esegui l'aiutante privilegiato di Update Manager"
 
 #: data/polkit/org.bodhi.updatemanager.policy.in.h:2
 msgid "Authentication is required to install or update packages."
-msgstr "L'autenticazione è necessaria per installare o aggiornare i pacchetti"
-
-#, python-format
-#~ msgid "%(message)s · Cached package data"
-#~ msgstr "%(message)s · Dati pacchetti in cache"
-
-#~ msgid "Checking for updates..."
-#~ msgstr "Controllo aggiornamenti..."
+msgstr "L'autenticazione è necessaria per installare o aggiornare i pacchetti."

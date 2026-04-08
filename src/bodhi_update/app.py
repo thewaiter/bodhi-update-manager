@@ -924,7 +924,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
                            }
         if cached:
             message = _(
-                "%(message)s \u00b7 Cached data \u2014 refresh to check for newer updates"
+                "%(message)s · Cached data — refresh to check for newer updates"
             ) % {"message": message}
 
         # Give a lightweight hint if optional backends found anything.

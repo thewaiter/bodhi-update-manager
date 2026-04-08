@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-08 04:34-0400\n"
+"POT-Creation-Date: 2026-04-08 17:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,8 +42,8 @@ msgid ""
 msgstr ""
 
 #: src/bodhi_update/app.py:83 src/bodhi_update/app.py:666
-#: data/applications//bodhi-update-manager.in:5
-#: data/applications//bodhi-update-manager-tray.in:5
+#: data/applications//bodhi-update-manager.in:4
+#: data/applications//bodhi-update-manager-tray.in:4
 msgid "Update Manager"
 msgstr ""
 
@@ -147,6 +147,11 @@ msgstr ""
 msgid "Repository"
 msgstr ""
 
+#: src/bodhi_update/app.py:440 src/bodhi_update/app.py:1585
+#: src/bodhi_update/app.py:1586
+msgid "Installing updates..."
+msgstr ""
+
 #: src/bodhi_update/app.py:445 src/bodhi_update/app.py:452
 #: src/bodhi_update/app.py:1552 src/bodhi_update/app.py:1555
 #: src/bodhi_update/app.py:1660
@@ -188,6 +193,10 @@ msgstr ""
 
 #: src/bodhi_update/app.py:581
 msgid "Preferences saved."
+msgstr ""
+
+#: src/bodhi_update/app.py:614
+msgid "Version:"
 msgstr ""
 
 #: src/bodhi_update/app.py:644
@@ -267,8 +276,7 @@ msgstr[1] ""
 
 #: src/bodhi_update/app.py:927
 #, python-format
-msgid ""
-"%(message)s \\u00b7 Cached data \\u2014 refresh to check for newer updates"
+msgid "%(message)s · Cached data — refresh to check for newer updates"
 msgstr ""
 
 #: src/bodhi_update/app.py:940
@@ -367,10 +375,6 @@ msgstr ""
 
 #: src/bodhi_update/app.py:1583
 msgid "This may take a few minutes."
-msgstr ""
-
-#: src/bodhi_update/app.py:1585 src/bodhi_update/app.py:1586
-msgid "Installing updates..."
 msgstr ""
 
 #: src/bodhi_update/app.py:1590 src/bodhi_update/app.py:1617
@@ -495,8 +499,8 @@ msgstr ""
 msgid "Installing selected updates..."
 msgstr ""
 
-#: data/applications//bodhi-update-manager.in:6
-#: data/applications//bodhi-update-manager-tray.in:6
+#: data/applications//bodhi-update-manager.in:5
+#: data/applications//bodhi-update-manager-tray.in:5
 msgid "Install system updates and local packages for Bodhi Linux"
 msgstr ""
 

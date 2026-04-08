@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bodhi-update-manager 0.1-3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-08 04:34-0400\n"
+"POT-Creation-Date: 2026-04-08 17:32+0200\n"
 "PO-Revision-Date: 2026-03-27 14:13-0400\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: Bodhi Team\n"
@@ -41,8 +41,8 @@ msgid ""
 msgstr ""
 
 #: src/bodhi_update/app.py:83 src/bodhi_update/app.py:666
-#: data/applications//bodhi-update-manager.in:5
-#: data/applications//bodhi-update-manager-tray.in:5
+#: data/applications//bodhi-update-manager.in:4
+#: data/applications//bodhi-update-manager-tray.in:4
 #, fuzzy
 msgid "Update Manager"
 msgstr "Bodhi Update Manager"
@@ -147,6 +147,11 @@ msgstr "Size"
 msgid "Repository"
 msgstr "Repository"
 
+#: src/bodhi_update/app.py:440 src/bodhi_update/app.py:1585
+#: src/bodhi_update/app.py:1586
+msgid "Installing updates..."
+msgstr "Installing updates..."
+
 #: src/bodhi_update/app.py:445 src/bodhi_update/app.py:452
 #: src/bodhi_update/app.py:1552 src/bodhi_update/app.py:1555
 #: src/bodhi_update/app.py:1660
@@ -190,6 +195,10 @@ msgstr "Show Flatpak updates"
 #: src/bodhi_update/app.py:581
 msgid "Preferences saved."
 msgstr "Preferences saved."
+
+#: src/bodhi_update/app.py:614
+msgid "Version:"
+msgstr ""
 
 #: src/bodhi_update/app.py:644
 msgid ""
@@ -269,10 +278,9 @@ msgstr[0] "%(count)d update available · Download: %(size)s"
 msgstr[1] "%(count)d updates available · Download: %(size)s"
 
 #: src/bodhi_update/app.py:927
-#, python-format
-msgid ""
-"%(message)s \\u00b7 Cached data \\u2014 refresh to check for newer updates"
-msgstr ""
+#, fuzzy, python-format
+msgid "%(message)s · Cached data — refresh to check for newer updates"
+msgstr "%(message)s · Cached package data"
 
 #: src/bodhi_update/app.py:940
 #, python-format
@@ -374,10 +382,6 @@ msgstr "Finished querying backends. Total updates: %d"
 #: src/bodhi_update/app.py:1583
 msgid "This may take a few minutes."
 msgstr "This may take a few minutes."
-
-#: src/bodhi_update/app.py:1585 src/bodhi_update/app.py:1586
-msgid "Installing updates..."
-msgstr "Installing updates..."
 
 #: src/bodhi_update/app.py:1590 src/bodhi_update/app.py:1617
 #: src/bodhi_update/app.py:1657 src/bodhi_update/app.py:1776
@@ -504,8 +508,8 @@ msgstr "No packages selected."
 msgid "Installing selected updates..."
 msgstr "Installing selected updates..."
 
-#: data/applications//bodhi-update-manager.in:6
-#: data/applications//bodhi-update-manager-tray.in:6
+#: data/applications//bodhi-update-manager.in:5
+#: data/applications//bodhi-update-manager-tray.in:5
 #, fuzzy
 msgid "Install system updates and local packages for Bodhi Linux"
 msgstr "A lightweight system update tool for Bodhi Linux."
@@ -517,10 +521,6 @@ msgstr ""
 #: data/polkit/org.bodhi.updatemanager.policy.in.h:2
 msgid "Authentication is required to install or update packages."
 msgstr ""
-
-#, python-format
-#~ msgid "%(message)s · Cached package data"
-#~ msgstr "%(message)s · Cached package data"
 
 #~ msgid "Checking for updates..."
 #~ msgstr "Checking for updates..."
