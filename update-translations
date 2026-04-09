@@ -23,30 +23,7 @@ DESKTOP_OUTPUT="$APP_DIR/bodhi-update-manager.desktop"
 XDG_OUTPUT="$APP_DIR/bodhi-update-manager-tray.desktop"
 POLICY_OUTPUT="data/polkit/org.bodhi.updatemanager.policy"
 VERSION=$(PYTHONPATH=src python3 -c 'from bodhi_update._version import __version__; print(__version__)')
-
-check_command() {
-    if ! command -v "$1" >/dev/null 2>&1; then
-        echo "$1 could not be found."
-        exit 255
-    fi
-}
-
-check_command xgettext
-check_command msgmerge
-check_command msginit
-check_command msgfmt
-check_command intltool-extract
-check_command intltool-merge
-
-if [[ ! -f "$TRANSLATION_DIR/LINGUAS" ]]; then
-    echo "Missing $TRANSLATION_DIR/LINGUAS"
-    exit 1
-fi
-
-if [[ ! -f "$FILE_LIST" ]]; then
-    echo "Missing $FILE_LIST"
-    exit 1
-fi
+ISSUES="https://github.com/flux-abyss/bodhi-update-manager/issues"
 
 mapfile -t langs < <(grep -vE '^\s*($|#)' "$TRANSLATION_DIR/LINGUAS")
 
@@ -58,9 +35,6 @@ xgettext \
   --keyword=_ \
   --keyword=N_ \
   --keyword=ngettext:1,2 \
-  --package-name="bodhi-update-manager" \
-  --package-version="$VERSION" \
-  --msgid-bugs-address="https://github.com/flux-abyss/bodhi-update-manager/issues" \
   -o "$POT_FILE" \
   --files-from="$FILE_LIST"
 
@@ -70,7 +44,7 @@ xgettext \
   --from-code=UTF-8 \
   -o "$POT_FILE" \
   "$DESKTOP_TEMPLATE"
-  
+ 
 xgettext \
   --join-existing \
   --language=Desktop \
@@ -82,12 +56,15 @@ echo -e "Extracting PolicyKit strings\n"
 intltool-extract --type=gettext/xml "$POLICY_TEMPLATE"
 
 xgettext \
-    --join-existing \
-    --language=C \
-    --from-code=UTF-8 \
-    --keyword=N_ \
-    -o "$POT_FILE" \
-    "${POLICY_TEMPLATE}.h"
+  --join-existing \
+  --language=C \
+  --from-code=UTF-8 \
+  --keyword=N_ \
+  --package-name="bodhi-update-manager" \
+  --package-version="$VERSION" \
+  --msgid-bugs-address="$ISSUES" \
+  -o "$POT_FILE" \
+  "${POLICY_TEMPLATE}.h"
 
 rm -f "${POLICY_TEMPLATE}.h"
 
@@ -106,8 +83,7 @@ for lang in "${langs[@]}"; do
             --input="$POT_FILE" \
             --locale="$lang" \
             --output-file="$po_file" \
-            --no-translator \
-            --package-name="bodhi-update-manager"
+            --no-translator
         # Set Language-Team
         sed -i "s/^\"Language-Team:.*\"/\"Language-Team: Bodhi Team\\\\n\"/" "$po_file"
     fi
@@ -136,5 +112,8 @@ echo "Generating translated PolicyKit file"
 intltool-merge -x "$TRANSLATION_DIR" \
     "$POLICY_TEMPLATE" \
     "$POLICY_OUTPUT" > /dev/null 2>&1
+
+# Remove backup po files
+rm "$TRANSLATION_DIR"/*.po~ > /dev/null 2>&1
 
 echo -e "\nLocalization Update Complete"
