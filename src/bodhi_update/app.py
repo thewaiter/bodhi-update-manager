@@ -65,19 +65,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>."""
 class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attributes
     """Main application window: update list, install screen, preferences, and tray hooks."""
 
-    COL_SELECTED = 0
-    COL_PACKAGE = 1
-    COL_INSTALLED = 2
-    COL_NEW = 3
-    COL_SIZE = 4
-    COL_REPO = 5
-    COL_RAW_NAME = 6
-    COL_CATEGORY = 7
-    COL_BACKEND = 8
-    COL_ICON = 9  # GTK icon-name (symbolic)
-    COL_RAW_SIZE = 10  # Raw byte count for exact size summation
-    COL_DESC = 11  # Raw description text (for reliable toggle of pkg markup)
-    COL_HELD = 12  # str — constraint state: 'held', 'blocked_by_hold', or 'normal'
+    ( COL_SELECTED, COL_PACKAGE,  COL_INSTALLED, COL_NEW,  COL_SIZE, COL_REPO,
+      COL_RAW_NAME, COL_CATEGORY, COL_BACKEND,   COL_ICON, COL_RAW_SIZE, 
+      COL_DESC, COL_HELD ) = range(13)
 
     def __init__(self, deb_path: str | None = None) -> None:
         super().__init__(title=_("Update Manager"))
