@@ -59,6 +59,14 @@ Built with **Python**, **GTK3**, and **VTE**, the application provides a unified
 ---
 
 ## Build
+From the project root, install build dependencies (Debian/Ubuntu):
+
+```bash
+sudo apt update
+sudo apt build-dep .
+```
+
+Then build the package:
 
 ```bash
 dpkg-buildpackage -us -uc -b
@@ -72,6 +80,7 @@ sudo dpkg -i ../bodhi-update-manager_*.deb
 bodhi-update-manager
 ```
 ## Dependencies
+
 ```
 python3
 python3-gi
