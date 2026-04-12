@@ -1,7 +1,7 @@
 """Installation command building for the Bodhi Update Manager.
 
-All public ``build_*_argv`` functions return a plain ``list[str]`` suitable
-for direct use with ``subprocess.run`` or ``Vte.Terminal.spawn_async``.
+All public 'build_*_argv' functions return a plain 'list[str]' suitable
+for direct use with 'subprocess.run' or 'Vte.Terminal.spawn_async'.
 No shell is involved between the GUI and pkexec: the privilege path is
 strictly:  GUI → pkexec → /usr/libexec/bodhi-update-manager-root → apt-get
 """
@@ -35,9 +35,9 @@ def get_helper_path() -> str:
     """Return the absolute path to the root helper that pkexec will invoke.
 
     Resolution order:
-    1. ``BODHI_HELPER_PATH`` env var — lets packagers or CI override the path.
-    2. The installed binary at ``/usr/libexec/bodhi-update-manager-root``.
-    3. ``data/libexec/bodhi-update-manager-root`` in the source tree
+    1. 'BODHI_HELPER_PATH' env var — lets packagers or CI override the path.
+    2. The installed binary at '/usr/libexec/bodhi-update-manager-root'.
+    3. 'data/libexec/bodhi-update-manager-root' in the source tree
        (development / uninstalled mode).
     """
     override = os.environ.get("BODHI_HELPER_PATH")
@@ -64,12 +64,12 @@ def _privilege_tool() -> str:
 def build_upgrade_argv(packages: list[str] | None = None) -> list[str]:
     """Return the argv for an APT upgrade (or targeted install) via the helper.
 
-    The returned list is ready for ``Vte.Terminal.spawn_async`` or
-    ``subprocess.run`` — no shell quoting or wrapping is needed or used.
+    The returned list is ready for 'Vte.Terminal.spawn_async' or
+    'subprocess.run' — no shell quoting or wrapping is needed or used.
 
     Args:
         packages: Optional explicit package list.  When *None* or empty the
-                  helper performs a full ``apt-get full-upgrade``.
+                  helper performs a full 'apt-get full-upgrade'.
     """
     tool = _privilege_tool()
     helper = get_helper_path()
@@ -86,7 +86,7 @@ def build_deb_install_argv(deb_path: str) -> list[str]:
     receive a meaningful error before any privilege escalation occurs.
 
     Raises:
-        ValueError: *deb_path* does not end with ``.deb``.
+        ValueError: *deb_path* does not end with '.deb'.
         FileNotFoundError: *deb_path* does not exist or is not a regular file.
         RuntimeError: no privilege tool is available.
     """
@@ -114,7 +114,7 @@ def build_hold_argv(package: str,
         package: Debian package name to act on.
         hold: True to place the package on hold; False to remove the hold.
         sentinel_path: Optional path for the auth-success sentinel file.
-            When provided, ``--sentinel <path>`` is inserted after the helper
+            When provided, '--sentinel <path>' is inserted after the helper
             path so the root helper can signal auth success to the GUI.
     """
     tool = _privilege_tool()

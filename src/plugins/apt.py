@@ -144,9 +144,9 @@ def _sort_key(item: UpdateItem) -> tuple[int, str]:
 
 
 def _get_held_packages() -> set[str]:
-    """Return the set of package names pinned via ``apt-mark hold``.
+    """Return the set of package names pinned via 'apt-mark hold'.
 
-    Runs ``apt-mark showhold`` without a shell.  Returns an empty set
+    Runs 'apt-mark showhold' without a shell.  Returns an empty set
     on any error so callers can proceed gracefully.
     """
     try:
@@ -167,9 +167,9 @@ def _get_held_packages() -> set[str]:
 def _get_kept_back_packages() -> set[str]:
     """Return packages APT would keep back during a full-upgrade.
 
-    Runs ``apt-get --simulate full-upgrade`` (no root required) and parses
+    Runs 'apt-get --simulate full-upgrade' (no root required) and parses
     the "The following packages have been kept back:" stanza.
-    Handles multi-line lists and multiarch names (e.g. ``libc6:i386``).
+    Handles multi-line lists and multiarch names (e.g. 'libc6:i386').
 
     Uses full-upgrade (not plain upgrade) to match what the root helper runs
     at install time, so held-dependency constraints are detected correctly.
@@ -207,7 +207,7 @@ def _get_kept_back_packages() -> set[str]:
 def _apt_cache_depends(held_pkg: str) -> set[str]:
     """Return the set of package names that *held_pkg* depends on.
 
-    Uses ``apt-cache depends``. Returns an empty set on any error.
+    Uses 'apt-cache depends'. Returns an empty set on any error.
     Results are not cached here; the caller may pass a shared *depends_cache*
     dict to avoid redundant subprocess calls.
     """
@@ -245,13 +245,13 @@ def _guess_blocking_held_package(
 ) -> str | None:
     """Return the single held package most likely blocking *pkg_name*, or None.
 
-    Simple heuristic: run ``apt-cache depends`` for each held package and check
+    Simple heuristic: run 'apt-cache depends' for each held package and check
     whether *pkg_name* appears in its dependencies.  Returns the name only if
     exactly one held package matches; otherwise returns None so the caller can
     fall back to a generic message.
 
     Pass *depends_cache* (a shared mutable dict) to avoid calling
-    ``apt-cache depends`` more than once per held package across a single pass.
+    'apt-cache depends' more than once per held package across a single pass.
     """
     if not held_names:
         return None
@@ -381,8 +381,8 @@ class AptBackend(UpdateBackend):
         return False, f"Failed to refresh package lists. ({first_err})"
 
     def refresh(self, sentinel_path: str | None = None) -> Tuple[bool, str]:
-        """Run a privileged ``apt-get update`` via the root helper and return ``(success,
-        message)``."""
+        """Run a privileged 'apt-get update' via the root helper and return '(success,
+        message)'."""
         privilege_tool = find_privilege_tool()
         if privilege_tool is None:
             return False, "No privilege tool found (pkexec / sudo / doas)."
@@ -452,7 +452,7 @@ class AptBackend(UpdateBackend):
         ), constraint
 
     def get_updates(self) -> Tuple[List[UpdateItem], int]:
-        """Read the local APT cache and return ``(updates, total_download_bytes)``."""
+        """Read the local APT cache and return '(updates, total_download_bytes)'."""
         held_names = _get_held_packages()
         kept_back_names = _get_kept_back_packages()
         cache = apt.Cache()
