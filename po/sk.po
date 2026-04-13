@@ -116,7 +116,7 @@ msgstr "Systém"
 
 #: src/app.py:295
 msgid "A system restart is required to complete the update."
-msgstr "Na dokončenie aktualizácie je potrebný reštart systému."
+msgstr "Na dokončenie aktualizácie je potrebný reštart."
 
 #: src/app.py:299
 msgid "Restart Now"
@@ -157,11 +157,11 @@ msgstr "Čaká sa na overenie..."
 
 #: src/app.py:454 src/app.py:1570 src/app.py:1981
 msgid "Show Details"
-msgstr "Zobraziť detaily"
+msgstr "Zobraziť podrobnosti"
 
 #: src/app.py:458
 msgid "Back to Updates"
-msgstr "Späť na aktualizácie"
+msgstr "Späť na zoznam aktualizácií"
 
 #: src/app.py:508
 msgid "Cancel"
@@ -172,13 +172,12 @@ msgid "Apply"
 msgstr "Použiť"
 
 #: src/app.py:520
-#, fuzzy
 msgid "Show notifications"
-msgstr "Zobraziť popisy"
+msgstr "Zobraziť oznámenia"
 
 #: src/app.py:524
 msgid "Show held/blocked packages"
-msgstr ""
+msgstr "Zobraziť podržané/blokované balíčky"
 
 #: src/app.py:532
 msgid "Show Snap updates"
@@ -220,11 +219,11 @@ msgstr ""
 
 #: src/app.py:663
 msgid "Website"
-msgstr "Web stránka"
+msgstr "Webová stránka"
 
 #: src/app.py:664
 msgid "Credits"
-msgstr "Vytvorili"
+msgstr "Autori"
 
 #: src/app.py:665
 msgid "License"
@@ -239,9 +238,8 @@ msgid "Ready"
 msgstr "Pripravené"
 
 #: src/app.py:874 src/app.py:1247 src/app.py:1504
-#, fuzzy
 msgid "Loading updates..."
-msgstr "Inštalujú sa aktualizácie..."
+msgstr "Načítavajú sa aktualizácie..."
 
 #: src/app.py:898
 #, python-format
@@ -249,9 +247,8 @@ msgid "%(message)s  Restart required."
 msgstr "%(message)s  Vyžaduje sa reštart."
 
 #: src/app.py:911
-#, fuzzy
 msgid "System is up to date. No pending updates in cached package data."
-msgstr "Systém je aktuálny. Zobrazené sú údaje balíkov v bufferi."
+msgstr "Systém je aktuálny. Žiadne čakajúce aktualizácie v uložených údajoch balíkov."
 
 #: src/app.py:913
 msgid "System is up to date."
@@ -270,9 +267,8 @@ msgstr[1] "%(count)d aktualizácie dostupné · Stiahnuť: %(size)s"
 msgstr[2] "%(count)d aktualizácií dostupných · Stiahnuť: %(size)s"
 
 #: src/app.py:934
-#, fuzzy, python-format
 msgid "%(message)s · Cached data — refresh to check for newer updates"
-msgstr "%(message)s · Uložené údaje balíkov"
+msgstr "%(message)s · Uložené údaje — obnovte pre kontrolu novších aktualizácií"
 
 #: src/app.py:947
 #, python-format
@@ -283,9 +279,9 @@ msgstr "%(message)s (zahŕňa %(extras)s)"
 #, python-format
 msgid "%(n)d held/blocked package hidden"
 msgid_plural "%(n)d held/blocked packages hidden"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%(n)d podržaný/blokovaný balík skrytý"
+msgstr[1] "%(n)d podržané/blokované balíky skryté"
+msgstr[2] "%(n)d podržaných/blokovaných balíkov skrytých"
 
 #: src/app.py:1025
 #, python-format
@@ -297,12 +293,11 @@ msgstr[2] "%(count)d aktualizácií vybraných · Stiahnuť: %(size)s"
 
 #: src/app.py:1060
 msgid "Unhold package"
-msgstr ""
+msgstr "Zrušiť podržanie balíka"
 
 #: src/app.py:1060
-#, fuzzy
 msgid "Hold package"
-msgstr "Balík"
+msgstr "Podržať balík"
 
 #: src/app.py:1112 src/app.py:1352 src/app.py:1386
 msgid "System package"
@@ -310,39 +305,37 @@ msgstr "Systémový balík"
 
 #: src/app.py:1132
 msgid "Locking package..."
-msgstr ""
+msgstr "Zamyká sa balík..."
 
 #: src/app.py:1132
 msgid "Unlocking package..."
-msgstr ""
+msgstr "Odomyká sa balík..."
 
 #: src/app.py:1143 src/app.py:1566 src/app.py:1671 src/app.py:1912
-#, fuzzy
 msgid "Waiting for authorization..."
-msgstr "Čaká sa na overenie..."
+msgstr "Čaká sa na autorizáciu..."
 
 #: src/app.py:1172
 msgid "apt-mark failed (unknown error)"
-msgstr ""
+msgstr "apt-mark zlyhal (neznáma chyba)"
 
 #: src/app.py:1176
 #, python-format
 msgid "Package '%(name)s' is now held."
-msgstr ""
+msgstr "Balík '%(name)s' je teraz podržaný."
 
 #: src/app.py:1178
 #, python-format
 msgid "Package '%(name)s' is no longer held."
-msgstr ""
+msgstr "Balík '%(name)s' už nie je podržaný."
 
 #: src/app.py:1337
-#, fuzzy
 msgid "Held package"
-msgstr "Systémový balík"
+msgstr "Podržaný balík"
 
 #: src/app.py:1346
 msgid "Blocked by held package or dependency constraints"
-msgstr ""
+msgstr "Blokované podržaným balíkom alebo obmedzeniami závislostí"
 
 #: src/app.py:1369
 msgid "N/A"
@@ -382,7 +375,7 @@ msgstr "Inštalujú sa aktualizácie..."
 #: src/app.py:1600 src/app.py:1627 src/app.py:1667 src/app.py:1786
 #: src/app.py:1981
 msgid "Hide Details"
-msgstr "Skryť detaily"
+msgstr "Skryť podrobnosti"
 
 #: src/app.py:1616
 #, python-format
@@ -395,7 +388,7 @@ msgstr "Zlyhalo"
 
 #: src/app.py:1623
 msgid "Failed to start installation. See Details below."
-msgstr "Inštalácia sa nezahájila. Pozri detaily nižšie."
+msgstr "Inštalácia sa nezahájila. Pozri podrobnosti nižšie."
 
 #: src/app.py:1628
 msgid "Failed to start installation."
@@ -411,12 +404,12 @@ msgid ""
 "Enter your password in the terminal below. For security, nothing will appear "
 "while typing."
 msgstr ""
-"Zadaj svoje heslo v termináli. Kvôli bezpečnosti sa nič nezobrazuje počas "
+"Zadajte svoje heslo v termináli. Kvôli bezpečnosti sa nič nezobrazuje počas "
 "písania."
 
 #: src/app.py:1663
 msgid "Terminal auth in use — revealing VTE for password entry."
-msgstr "Autorizácia prebieha — zadanie hesla pre VTE."
+msgstr "Prebieha autorizácia - zadajte heslo v termináli."
 
 #: src/app.py:1714
 #, python-format
@@ -458,7 +451,7 @@ msgstr "Inštalácia zlyhala s návratovým kódom: %s"
 #: src/app.py:1780
 #, python-format
 msgid "Update failed. Exit code: %(exit_code)s. See Details below."
-msgstr "Aktualizácia zlyhala. Kód: %(exit_code)s. Pozri detaily nižšie."
+msgstr "Aktualizácia zlyhala. Kód: %(exit_code)s. Pozri podrobnosti nižšie."
 
 #: src/app.py:1787
 #, python-format
@@ -506,15 +499,12 @@ msgstr "Inštalujú sa vybrané aktualizácie..."
 #: data/applications//bodhi-update-manager.in:6
 #: data/applications//bodhi-update-manager-tray.in:6
 msgid "Install system updates and local packages for Bodhi Linux"
-msgstr ""
+msgstr "Inštalovať systémové aktualizácie a lokálne balíky pre Bodhi Linux"
 
 #: data/polkit/org.bodhi.updatemanager.policy.in.h:1
 msgid "Run the Update Manager privileged helper"
-msgstr ""
+msgstr "Spustiť pomocný nástroj Správcu aktualizácií s oprávneniami"
 
 #: data/polkit/org.bodhi.updatemanager.policy.in.h:2
 msgid "Authentication is required to install or update packages."
-msgstr ""
-
-#~ msgid "Checking for updates..."
-#~ msgstr "Kontrolujú sa aktualizácie..."
+msgstr "Na inštaláciu alebo aktualizáciu balíkov je potrebné overenie"
