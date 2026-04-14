@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import gettext
-import json
 import logging
 import os
 import random
@@ -37,6 +36,7 @@ from bodhi_update.install_commands import build_deb_install_argv, build_hold_arg
 from bodhi_update.models import (  # noqa: E402
     CONSTRAINT_BLOCKED, CONSTRAINT_HELD, CONSTRAINT_NORMAL, UpdateItem,
 )
+from bodhi_update.prefs import PreferencesStore
 from bodhi_update.utils import (  # noqa: E402
     find_privilege_tool, format_size, reboot_required,
 )
@@ -72,7 +72,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
     """Main application window: update list, install screen, preferences, and tray hooks."""
 
     ( COL_SELECTED, COL_PACKAGE,  COL_INSTALLED, COL_NEW,  COL_SIZE, COL_REPO,
-      COL_RAW_NAME, COL_CATEGORY, COL_BACKEND,   COL_ICON, COL_RAW_SIZE, 
+      COL_RAW_NAME, COL_CATEGORY, COL_BACKEND,   COL_ICON, COL_RAW_SIZE,
       COL_DESC, COL_HELD ) = range(13)
 
     def __init__(self, deb_path: str | None = None) -> None:
@@ -96,8 +96,9 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         self._refresh_poll_source_id: int | None = None
         # State machine: IDLE → AUTH_PENDING → RUNNING → COMPLETE | FAILED
         self.install_state: str = "IDLE"
+        self.pref_store = PreferencesStore(APP_NAME)
+        self.prefs = self.pref_store.load()
 
-        self.prefs = self._load_prefs()
         # Guard flag used by _set_show_descriptions() to suppress menu re-entry.
         self._syncing_desc = False
 
@@ -561,7 +562,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
                     self.prefs["show_flatpak"] = new_val
                     changed = True
             if changed:
-                self._save_prefs()
+                self.pref_store.save(self.prefs)
                 self.filter_model.refilter()
                 # Flash "Preferences saved." briefly, then restore the real count status.
                 self._restore_current_update_status()
@@ -685,7 +686,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         """Update and persist the show-descriptions pref, sync the menu item, rebuild markup."""
         # _syncing_desc blocks on_toggle_descriptions re-entry during the menu sync.
         self.prefs["show_descriptions"] = enabled
-        self._save_prefs()
+        self.pref_store.save(self.prefs)
         self._syncing_desc = True
         try:
             self.show_desc_menu_item.set_active(enabled)
@@ -707,56 +708,6 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
                     name, desc, show_desc, constraint)
         finally:
             self.store.thaw_notify()
-
-    # ------------------------------------------------------------------ #
-    # Preferences persistence                                              #
-    # ------------------------------------------------------------------ #
-
-    def _get_prefs_path(self) -> str:
-        config_home = os.environ.get("XDG_CONFIG_HOME",
-                                     os.path.expanduser("~/.config"))
-        return os.path.join(config_home, "bodhi-update-manager", "prefs.json")
-
-    def _load_prefs(self) -> Dict[str, bool]:
-        defaults: Dict[str, bool] = {
-            "show_descriptions": True,
-            "show_notifications": True,
-            "show_held_packages": False,
-            "show_snap": True,
-            "show_flatpak": True,
-        }
-        path = self._get_prefs_path()
-
-        if not os.path.exists(path):
-            return defaults
-
-        try:
-            with open(path, "r", encoding="utf-8") as f:
-                data = json.load(f)
-        except OSError as e:
-            logger.warning("Could not read prefs file at %s: %s", path, e)
-            return defaults
-        except json.JSONDecodeError as e:
-            logger.error("Prefs file is corrupted JSON at %s: %s", path, e)
-            return defaults
-
-        if not isinstance(data, dict):
-            logger.error("Prefs file expected a dict but got %s", type(data).__name__)
-            return defaults
-
-        defaults.update(data)
-        return defaults
-
-    def _save_prefs(self) -> None:
-        path = self._get_prefs_path()
-        try:
-            os.makedirs(os.path.dirname(path), exist_ok=True)
-            with open(path, "w", encoding="utf-8") as f:
-                json.dump(self.prefs, f)
-        except (OSError, TypeError):
-            # OSError: directory creation or file write failed
-            # TypeError: prefs dict contains non-serializable value
-            pass
 
     # ------------------------------------------------------------------ #
     # Widget helpers                                                       #
