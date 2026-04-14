@@ -130,6 +130,8 @@ def discover_plugins() -> List[type[UpdateBackend]]:
     """Scan the plugins package and return concrete UpdateBackend subclasses."""
     # Sorted for deterministic loading order across environments.
     plugins_dir = Path(__file__).parent / "plugins"
+    if not plugins_dir.exists():
+        return []
     discovered: List[type[UpdateBackend]] = []
     seen: set[type] = set()
 
