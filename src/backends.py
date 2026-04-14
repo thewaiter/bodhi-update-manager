@@ -131,7 +131,7 @@ def discover_plugins() -> List[type[UpdateBackend]]:
     # Sorted for deterministic loading order across environments.
     plugins_dir = Path(__file__).parent / "plugins"
     discovered: List[type[UpdateBackend]] = []
-    seen_ids: set = set()
+    seen: set[type] = set()
 
     # Sort for deterministic loading order.
     plugin_files = sorted(plugins_dir.glob("*.py"))
@@ -153,10 +153,10 @@ def discover_plugins() -> List[type[UpdateBackend]]:
         for _name, obj in inspect.getmembers(module, inspect.isclass):
             if not _is_valid_backend_class(obj, module_name):
                 continue
-            if id(obj) in seen_ids:
+            if obj in seen:
                 continue
-            seen_ids.add(id(obj))
-            discovered.append(obj)  # type: ignore[arg-type]
+            seen.add(obj)
+            discovered.append(obj)
 
     return discovered
 
