@@ -321,6 +321,7 @@ class TrayIcon:
         """
         try:
             from bodhi_update.backends import get_registry, initialize_registry  # noqa: PLC0415
+            from bodhi_update.models import CONSTRAINT_HELD, CONSTRAINT_BLOCKED  # noqa: PLC0415
             initialize_registry()  # idempotent
             count = 0
             severity = "low"
@@ -328,7 +329,7 @@ class TrayIcon:
                 try:
                     updates, _ = backend.get_updates()
                     for u in updates:
-                        if getattr(u, "held", False):
+                        if getattr(u, "constraint", None) in (CONSTRAINT_HELD, CONSTRAINT_BLOCKED):
                             continue
                         count += 1
                         s = _pkg_severity(
