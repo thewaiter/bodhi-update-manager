@@ -32,6 +32,7 @@ from gi.repository import Gdk, Gio, GLib, Gtk, Pango, Vte  # noqa: E402
 
 from bodhi_update._version import __version__  # noqa: E402
 from bodhi_update.backends import get_registry, initialize_registry  # noqa: E402
+from bodhi_update.hold_controller import HoldController   # noqa: E402
 from bodhi_update.install_commands import build_hold_argv  # noqa: E402
 from bodhi_update.install_controller import InstallController  # noqa: E402
 from bodhi_update.models import (  # noqa: E402
@@ -85,9 +86,6 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
 
         self.refresh_in_progress = False
         self.install_in_progress = False
-        # pkexec auth sentinel + poller (hold/unhold).
-        self._hold_sentinel_path: str | None = None
-        self._hold_poll_source_id: int | None = None
 
         self.pref_store = PreferencesStore(APP_NAME)
         self.prefs = self.pref_store.load()
@@ -137,6 +135,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         self._build_stack()
         self.install_controller = InstallController(self)
         self.refresh_controller = RefreshController(self)
+        self.hold_controller = HoldController(self)
         self._build_status()
 
         if deb_path is not None:
@@ -983,156 +982,13 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
                                            Gtk.IconSize.MENU)
         item.set_image(img)
         item.set_always_show_image(True)
-        item.connect("activate",
-                     lambda _: self._do_hold_toggle(pkg_name, not is_held))
+        item.connect(
+            "activate",
+            lambda _: self.hold_controller.do_hold_toggle(pkg_name, not is_held),
+        )
         menu.append(item)
         menu.show_all()
         menu.popup_at_pointer(event)
-
-    def _reload_apt_rows(self) -> None:  # pylint: disable=too-many-locals
-        """Re-query APT rows only, leaving non-APT rows intact."""
-        # Save non-APT rows before clearing the store.
-        non_apt = [
-            list(row) for row in self.store if row[self.COL_BACKEND] != "apt"
-        ]
-
-        apt_updates: List[UpdateItem] = []
-        apt_bytes = 0
-        for backend in get_registry().get_all_backends():
-            if backend.backend_id != "apt":
-                continue
-            try:
-                items, b = backend.get_updates()
-                apt_updates.extend(items)
-                apt_bytes += b
-            except (OSError, RuntimeError, ValueError):
-                # Ignore locks, backend crashes, or malformed data return
-                continue
-
-        show_desc = self.prefs.get("show_descriptions", True)
-        self.store.freeze_notify()
-        try:
-            self.store.clear()
-            for row in non_apt:
-                self.store.append(row)
-            # Insert fresh APT rows.
-            for update in apt_updates:
-                constraint = update.constraint
-                icon = self._category_icon(update.category, update.backend,
-                                           constraint)
-                pkg_markup = self._build_pkg_markup(update.name,
-                                                    update.description,
-                                                    show_desc, constraint)
-                size_str = format_size(update.size)
-                self.store.append([
-                    False, pkg_markup, update.installed_version, update.candidate_version,
-                    size_str, update.origin, update.name, update.category, update.backend,
-                    icon, update.size, update.description or _("System package"), constraint,
-                ])
-        finally:
-            self.store.thaw_notify()
-
-        non_apt_bytes = sum(row[self.COL_RAW_SIZE]
-                            for row in self.store
-                            if row[self.COL_BACKEND] != "apt")
-        actionable = sum(
-            1 for row in self.store if row[self.COL_HELD] == CONSTRAINT_NORMAL)
-        self._update_count_status(actionable,
-                                  apt_bytes + non_apt_bytes,
-                                  cached=True)
-
-    def _do_hold_toggle(self, pkg_name: str, hold: bool) -> None:
-        """Run apt-mark hold/unhold via the privilege helper in a background thread."""
-        if self.refresh_in_progress or self.install_in_progress:
-            return
-
-        running_msg = _(
-            "Locking package...") if hold else _("Unlocking package...")
-
-        # Sentinel file distinguishes "waiting for pkexec auth" from "running".
-        sentinel = (
-            f"/tmp/bodup-hold-{os.getpid()}-{random.randint(0, 0xFFFFFF):06x}.ok"
-        )
-        self._hold_sentinel_path: str | None = sentinel
-        self._hold_poll_source_id: int | None = GLib.timeout_add(
-            100, self._poll_hold_sentinel, running_msg)
-
-        self._set_status(_("Waiting for authorization..."))
-
-        def _worker() -> None:
-            try:
-                argv = build_hold_argv(pkg_name,
-                                       hold=hold,
-                                       sentinel_path=sentinel)
-            except RuntimeError as exc:
-                # Build failed — sentinel will never be written; cancel poller.
-                self._cancel_hold_sentinel()
-                GLib.idle_add(self._set_status, str(exc))
-                return
-            result = subprocess.run(argv, capture_output=True, check=False)
-            # If sentinel still exists, apt-mark finished before the first poll tick.
-            # Emit the running message before posting success/failure.
-            _sentinel_path = self._hold_sentinel_path
-            if _sentinel_path and os.path.exists(_sentinel_path):
-                try:
-                    os.unlink(_sentinel_path)
-                except OSError:
-                    pass
-                self._hold_sentinel_path = None
-                GLib.idle_add(self._set_status, running_msg)
-            self._cancel_hold_sentinel()
-            if result.returncode != 0:
-                err = (result.stderr or
-                       b"").decode(errors="replace").strip().splitlines()
-                msg = err[0] if err else _("apt-mark failed (unknown error)")
-                GLib.idle_add(self._set_status, msg)
-            else:
-                if hold:
-                    status = _("Package '%(name)s' is now held.") % {"name": pkg_name}
-                else:
-                    status = _("Package '%(name)s' is no longer held.") % {"name": pkg_name}
-                GLib.idle_add(self._reload_apt_rows)
-                GLib.idle_add(self._set_status, status)
-                GLib.timeout_add_seconds(3, self._restore_current_update_status)
-
-        threading.Thread(target=_worker, daemon=True).start()
-
-    def _poll_hold_sentinel(self, running_msg: str) -> bool:
-        """100 ms GLib poller: flip status bar to running when sentinel appears."""
-        # Sentinel written by root helper once pkexec auth succeeds.
-        path = self._hold_sentinel_path
-        if path is None:
-            return False  # already cancelled
-        if os.path.exists(path):
-            try:
-                os.unlink(path)
-            except OSError:
-                pass
-            self._hold_sentinel_path = None
-            self._hold_poll_source_id = None
-            GLib.idle_add(self._set_status, running_msg)
-            return False
-        return True
-
-    def _stop_hold_poller(self) -> None:
-        """Stop the hold sentinel poller without touching the file."""
-        # Called from the worker thread; leaves the file for the GTK poller to consume.
-        src = getattr(self, "_hold_poll_source_id", None)
-        if src is not None:
-            GLib.source_remove(src)
-            self._hold_poll_source_id = None
-
-    def _cancel_hold_sentinel(self) -> None:
-        """Stop the hold sentinel poller and remove any leftover file."""
-        # Used when the sentinel will never be written (build error, cancelled auth).
-        self._stop_hold_poller()
-        path = getattr(self, "_hold_sentinel_path", None)
-        if path:
-            self._hold_sentinel_path = None
-            try:
-                os.unlink(path)
-            except OSError:
-                pass
 
     # ------------------------------------------------------------------ #
     # Store / data helpers                                                 #
