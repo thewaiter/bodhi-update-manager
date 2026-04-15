@@ -32,12 +32,13 @@ from gi.repository import Gdk, Gio, GLib, Gtk, Pango, Vte  # noqa: E402
 
 from bodhi_update._version import __version__  # noqa: E402
 from bodhi_update.backends import get_registry, initialize_registry  # noqa: E402
-from bodhi_update.install_controller import InstallController
-from bodhi_update.install_commands import build_deb_install_argv, build_hold_argv  # noqa: E402
+from bodhi_update.install_commands import build_hold_argv  # noqa: E402
+from bodhi_update.install_controller import InstallController  # noqa: E402
 from bodhi_update.models import (  # noqa: E402
     CONSTRAINT_BLOCKED, CONSTRAINT_HELD, CONSTRAINT_NORMAL, UpdateItem,
 )
-from bodhi_update.prefs import PreferencesStore
+from bodhi_update.prefs import PreferencesStore  # noqa: E402
+from bodhi_update.refresh_controller import RefreshController  # noqa: E402
 from bodhi_update.utils import (  # noqa: E402
     find_privilege_tool, format_size, reboot_required,
 )
@@ -72,9 +73,9 @@ def clamp(value: int, lo: int, hi: int) -> int:
 class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attributes
     """Main application window: update list, install screen, preferences, and tray hooks."""
 
-    ( COL_SELECTED, COL_PACKAGE,  COL_INSTALLED, COL_NEW,  COL_SIZE, COL_REPO,
-      COL_RAW_NAME, COL_CATEGORY, COL_BACKEND,   COL_ICON, COL_RAW_SIZE,
-      COL_DESC, COL_HELD ) = range(13)
+    (COL_SELECTED, COL_PACKAGE,  COL_INSTALLED, COL_NEW,  COL_SIZE, COL_REPO,
+     COL_RAW_NAME, COL_CATEGORY, COL_BACKEND,   COL_ICON, COL_RAW_SIZE,
+     COL_DESC, COL_HELD) = range(13)
 
     def __init__(self, deb_path: str | None = None) -> None:
         super().__init__(title=_("Update Manager"))
@@ -87,9 +88,6 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         # pkexec auth sentinel + poller (hold/unhold).
         self._hold_sentinel_path: str | None = None
         self._hold_poll_source_id: int | None = None
-        # pkexec auth sentinel + poller (refresh).
-        self._refresh_sentinel_path: str | None = None
-        self._refresh_poll_source_id: int | None = None
 
         self.pref_store = PreferencesStore(APP_NAME)
         self.prefs = self.pref_store.load()
@@ -138,6 +136,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         self._build_reboot_bar()
         self._build_stack()
         self.install_controller = InstallController(self)
+        self.refresh_controller = RefreshController(self)
         self._build_status()
 
         if deb_path is not None:
@@ -1135,30 +1134,6 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
             except OSError:
                 pass
 
-    def _poll_refresh_sentinel(self) -> bool:
-        """100 ms GLib poller: flip status bar to loading once refresh sentinel appears."""
-        # Sentinel written by root helper once pkexec auth succeeds.
-        path = self._refresh_sentinel_path
-        if path is None:
-            return False  # already cancelled or consumed
-        if os.path.exists(path):
-            try:
-                os.unlink(path)
-            except OSError:
-                pass
-            self._refresh_sentinel_path = None
-            self._refresh_poll_source_id = None
-            GLib.idle_add(self._set_status, _("Loading updates..."))
-            return False
-        return True
-
-    def _stop_refresh_poller(self) -> None:
-        """Stop the refresh sentinel GLib poller (does not touch the file)."""
-        src = getattr(self, "_refresh_poll_source_id", None)
-        if src is not None:
-            GLib.source_remove(src)
-            self._refresh_poll_source_id = None
-
     # ------------------------------------------------------------------ #
     # Store / data helpers                                                 #
     # ------------------------------------------------------------------ #
@@ -1343,95 +1318,6 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         return False
 
     # ------------------------------------------------------------------ #
-    # Refresh flow                                                         #
-    # ------------------------------------------------------------------ #
-
-    def _finish_refresh_ui(
-        self,
-        ok: bool,
-        message: str,
-        updates: List[UpdateItem],
-        total_bytes: int,
-    ) -> bool:
-        log.info(_("Refresh finished. %d updates. Success: %s"), len(updates), ok)
-        self._set_refresh_busy(False)
-        self._set_updates_loading(False)
-
-        # Populate store and count status even on failure (fall back to cached data).
-        self._populate_store(updates)
-        actionable = sum(
-            1 for u in updates
-            if getattr(u, "constraint", CONSTRAINT_NORMAL) == CONSTRAINT_NORMAL)
-        self._update_count_status(actionable, total_bytes, cached=not ok)
-
-        if not ok and message:
-            # Append failure detail without clobbering the update count.
-            current_status = self.status_label.get_text()
-            self._set_status(_("%(current_status)s — Warning: %(message)s") % {
-                "current_status": current_status,
-                "message": message
-            })
-
-        return False
-
-    def _refresh_worker(self) -> None:
-        messages = []
-        backends = get_registry().get_all_backends()
-
-        successful_backends = 0
-
-        sentinel = self._refresh_sentinel_path
-
-        for backend in backends:
-            if backend.backend_id == "apt":
-                ok, msg = backend.refresh(sentinel_path=sentinel)
-            else:
-                ok, msg = backend.refresh()
-            if not ok and msg:
-                messages.append(msg)
-
-        # Stop the poller before consuming the sentinel to avoid double-posting.
-        self._stop_refresh_poller()
-
-        # If sentinel still exists, apt-get update finished before the first poll tick.
-        if sentinel and os.path.exists(sentinel):
-            try:
-                os.unlink(sentinel)
-            except OSError:
-                pass
-            GLib.idle_add(self._set_status, _("Loading updates..."))
-        self._refresh_sentinel_path = None
-
-        updates: List[UpdateItem] = []
-        total_bytes = 0
-
-        for backend in backends:
-            try:
-                b_updates, b_bytes = backend.get_updates()
-                updates.extend(b_updates)
-                total_bytes += b_bytes
-                successful_backends += 1
-            except (OSError, RuntimeError, ValueError) as exc:
-                # Report per-backend failures in the UI status.
-                log.error("Backend %s get_updates failed: %s",
-                          backend.display_name, exc)
-                messages.append(
-                    f"{backend.display_name} get_updates failed. ({exc})")
-
-        # Hard-fail only if every enabled backend failed.
-        fatal_fail = (successful_backends == 0 and len(backends) > 0)
-
-        final_msg = _("Package lists refreshed.")
-        if messages:
-            final_msg = " · ".join(messages)
-
-        log.info(_("Finished querying backends. Total updates: %d"), len(updates))
-
-        GLib.idle_add(  # type: ignore[call-arg]
-            self._finish_refresh_ui, not fatal_fail, final_msg, updates,
-            total_bytes)
-
-    # ------------------------------------------------------------------ #
     # Install flow                                                         #
     # ------------------------------------------------------------------ #
 
@@ -1460,6 +1346,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
 
     def _finish_install_failure(self, exit_code: int) -> None:
         self.install_controller.finish_install_failure(exit_code)
+
         def _terminal_text(self) -> str:
             """Return plain text from the VTE terminal, or '' on error.
 
@@ -1555,7 +1442,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         self._set_show_descriptions(checkmenuitem.get_active())
 
     def on_check_updates(self, _button: Gtk.Button | None) -> None:
-        """Trigger a privileged apt-get update and reload the update list."""
+        """Trigger a privileged refresh and reload the update list."""
         if self.refresh_in_progress or self.install_in_progress:
             return
 
@@ -1565,23 +1452,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
                 self._set_status(message)
                 return
 
-        self._set_refresh_busy(True)
-        # Show spinner immediately; status stays "Waiting..." until auth succeeds.
-        self.updates_stack.set_visible_child_name("loading")
-        self._loading_spinner.start()
-        self._updates_loading = True
-        self._update_action_sensitivity()
-        self._set_status(_("Waiting for authorization..."))
-        # Fresh sentinel + poller so "Loading updates..." fires as soon as auth succeeds.
-        self._refresh_sentinel_path = (
-            f"/tmp/bodup-refresh-{os.getpid()}-{random.randint(0, 0xFFFFFF):06x}.ok"
-        )
-        self._refresh_poll_source_id = GLib.timeout_add(
-            100, self._poll_refresh_sentinel)
-        log.info(_("Starting background refresh for updates."))
-
-        worker = threading.Thread(target=self._refresh_worker, daemon=True)
-        worker.start()
+        self.refresh_controller.start_refresh()
 
     def _build_install_target_command(
             self, grouped_packages: Dict[str, List[str]] | None) -> list[str]:
@@ -1657,6 +1528,8 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
                          daemon=True).start()
 
     def on_install_child_exited(self, _terminal: Vte.Terminal, status: int) -> None:
+        """VTE child-exited signal: route to success or failure finish handler."""
+
         if status == 0:
             self._finish_install_success()
         else:
