@@ -32,6 +32,7 @@ from gi.repository import Gdk, Gio, GLib, Gtk, Pango, Vte  # noqa: E402
 
 from bodhi_update._version import __version__  # noqa: E402
 from bodhi_update.backends import get_registry, initialize_registry  # noqa: E402
+from bodhi_update.install_controller import InstallController
 from bodhi_update.install_commands import build_deb_install_argv, build_hold_argv  # noqa: E402
 from bodhi_update.models import (  # noqa: E402
     CONSTRAINT_BLOCKED, CONSTRAINT_HELD, CONSTRAINT_NORMAL, UpdateItem,
@@ -83,19 +84,13 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
 
         self.refresh_in_progress = False
         self.install_in_progress = False
-        self.install_output_started = False
-        self.install_pulse_source_id: int | None = None
-        # pkexec auth sentinel + poller (install).
-        self._auth_sentinel_path: str | None = None
-        self._auth_poll_source_id: int | None = None
         # pkexec auth sentinel + poller (hold/unhold).
         self._hold_sentinel_path: str | None = None
         self._hold_poll_source_id: int | None = None
         # pkexec auth sentinel + poller (refresh).
         self._refresh_sentinel_path: str | None = None
         self._refresh_poll_source_id: int | None = None
-        # State machine: IDLE → AUTH_PENDING → RUNNING → COMPLETE | FAILED
-        self.install_state: str = "IDLE"
+
         self.pref_store = PreferencesStore(APP_NAME)
         self.prefs = self.pref_store.load()
 
@@ -142,6 +137,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         self._build_toolbar()
         self._build_reboot_bar()
         self._build_stack()
+        self.install_controller = InstallController(self)
         self._build_status()
 
         if deb_path is not None:
@@ -1439,251 +1435,45 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
     # Install flow                                                         #
     # ------------------------------------------------------------------ #
 
-    def _pulse_install_progress(self) -> bool:
-        if not self.install_in_progress or not self.install_output_started:
-            self.install_pulse_source_id = None
-            return False
-
-        self.install_progress.pulse()
-        return True
-
-    def _start_install_progress(self, title: str) -> None:
-        self.install_state = "AUTH_PENDING"
-        self._set_install_busy(True)
-        self.install_output_started = False
-        self._active_privilege_tool = None
-        self._auth_sentinel_path = None
-        if self._auth_poll_source_id is not None:
-            GLib.source_remove(self._auth_poll_source_id)
-            self._auth_poll_source_id = None
-        self.stack.set_visible_child_name("install")
-
-        self.install_title_label.set_markup(
-            f"<b>{GLib.markup_escape_text(title)}</b>")
-        self.install_phase_label.set_text(_("Waiting for authentication..."))
-        self.install_progress.set_fraction(0.0)
-        self.install_progress.set_show_text(True)
-        self.install_progress.set_text(_("Waiting for authentication..."))
-        self._set_status(_("Waiting for authorization..."))
-
-        self.install_details_revealer.set_reveal_child(False)
-        self.show_details_button.set_active(False)
-        self.show_details_button.set_label(_("Show Details"))
-
-        if self.install_pulse_source_id is not None:
-            GLib.source_remove(self.install_pulse_source_id)
-            self.install_pulse_source_id = None
-
-        try:
-            self.install_terminal.reset(True, True)
-        except (AttributeError, TypeError, RuntimeError):  # VTE reset may raise on Wayland
-            pass
-
-    def _mark_install_running(self) -> None:
-        """Transition install UI from AUTH_PENDING → RUNNING. Idempotent."""
-        # Called by the sentinel poller (pkexec) or the VTE marker watcher (sudo/doas).
-        if self.install_state != "AUTH_PENDING":
-            return
-
-        self.install_state = "RUNNING"
-        self.install_output_started = True
-        self.install_phase_label.set_text(
-            _("This may take a few minutes.")
-        )
-        self.install_progress.set_text(_("Installing updates..."))
-        self._set_status(_("Installing updates..."))
-
-        self.install_details_revealer.set_reveal_child(True)
-        self.show_details_button.set_active(True)
-        self.show_details_button.set_label(_("Hide Details"))
-        self.install_terminal.grab_focus()
-
-        if self.install_pulse_source_id is None:
-            self.install_pulse_source_id = GLib.timeout_add(
-                150, self._pulse_install_progress)
-
-    def _on_spawn_complete(self, terminal, pid, error, user_data=None):
-        """VTE spawn_async callback — catches hard spawn failures.
-
-        Auth success is handled separately by the sentinel poller (pkexec)
-        or the VTE marker watcher (sudo/doas).
-        """
-        if error is not None:
-            log.error(_("Spawn failed: %s"), error.message)
-            self.install_state = "FAILED"
-            self._cancel_auth_sentinel()
-            self._set_install_busy(False)
-            self.install_progress.set_fraction(0.0)
-            self.install_progress.set_text(_("Failed"))
-            self.install_phase_label.set_text(
-                _("Failed to start installation. See Details below.")
-            )
-            self.install_details_revealer.set_reveal_child(True)
-            self.show_details_button.set_active(True)
-            self.show_details_button.set_label(_("Hide Details"))
-            self._set_status(_("Failed to start installation."))
-            return
-
-        log.info(_("Install process spawned (pid %s)."), pid)
-
-    def _spawn_install_command(self, argv: list[str]) -> None:
-        """Spawn argv directly in the VTE terminal (no shell).
-
-        Privilege chain: GUI → pkexec → helper → apt-get
-        """
-        envv = [f"{k}={v}" for k, v in os.environ.items()]
-
-        self.install_terminal.spawn_async(
-            Vte.PtyFlags.DEFAULT,
-            os.getcwd(),
-            argv,
-            envv,
-            GLib.SpawnFlags.DEFAULT,
-            None,
-            None,
-            -1,
-            None,
-            self._on_spawn_complete,
-            None,
-        )
-
-    def _handle_terminal_auth_fallback(self) -> None:
-        """Update the UI when terminal authentication (sudo/doas) is used instead of pkexec."""
-        msg = _(
-            "Enter your password in the terminal below."
-            " For security, nothing will appear while typing."
-        )
-
-        log.info(_("Terminal auth in use — revealing VTE for password entry."))
-
-        self.install_details_revealer.set_reveal_child(True)
-        self.show_details_button.set_active(True)
-        self.show_details_button.set_label(_("Hide Details"))
-
-        self.install_phase_label.set_text(msg)
-        self.install_progress.set_text(_("Waiting for authentication..."))
-        self._set_status(_("Waiting for authorization..."))
-
-        self.install_terminal.grab_focus()
-
-    def _poll_auth_sentinel(self) -> bool:
-        """100 ms GLib poller: transition to RUNNING when auth sentinel appears."""
-        # Returns False once no longer in AUTH_PENDING, stopping the source.
-        if self.install_state != "AUTH_PENDING":
-            self._auth_poll_source_id = None
-            return False
-
-        path = self._auth_sentinel_path
-        if path and os.path.exists(path):
-            log.info("Auth sentinel found — transitioning to RUNNING.")
-            try:
-                os.unlink(path)
-            except OSError:
-                pass
-            self._auth_sentinel_path = None
-            self._auth_poll_source_id = None
-            GLib.idle_add(self._mark_install_running)
-            return False
-
-        return True
-
-    def _cancel_auth_sentinel(self) -> None:
-        """Stop the sentinel poller and clean up any leftover sentinel file."""
-        if self._auth_poll_source_id is not None:
-            GLib.source_remove(self._auth_poll_source_id)
-            self._auth_poll_source_id = None
-        path = self._auth_sentinel_path
-        if path:
-            self._auth_sentinel_path = None
-            try:
-                os.unlink(path)
-            except OSError:
-                pass
-
     def _launch_install(self, argv: list[str], title: str) -> None:
-        log.info(_("Starting installation: %s"), title)
-        log.debug(_("Command: %s"), argv)
-
-        self._start_install_progress(title)
-        # Cache the tool for this install run so callbacks don't re-lookup.
-        self._active_privilege_tool = find_privilege_tool()
-
-        if self._active_privilege_tool == "pkexec":
-            # pkexec strips env vars, so pass the sentinel path as a CLI arg instead.
-            sentinel = f"/tmp/bodup-auth-{os.getpid()}-{random.randint(0, 0xFFFFFF):06x}.ok"
-            self._auth_sentinel_path = sentinel
-            # [pkexec, helper, subcommand, ...] → [pkexec, helper, --sentinel, path, subcommand, ...]
-            guarded_argv = [argv[0], argv[1], "--sentinel", sentinel, *argv[2:]]
-            self._spawn_install_command(guarded_argv)
-            self._auth_poll_source_id = GLib.timeout_add(
-                100, self._poll_auth_sentinel)
-        else:
-            # sudo/doas: auth happens in the VTE; reveal it and go straight to RUNNING.
-            self._spawn_install_command(argv)
-            self._handle_terminal_auth_fallback()
-            GLib.idle_add(self._mark_install_running)
+        self.install_controller.launch_install(argv, title)
 
     def _launch_deb_install(self, deb_path: str) -> None:
-        """Switch to the install screen and install a local .deb file."""
         deb_name = os.path.basename(deb_path)
 
         try:
-            argv = build_deb_install_argv(deb_path)
+            self.install_controller.launch_deb_install(
+                deb_path,
+                _("Installing %(deb_name)s...") % {"deb_name": deb_name},
+            )
         except (RuntimeError, ValueError, FileNotFoundError) as exc:
-            # Show the install page so the error is visible, then bail.
-            self._start_install_progress(
-                _("Installing %(deb_name)s...") % {"deb_name": deb_name})
             self._set_install_busy(False)
             self.install_progress.set_fraction(0.0)
             self.install_progress.set_text(_("Failed"))
             self.install_phase_label.set_text(str(exc))
             self._set_status(_("Validation failed: %(exc)s") % {"exc": exc})
-            return
-        self._launch_install(argv, _("Installing %(deb_name)s...") % {"deb_name": deb_name})
 
     def _finish_install_success(self) -> None:
-        log.info(_("Installation completed successfully."))
-        self.install_state = "COMPLETE"
-        self._cancel_auth_sentinel()
-        self._set_install_busy(False)
-        self.install_progress.set_fraction(1.0)
-        self.install_progress.set_text(_("Complete"))
-        self.install_phase_label.set_text(_("Updates installed successfully."))
-        self._set_status(_("Ready"))
-
+        self.install_controller.finish_install_success()
         if reboot_required():
             self.reboot_info_bar.show()
 
     def _finish_install_failure(self, exit_code: int) -> None:
-        log.error(_("Installation failed with exit code: %s"), exit_code)
-        self.install_state = "FAILED"
-        self._cancel_auth_sentinel()
-        self._set_install_busy(False)
-        self.install_progress.set_fraction(0.0)
-        self.install_progress.set_text(_("Failed"))
-        self.install_phase_label.set_text(
-            _("Update failed. Exit code: %(exit_code)s. See Details below.")
-            % {"exit_code": exit_code})
+        self.install_controller.finish_install_failure(exit_code)
+        def _terminal_text(self) -> str:
+            """Return plain text from the VTE terminal, or '' on error.
 
-        self.install_details_revealer.set_reveal_child(True)
-        self.show_details_button.set_active(True)
-        self.show_details_button.set_label(_("Hide Details"))
-        self._set_status(_("Update failed. Exit code: %(exit_code)s") % {"exit_code": exit_code})
-
-    def _terminal_text(self) -> str:
-        """Return plain text from the VTE terminal, or '' on error.
-
-        Must pass attributes=None to avoid a vte_terminal_get_text assertion
-        failure caused by PyGObject supplying a non-null GArray pointer.
-        """
-        try:
-            result = self.install_terminal.get_text(lambda *a: True, None)
-            text = result[0] if isinstance(result, tuple) else result
-            return text or ""
-        except (AttributeError, TypeError, ValueError):
-            # VTE API is loosely typed and sensitive to GArray pointers;
-            # return empty string if the bridge or assertion fails.
-            return ""
+            Must pass attributes=None to avoid a vte_terminal_get_text assertion
+            failure caused by PyGObject supplying a non-null GArray pointer.
+            """
+            try:
+                result = self.install_terminal.get_text(lambda *a: True, None)
+                text = result[0] if isinstance(result, tuple) else result
+                return text or ""
+            except (AttributeError, TypeError, ValueError):
+                # VTE API is loosely typed and sensitive to GArray pointers;
+                # return empty string if the bridge or assertion fails.
+                return ""
 
     def _on_reboot_bar_response(self, _bar: Gtk.InfoBar,
                                 response_id: int) -> None:
@@ -1866,9 +1656,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         threading.Thread(target=self._load_cached_updates_on_startup,
                          daemon=True).start()
 
-    def on_install_child_exited(self, _terminal: Vte.Terminal,
-                                status: int) -> None:
-        """VTE child-exited signal: route to success or failure finish handler."""
+    def on_install_child_exited(self, _terminal: Vte.Terminal, status: int) -> None:
         if status == 0:
             self._finish_install_success()
         else:
