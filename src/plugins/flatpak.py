@@ -19,9 +19,9 @@ class FlatpakBackend(UpdateBackend):
     meta = BackendMeta(
         backend_id = "flatpak",
         display_name = "Flatpak Packages",
-        filter_group = "containers",
-        filter_label = "Containers",
-        filter_sort_order = 100,
+        filter_group = "flatpak",
+        filter_label = "FlatPak",
+        filter_sort_order = 200,
     )
 
     def is_available(self) -> bool:

@@ -79,9 +79,9 @@ def clamp(value: int, lo: int, hi: int) -> int:
 class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attributes
     """Main application window: update list, install screen, preferences, and tray hooks."""
 
-    (COL_SELECTED, COL_PACKAGE,  COL_INSTALLED, COL_NEW,  COL_SIZE, COL_REPO,
-     COL_RAW_NAME, COL_CATEGORY, COL_BACKEND,   COL_ICON, COL_RAW_SIZE,
-     COL_DESC, COL_HELD) = range(13)
+    (COL_SELECTED, COL_PACKAGE,  COL_INSTALLED, COL_NEW,          COL_SIZE,
+     COL_REPO,     COL_RAW_NAME, COL_CATEGORY,  COL_FILTER_GROUP, COL_BACKEND,
+     COL_ICON,     COL_RAW_SIZE, COL_DESC,      COL_HELD) = range(14)
 
     def __init__(self, deb_path: str | None = None) -> None:
         super().__init__(title=_("Update Manager"))
@@ -111,7 +111,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         initialize_registry()
 
         self.store = Gtk.ListStore(
-            bool,  # selected
+            bool, # selected
             str,  # markup
             str,  # installed_version
             str,  # candidate_version
@@ -119,6 +119,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
             str,  # origin
             str,  # name
             str,  # category
+            str,  # filter_group
             str,  # backend
             str,  # icon
             int,  # raw_size
@@ -265,14 +266,13 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         self.category_combo.append("security", _("Security"))
         self.category_combo.append("kernel", _("Kernel"))
         self.category_combo.append("system", _("System"))
-        # Optional backends: only add a filter entry when discovered.
-        _registered_ids = {
-            b.backend_id for b in get_registry().get_all_backends()
-        }
-        if "snap" in _registered_ids:
-            self.category_combo.append("snap", "Snap")
-        if "flatpak" in _registered_ids:
-            self.category_combo.append("flatpak", "Flatpak")
+
+        for group_key, (group_label, _sort_order) in sorted(
+            get_registry().get_filter_groups().items(),
+            key=lambda item: (item[1][1], item[1][0].lower()),
+        ):
+            self.category_combo.append(group_key, group_label)
+
         self.category_combo.set_active_id("all")
         self.category_combo.connect("changed", self.on_category_changed)
         toolbar.pack_start(self.category_combo, False, False, 0)
@@ -968,24 +968,33 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         self._update_count_status(actionable, total_bytes, cached=True)
         return False  # one-shot: remove the timeout source
 
-    def _category_filter_func(self, model: Gtk.TreeModel, iter_: Gtk.TreeIter,
-                              _data: object) -> bool:
+    def _category_filter_func(
+        self,
+        model: Gtk.TreeModel,
+        iter_: Gtk.TreeIter,
+        _data: object,
+    ) -> bool:
         row_backend = model[iter_][self.COL_BACKEND]
-        # Hide rows whose backend is disabled in Preferences.
+
         if row_backend == "snap" and not self.prefs.get("show_snap", True):
             return False
-        if row_backend == "flatpak" and not self.prefs.get(
-                "show_flatpak", True):
+        if row_backend == "flatpak" and not self.prefs.get("show_flatpak", True):
             return False
-        # Hide held/blocked APT packages unless show_held_packages is enabled.
-        if (model[iter_][self.COL_HELD] in (CONSTRAINT_HELD, CONSTRAINT_BLOCKED)
-                and not self.prefs.get("show_held_packages", False)):
+
+        if (
+            model[iter_][self.COL_HELD] in (CONSTRAINT_HELD, CONSTRAINT_BLOCKED)
+            and not self.prefs.get("show_held_packages", False)
+        ):
             return False
-        category_id = self.category_combo.get_active_id()
-        if not category_id or category_id == "all":
+
+        selected_id = self.category_combo.get_active_id()
+        if not selected_id or selected_id == "all":
             return True
-        row_category = model[iter_][self.COL_CATEGORY]
-        return row_category == category_id
+
+        if selected_id in {"security", "kernel", "system"}:
+            return model[iter_][self.COL_CATEGORY] == selected_id
+
+        return model[iter_][self.COL_FILTER_GROUP] == selected_id
 
     @staticmethod
     def _toggle_cell_data_func(
@@ -1067,23 +1076,24 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
                     if update.size == 0 and update.backend != "apt"
                     else format_size(update.size)
                 )
-                self.store.append(
-                    [
-                        False,  # COL_SELECTED
-                        pkg_markup,  # COL_PACKAGE
-                        update.installed_version,  # COL_INSTALLED
-                        update.candidate_version,  # COL_NEW
-                        size_str,  # COL_SIZE
-                        update.origin,  # COL_REPO
-                        update.name,  # COL_RAW_NAME
-                        update.category,  # COL_CATEGORY
-                        update.backend,  # COL_BACKEND
-                        icon,  # COL_ICON
-                        update.size,  # COL_RAW_SIZE
-                        update.description or _("System package"),  # COL_DESC
-                        constraint,  # COL_HELD (constraint state string)
-                    ]
-                )
+                backend = get_registry().get_backend(update.backend)
+                filter_group = backend.filter_group if backend is not None else None
+                self.store.append([
+                    False,
+                    pkg_markup,
+                    update.installed_version,
+                    update.candidate_version,
+                    size_str,
+                    update.origin,
+                    update.name,
+                    update.category,
+                    filter_group or "",
+                    update.backend,
+                    icon,
+                    update.size,
+                    update.description or _("System package"),
+                    constraint,
+                ])
         finally:
             self.store.thaw_notify()
 

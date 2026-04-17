@@ -15,8 +15,8 @@ class SnapBackend(UpdateBackend):
     meta = BackendMeta(
         backend_id = "snap",
         display_name = "Snap Packages",
-        filter_group = "containers",
-        filter_label = "Containers",
+        filter_group = "snap",
+        filter_label = "Snap",
         filter_sort_order = 200,
     )
 
