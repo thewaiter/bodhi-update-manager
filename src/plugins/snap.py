@@ -12,13 +12,8 @@ from bodhi_update.models import UpdateItem
 class SnapBackend(UpdateBackend):
     """Update backend that queries installed Snap packages."""
 
-    @property
-    def backend_id(self) -> str:
-        return "snap"
-
-    @property
-    def display_name(self) -> str:
-        return "Snap Packages"
+    backend_id = "snap"
+    display_name = "Snap Packages"
 
     def is_available(self) -> bool:
         """Return True only if snap exists and snapd is responsive.

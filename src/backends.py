@@ -14,17 +14,23 @@ _log = logging.getLogger(__name__)
 
 class UpdateBackend(ABC):
     """Interface for update discovery and installation backends."""
+    
+    # A unique string identifier for this backend, e.g., 'apt', 'python'.
+    backend_id: str | None = None
+    # A human-readable name for the backend, e.g., 'Debian/Ubuntu packages'.
+    display_name: str | None = None
 
-    @property
-    @abstractmethod
-    def backend_id(self) -> str:
-        """A unique string identifier for this backend, e.g., 'apt', 'python'."""
-
-    @property
-    @abstractmethod
-    def display_name(self) -> str:
-        """A human-readable name for the backend, e.g., 'Debian/Ubuntu packages'."""
-
+    def __init_subclass__(cls, **kwargs):
+        """ require subclasses to define these class variables."""
+        
+        super().__init_subclass__(**kwargs)
+        if cls is UpdateBackend:
+            return
+        if not isinstance(cls.backend_id, str) or not cls.backend_id:
+            raise TypeError(f"{cls.__name__} must define a non-empty backend_id")
+        if not isinstance(cls.display_name, str) or not cls.display_name:
+            raise TypeError(f"{cls.__name__} must define a non-empty display_name")
+    
     def is_available(self) -> bool:
         """Return True if this backend is supported on the current system."""
         return False

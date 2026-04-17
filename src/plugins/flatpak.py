@@ -16,13 +16,8 @@ _LS_COLS = "application,branch,origin"
 class FlatpakBackend(UpdateBackend):
     """Update backend that queries installed Flatpak applications."""
 
-    @property
-    def backend_id(self) -> str:
-        return "flatpak"
-
-    @property
-    def display_name(self) -> str:
-        return "Flatpak Packages"
+    backend_id = "flatpak"
+    display_name = "Flatpak Packages"
 
     def is_available(self) -> bool:
         """Return True when the flatpak binary exists and can list apps.

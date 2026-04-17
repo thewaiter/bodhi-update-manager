@@ -289,13 +289,8 @@ def _output_mentions_network_error(text: str) -> bool:
 class AptBackend(UpdateBackend):
     """Update backend for Debian/Ubuntu APT package management."""
 
-    @property
-    def backend_id(self) -> str:
-        return "apt"
-
-    @property
-    def display_name(self) -> str:
-        return "Debian/Ubuntu Packages"
+    backend_id = "apt"
+    display_name = "Debian/Ubuntu Packages"
 
     def is_available(self) -> bool:
         # python-apt successfully imported at module level — APT is available.
