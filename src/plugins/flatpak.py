@@ -4,7 +4,7 @@ import shutil
 import subprocess
 from typing import Dict, List, Tuple
 
-from bodhi_update.backends import UpdateBackend
+from bodhi_update.backends import BackendMeta, UpdateBackend
 from bodhi_update.models import UpdateItem
 
 # `flatpak remote-ls --updates --columns=application,branch,origin` outputs
@@ -16,9 +16,14 @@ _LS_COLS = "application,branch,origin"
 class FlatpakBackend(UpdateBackend):
     """Update backend that queries installed Flatpak applications."""
 
-    backend_id = "flatpak"
-    display_name = "Flatpak Packages"
-
+    meta = BackendMeta(
+        backend_id = "flatpak",
+        display_name = "Flatpak Packages",
+        filter_group = "containers",
+        filter_label = "Containers",
+        filter_sort_order = 100,
+    )
+    
     def is_available(self) -> bool:
         """Return True when the flatpak binary exists and can list apps.
 

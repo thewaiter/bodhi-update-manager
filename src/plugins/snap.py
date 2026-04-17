@@ -5,15 +5,20 @@ import shutil
 import subprocess
 from typing import Dict, List, Tuple
 
-from bodhi_update.backends import UpdateBackend
+from bodhi_update.backends import BackendMeta, UpdateBackend
 from bodhi_update.models import UpdateItem
 
 
 class SnapBackend(UpdateBackend):
     """Update backend that queries installed Snap packages."""
 
-    backend_id = "snap"
-    display_name = "Snap Packages"
+    meta = BackendMeta(
+        backend_id = "snap",
+        display_name = "Snap Packages",
+        filter_group = "containers",
+        filter_label = "Containers",
+        filter_sort_order = 200,
+    )
 
     def is_available(self) -> bool:
         """Return True only if snap exists and snapd is responsive.

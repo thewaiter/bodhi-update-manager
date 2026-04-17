@@ -9,7 +9,7 @@ from typing import List, Tuple
 
 import apt
 
-from bodhi_update.backends import UpdateBackend
+from bodhi_update.backends import BackendMeta, UpdateBackend
 from bodhi_update.install_commands import build_upgrade_argv, get_helper_path
 from bodhi_update.models import (
     CONSTRAINT_BLOCKED,
@@ -289,8 +289,10 @@ def _output_mentions_network_error(text: str) -> bool:
 class AptBackend(UpdateBackend):
     """Update backend for Debian/Ubuntu APT package management."""
 
-    backend_id = "apt"
-    display_name = "Debian/Ubuntu Packages"
+    meta = BackendMeta(
+        backend_id = "apt",
+        display_name = "Debian/Ubuntu Packages",
+    )
 
     def is_available(self) -> bool:
         # python-apt successfully imported at module level — APT is available.
