@@ -23,6 +23,7 @@ class FlatpakBackend(UpdateBackend):
         filter_label = "FlatPak",
         filter_sort_order = 200,
         show_in_preferences=True,
+        icon_name="package-x-generic-symbolic"
     )
 
     def is_available(self) -> bool:

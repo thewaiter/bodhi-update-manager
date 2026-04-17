@@ -26,6 +26,7 @@ class BackendMeta:
     filter_label: str | None = None
     filter_sort_order: int = 100
     show_in_preferences: bool = False
+    icon_name: str | None = None
 
 
 class UpdateBackend(ABC):

@@ -1018,23 +1018,6 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         self.store.clear()
 
     @staticmethod
-    def _category_icon(category: str,
-                       backend: str,
-                       constraint: str = CONSTRAINT_NORMAL) -> str:
-        """Return GTK symbolic icon name for category/backend/constraint."""
-        if constraint == CONSTRAINT_HELD:
-            return "changes-prevent-symbolic"
-        if constraint == CONSTRAINT_BLOCKED:
-            return "dialog-warning-symbolic"
-        if category == "security":
-            return "security-high-symbolic"
-        if category == "kernel":
-            return "applications-system-symbolic"
-        if category in ("snap", "flatpak") or backend in ("snap", "flatpak"):
-            return "package-x-generic-symbolic"
-        return "software-update-available-symbolic"
-
-    @staticmethod
     def _build_pkg_markup(name: str,
                           description: str,
                           show_desc: bool,
@@ -1069,8 +1052,11 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
             show_desc = self.prefs.get("show_descriptions", True)
             for update in updates:
                 constraint = getattr(update, "constraint", CONSTRAINT_NORMAL)
-                icon = self._category_icon(update.category, update.backend,
-                                           constraint)
+                icon = self.backend_service.get_row_icon(
+                    update.category,
+                    update.backend,
+                    constraint,
+                )
                 pkg_markup = self._build_pkg_markup(update.name,
                                                     update.description,
                                                     show_desc, constraint)

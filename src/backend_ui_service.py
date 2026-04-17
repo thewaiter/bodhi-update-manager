@@ -158,3 +158,43 @@ class BackendUIService:
             )
 
         return backend.build_install_command(target_packages)
+
+
+    def get_row_icon(
+        self,
+        category: str,
+        backend_id: str,
+        constraint: str,
+    ) -> str:
+        """Return GTK icon-name for a row.
+
+        Priority:
+          1. Constraint state (held / blocked)
+          2. Core categories (security / kernel)
+          3. Backend-provided icon (metadata)
+          4. Generic fallback
+        """
+
+        # --- Constraint state (highest priority) ---
+        if constraint == "held":
+            return "changes-prevent-symbolic"
+
+        if constraint == "blocked_by_hold":
+            return "dialog-warning-symbolic"
+
+        # --- Core categories ---
+        if category == "security":
+            return "security-high-symbolic"
+
+        if category == "kernel":
+            return "applications-system-symbolic"
+
+        # --- Backend-provided icon ---
+        backend = self.get_backend(backend_id)
+        if backend is not None:
+            icon_name = getattr(getattr(backend, "meta", None), "icon_name", None)
+            if icon_name:
+                return icon_name
+
+        # --- Fallback ---
+        return "system-software-update-symbolic"

@@ -19,6 +19,7 @@ class SnapBackend(UpdateBackend):
         filter_label = "Snap",
         filter_sort_order = 200,
         show_in_preferences=True,
+        icon_name="package-x-generic-symbolic"
     )
 
     def is_available(self) -> bool:
