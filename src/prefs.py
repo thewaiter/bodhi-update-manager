@@ -9,7 +9,7 @@ from typing import Any
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_PREFS: dict[str, bool] = {
+DEFAULT_PREFS: dict[str, Any] = {
     "show_descriptions": True,
     "show_notifications": True,
     "show_held_packages": False,
@@ -25,7 +25,7 @@ class PreferencesStore:
     def __init__(
         self,
         app_name: str = "bodhi-update-manager",
-        defaults: dict[str, bool] | None = None,
+        defaults: dict[str, Any] | None = None,
     ) -> None:
         self.app_name = app_name
         self.defaults = dict(defaults or DEFAULT_PREFS)
@@ -38,7 +38,7 @@ class PreferencesStore:
         )
         return os.path.join(config_home, self.app_name, "prefs.json")
 
-    def load(self) -> dict[str, bool]:
+    def load(self) -> dict[str, Any]:
         """Load preferences from disk, falling back to defaults."""
         prefs = dict(self.defaults)
         path = self.get_path()
@@ -64,12 +64,14 @@ class PreferencesStore:
             return prefs
 
         for key, value in data.items():
-            if key in prefs and isinstance(value, bool):
+            if key == "backend_visibility" and isinstance(value, dict):
+                prefs[key] = value
+            elif key in prefs and isinstance(value, bool):
                 prefs[key] = value
 
         return prefs
 
-    def save(self, prefs: dict[str, bool]) -> bool:
+    def save(self, prefs: dict[str, Any]) -> bool:
         """Persist preferences to disk. Return True on success."""
         path = self.get_path()
 
