@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import gettext
+from enum import IntEnum
 import logging
 import os
 import subprocess
@@ -70,6 +71,32 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>."""
 )
 
+COLUMN_SCHEMA = (
+    ("SELECTED", bool),
+    ("PACKAGE", str),
+    ("INSTALLED", str),
+    ("NEW", str),
+    ("SIZE", str),
+    ("REPO", str),
+    ("RAW_NAME", str),
+    ("CATEGORY", str),
+    ("FILTER_GROUP", str),
+    ("BACKEND", str),
+    ("ICON", str),
+    ("RAW_SIZE", int),
+    ("DESC", str),
+    ("HELD", str),
+)
+
+Col = IntEnum(
+    "Col",
+    {name: index for index, (name, _col_type) in enumerate(COLUMN_SCHEMA)},
+)
+
+COLUMN_TYPES = tuple(col_type for _name, col_type in COLUMN_SCHEMA)
+
+assert len(COLUMN_TYPES) == len(Col)
+
 
 def clamp(value: int, lo: int, hi: int) -> int:
     """Return *value* clamped to [lo, hi]."""
@@ -78,10 +105,6 @@ def clamp(value: int, lo: int, hi: int) -> int:
 
 class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attributes
     """Main application window: update list, install screen, preferences, and tray hooks."""
-
-    (COL_SELECTED, COL_PACKAGE,  COL_INSTALLED, COL_NEW,          COL_SIZE,
-     COL_REPO,     COL_RAW_NAME, COL_CATEGORY,  COL_FILTER_GROUP, COL_BACKEND,
-     COL_ICON,     COL_RAW_SIZE, COL_DESC,      COL_HELD) = range(14)
 
     def __init__(self, deb_path: str | None = None) -> None:
         super().__init__(title=_("Update Manager"))
@@ -111,22 +134,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         # Returns False so GLib won't reschedule this one-shot idle callback.
         self.backend_service.initialize()
 
-        self.store = Gtk.ListStore(
-            bool, # selected
-            str,  # markup
-            str,  # installed_version
-            str,  # candidate_version
-            str,  # size_str
-            str,  # origin
-            str,  # name
-            str,  # category
-            str,  # filter_group
-            str,  # backend
-            str,  # icon
-            int,  # raw_size
-            str,  # description
-            str,  # constraint (held / blocked_by_hold / normal)
-        )
+        self.store = Gtk.ListStore(*COLUMN_TYPES)
         self.filter_model = self.store.filter_new()
         self.filter_model.set_visible_func(self._category_filter_func)
 
@@ -328,7 +336,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         icon_renderer.set_property("xalign", 0.5)
 
         icon_column = Gtk.TreeViewColumn(_("Type"), icon_renderer)
-        icon_column.add_attribute(icon_renderer, "icon-name", self.COL_ICON)
+        icon_column.add_attribute(icon_renderer, "icon-name", Col.ICON)
 
         icon_column.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
         icon_column.set_fixed_width(70)
@@ -340,7 +348,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         toggle_renderer = Gtk.CellRendererToggle()
         toggle_renderer.set_property("activatable", True)
         toggle_renderer.connect("toggled", self.on_toggle_selected)
-        toggle_column = Gtk.TreeViewColumn(_("Upgrade"), toggle_renderer, active=self.COL_SELECTED)
+        toggle_column = Gtk.TreeViewColumn(_("Upgrade"), toggle_renderer, active=Col.SELECTED)
         toggle_column.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
         toggle_column.set_fixed_width(90)
         # Hide the checkbox for held/blocked rows — they are non-actionable.
@@ -353,7 +361,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         self.pkg_renderer.set_property("ellipsize", Pango.EllipsizeMode.END)
         self.pkg_renderer.set_property("ellipsize-set", True)
         self.pkg_column = Gtk.TreeViewColumn(
-            _("Package"), self.pkg_renderer, markup=self.COL_PACKAGE)
+            _("Package"), self.pkg_renderer, markup=Col.PACKAGE)
         self.pkg_column.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
         self.pkg_column.set_resizable(True)
         self.pkg_column.set_expand(True)
@@ -363,22 +371,22 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
 
         self.tree.append_column(
             self._make_text_column(
-                _("Installed"), self.COL_INSTALLED, expand=False, min_width=150
+                _("Installed"),Col.INSTALLED, expand=False, min_width=150
             )
         )
         self.tree.append_column(
             self._make_text_column(
-                _("New"), self.COL_NEW, expand=False, min_width=150
+                _("New"), Col.NEW, expand=False, min_width=150
             )
         )
         self.tree.append_column(
             self._make_text_column(
-                _("Size"), self.COL_SIZE, expand=False, min_width=100
+                _("Size"), Col.SIZE, expand=False, min_width=100
             )
         )
         self.tree.append_column(
             self._make_text_column(
-                _("Repository"), self.COL_REPO, expand=True, min_width=180
+                _("Repository"), Col.REPO, expand=True, min_width=180
             )
         )
 
@@ -705,10 +713,10 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         self.store.freeze_notify()
         try:
             for row in self.store:
-                name = row[self.COL_RAW_NAME]
-                desc = row[self.COL_DESC]
-                constraint = row[self.COL_HELD]
-                row[self.COL_PACKAGE] = self._build_pkg_markup(
+                name = row[Col.RAW_NAME]
+                desc = row[Col.DESC]
+                constraint = row[Col.HELD]
+                row[Col.PACKAGE] = self._build_pkg_markup(
                     name, desc, show_desc, constraint)
         finally:
             self.store.thaw_notify()
@@ -839,18 +847,18 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
             return
 
         has_unknown_size = any(
-            row[self.COL_RAW_SIZE] == 0 and row[self.COL_BACKEND] != "apt"
+            row[Col.RAW_SIZE] == 0 and row[Col.BACKEND] != "apt"
             for row in self.store
         )
 
         extras = []
         for backend, label in (("snap", "Snap"), ("flatpak", "Flatpak")):
-            if any(row[self.COL_BACKEND] == backend for row in self.store):
+            if any(row[Col.BACKEND] == backend for row in self.store):
                 extras.append(label)
 
         hidden = 0
         if not self.prefs.get("show_held_packages", False):
-            hidden = hidden_held_count(self.store, self.COL_HELD)
+            hidden = hidden_held_count(self.store, Col.HELD)
 
         message = format_update_count_status(
             count,
@@ -867,13 +875,13 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         severity = "low"
         actionable_count = 0
         for row in self.store:
-            if row[self.COL_HELD] in (CONSTRAINT_HELD, CONSTRAINT_BLOCKED):
+            if row[Col.HELD] in (CONSTRAINT_HELD, CONSTRAINT_BLOCKED):
                 continue
             actionable_count += 1
             value = _pkg_severity(
-                row[self.COL_RAW_NAME],
-                row[self.COL_CATEGORY],
-                row[self.COL_BACKEND],
+                row[Col.RAW_NAME],
+                row[Col.CATEGORY],
+                row[Col.BACKEND],
             )
             if value == "high":
                 severity = "high"
@@ -897,15 +905,15 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         has_unknown = False
 
         for row in self.store:
-            if not row[self.COL_SELECTED]:
+            if not row[Col.SELECTED]:
                 continue
 
             total_selected += 1
-            raw = row[self.COL_RAW_SIZE]
+            raw = row[Col.RAW_SIZE]
             if raw > 0:
                 has_known = True
                 known_bytes += raw
-            elif row[self.COL_BACKEND] != "apt":
+            elif row[Col.BACKEND] != "apt":
                 has_unknown = True
 
         message = format_selected_count_status(
@@ -931,12 +939,12 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         path, *_ = result
         f_iter = self.filter_model.get_iter(path)
         row = self.filter_model[f_iter]
-        if row[self.COL_BACKEND] != "apt":
+        if row[Col.BACKEND] != "apt":
             return False
         self._show_hold_menu(
             event,
-            row[self.COL_RAW_NAME],
-            row[self.COL_HELD] == CONSTRAINT_HELD,
+            row[Col.RAW_NAME],
+            row[Col.HELD] == CONSTRAINT_HELD,
         )
         return True
 
@@ -963,13 +971,13 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
 
     def _restore_current_update_status(self) -> bool:
         """Recompute the normal status line from the current store state."""
-        if any(row[self.COL_SELECTED] for row in self.store):
+        if any(row[Col.SELECTED] for row in self.store):
             return False  # user made a selection; leave their status line alone
-        total_bytes = sum(row[self.COL_RAW_SIZE]
+        total_bytes = sum(row[Col.RAW_SIZE]
                           for row in self.store
-                          if row[self.COL_HELD] == CONSTRAINT_NORMAL)
+                          if row[Col.HELD] == CONSTRAINT_NORMAL)
         actionable = sum(
-            1 for row in self.store if row[self.COL_HELD] == CONSTRAINT_NORMAL)
+            1 for row in self.store if row[Col.HELD] == CONSTRAINT_NORMAL)
         self._update_count_status(actionable, total_bytes, cached=True)
         return False  # one-shot: remove the timeout source
 
@@ -979,13 +987,13 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         iter_: Gtk.TreeIter,
         _data: object,
     ) -> bool:
-        row_backend = model[iter_][self.COL_BACKEND]
+        row_backend = model[iter_][Col.BACKEND]
 
         if not self.backend_service.is_backend_enabled(row_backend):
             return False
 
         if (
-            model[iter_][self.COL_HELD] in (CONSTRAINT_HELD, CONSTRAINT_BLOCKED)
+            model[iter_][Col.HELD] in (CONSTRAINT_HELD, CONSTRAINT_BLOCKED)
             and not self.prefs.get("show_held_packages", False)
         ):
             return False
@@ -995,9 +1003,9 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
             return True
 
         if selected_id in {"security", "kernel", "system"}:
-            return model[iter_][self.COL_CATEGORY] == selected_id
+            return model[iter_][Col.CATEGORY] == selected_id
 
-        return model[iter_][self.COL_FILTER_GROUP] == selected_id
+        return model[iter_][Col.FILTER_GROUP] == selected_id
 
     @staticmethod
     def _toggle_cell_data_func(
@@ -1008,7 +1016,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         _data: object,
     ) -> None:
         """Hide the checkbox for held/blocked rows — they are non-actionable."""
-        constraint = model[iter_][UpdateManagerWindow.COL_HELD]
+        constraint = model[iter_][Col.HELD]
         cell.set_property(
             "visible",
             constraint not in (CONSTRAINT_HELD, CONSTRAINT_BLOCKED),
@@ -1067,20 +1075,20 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
                 )
                 filter_group = self.backend_service.get_row_filter_group(update.backend)
                 self.store.append([
-                    False,
-                    pkg_markup,
-                    update.installed_version,
-                    update.candidate_version,
-                    size_str,
-                    update.origin,
-                    update.name,
-                    update.category,
-                    filter_group,
-                    update.backend,
-                    icon,
-                    update.size,
-                    update.description or _("System package"),
-                    constraint,
+                    False,                       # Col.SELECTED
+                    pkg_markup,                  # Col.PACKAGE
+                    update.installed_version,    # Col.INSTALLED
+                    update.candidate_version,    # Col.NEW
+                    size_str,                    # Col.SIZE
+                    update.origin,               # Col.REPO
+                    update.name,                 # Col.RAW_NAME
+                    update.category,             # Col.CATEGORY
+                    filter_group,                # Col.FILTER_GROUP
+                    update.backend,              # Col.BACKEND
+                    icon,                        # Col.ICON
+                    update.size,                 # Col.RAW_SIZE
+                    update.description or _("System package"),  # Col.DESC
+                    constraint,                  # Col.HELD
                 ])
         finally:
             self.store.thaw_notify()
@@ -1089,9 +1097,9 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         """Return a mapping of backend_id -> [list of selected raw package names]."""
         grouped: Dict[str, List[str]] = {}
         for row in self.filter_model:
-            if row[self.COL_SELECTED]:
-                b_id = row[self.COL_BACKEND]
-                grouped.setdefault(b_id, []).append(row[self.COL_RAW_NAME])
+            if row[Col.SELECTED]:
+                b_id = row[Col.BACKEND]
+                grouped.setdefault(b_id, []).append(row[Col.RAW_NAME])
         return grouped
 
     def _load_cached_updates_on_startup(self) -> None:
@@ -1203,12 +1211,12 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         filter_iter = self.filter_model.get_iter(path)
         child_iter = self.filter_model.convert_iter_to_child_iter(filter_iter)
 
-        if self.store[child_iter][self.COL_HELD] in (CONSTRAINT_HELD,
+        if self.store[child_iter][Col.HELD] in (CONSTRAINT_HELD,
                                                      CONSTRAINT_BLOCKED):
             return
 
-        current = self.store[child_iter][self.COL_SELECTED]
-        self.store[child_iter][self.COL_SELECTED] = not current
+        current = self.store[child_iter][Col.SELECTED]
+        self.store[child_iter][Col.SELECTED] = not current
         self._refresh_selection_status()
 
     def on_clear_selection(self, _button: Gtk.Button) -> None:
@@ -1216,7 +1224,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         if self.refresh_in_progress or self.install_in_progress:
             return
         for row in self.store:
-            row[self.COL_SELECTED] = False
+            row[Col.SELECTED] = False
         self._refresh_selection_status()
 
     def on_select_all(self, _button: Gtk.Button) -> None:
@@ -1229,8 +1237,8 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         for path in paths:
             f_iter = self.filter_model.get_iter(path)
             c_iter = self.filter_model.convert_iter_to_child_iter(f_iter)
-            if self.store[c_iter][self.COL_HELD] == CONSTRAINT_NORMAL:
-                self.store[c_iter][self.COL_SELECTED] = True
+            if self.store[c_iter][Col.HELD] == CONSTRAINT_NORMAL:
+                self.store[c_iter][Col.SELECTED] = True
 
         self._refresh_selection_status()
 
@@ -1292,7 +1300,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
 
         # Clear selection so no stale checkboxes are visible during reload.
         for row in self.store:
-            row[self.COL_SELECTED] = False
+            row[Col.SELECTED] = False
 
         self.stack.set_visible_child_name("updates")
         self._update_action_sensitivity()
