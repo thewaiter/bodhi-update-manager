@@ -3,7 +3,7 @@
 # pylint: disable=too-many-lines  # UpdateManagerWindow is one cohesive GTK class
 from __future__ import annotations
 
-import gettext
+from gettext import bindtextdomain, textdomain, gettext as _
 from enum import IntEnum
 import logging
 import os
@@ -17,10 +17,8 @@ logger = logging.getLogger(__name__)
 
 APP_NAME = "bodhi-update-manager"
 
-gettext.bindtextdomain(APP_NAME, "/usr/share/locale")
-gettext.textdomain(APP_NAME)
-_ = gettext.gettext
-ngettext = gettext.ngettext
+bindtextdomain(APP_NAME, "/usr/share/locale")
+textdomain(APP_NAME)
 
 # gi.require_version() must be called before any gi.repository imports.
 import gi  # noqa: E402

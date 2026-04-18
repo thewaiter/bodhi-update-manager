@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from gettext import gettext as _, ngettext
+from gettext import gettext as _, ngettext as N_
 from typing import Iterable
 
 from bodhi_update.models import CONSTRAINT_BLOCKED, CONSTRAINT_HELD
@@ -43,7 +43,7 @@ def format_update_count_status(
     else:
         size_str = format_size(total_bytes)
 
-    message = ngettext(
+    message = N_(
         "%(count)d update available · Download: %(size)s",
         "%(count)d updates available · Download: %(size)s",
         count,
@@ -64,7 +64,7 @@ def format_update_count_status(
         }
 
     if hidden_held_count:
-        hint = ngettext(
+        hint = N_(
             "%(n)d held/blocked package hidden",
             "%(n)d held/blocked packages hidden",
             hidden_held_count,
@@ -92,7 +92,7 @@ def format_selected_count_status(
     else:
         dl_part = _("Unknown")
 
-    return ngettext(
+    return N_(
         "%(count)d update selected · Download: %(size)s",
         "%(count)d updates selected · Download: %(size)s",
         selected_count,
