@@ -265,9 +265,8 @@ msgid "Ready"
 msgstr "Připraveno"
 
 #: src/app.py:874 src/app.py:1247 src/app.py:1504
-#, fuzzy
 msgid "Loading updates..."
-msgstr "Instalují se aktualizace..."
+msgstr "Načítání aktualizací..."
 
 #: src/app.py:898
 #, python-format
@@ -275,9 +274,8 @@ msgid "%(message)s  Restart required."
 msgstr "%(message)s  Vyžaduje se restart."
 
 #: src/app.py:911
-#, fuzzy
 msgid "System is up to date. No pending updates in cached package data."
-msgstr "Systém je aktuální. Zobrazena uložená data balíčků."
+msgstr "Systém je aktuální. V uložených datech balíčků nejsou žádné čekající aktualizace."
 
 #: src/app.py:913
 msgid "System is up to date."
@@ -296,7 +294,7 @@ msgstr[1] "%(count)d aktualizace k dispozici · Stáhnout: %(size)s"
 msgstr[2] "%(count)d aktualizací k dispozici · Stáhnout: %(size)s"
 
 #: src/app.py:934
-#, fuzzy, python-format
+#, python-format
 msgid "%(message)s · Cached data — refresh to check for newer updates"
 msgstr "%(message)s · Uložená data balíčků"
 
