@@ -623,8 +623,6 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         min_w = 760
         min_h = 520
         margin = 12
-        margin = 12
-
         width = preferred_w
         height = preferred_h
 
