@@ -616,33 +616,39 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         return column
 
     def _apply_adaptive_window_size(self) -> None:
-        """Set initial window size, clamped to the monitor workarea (respects panels/docks)."""
-        # Falls back to preferred size if GDK can't report workarea dimensions.
+        """Set initial window size clamped to the current monitor workarea."""
         preferred_w = 1100
         preferred_h = 700
         min_w = 760
         min_h = 520
         margin = 12
+
         width = preferred_w
         height = preferred_h
 
-        # Catch GDK errors; fall back to preferred size.
-        try:
-            screen = Gdk.Screen.get_default()
-            if screen is not None:
-                monitor_num = max(screen.get_primary_monitor(), 0)
-                workarea = screen.get_monitor_workarea(monitor_num)
+        display = Gdk.Display.get_default()
+        if display is None:
+            self.set_default_size(width, height)
+            return
 
-                if workarea and workarea.width > 0 and workarea.height > 0:
-                    max_w = max(min_w, workarea.width - margin)
-                    max_h = max(min_h, workarea.height - margin)
+        monitor = display.get_primary_monitor()
+        if monitor is None and display.get_n_monitors() > 0:
+            monitor = display.get_monitor(0)
 
-                    # shrink if the monitor/workarea is too small
-                    width = clamp(preferred_w, min_w, max_w)
-                    height = clamp(preferred_h, min_h, max_h)
-        except (AttributeError, TypeError, ValueError):
-            # Fall back to preferred size if GDK API fails or returns junk
-            width, height = preferred_w, preferred_h
+        if monitor is None:
+            self.set_default_size(width, height)
+            return
+
+        workarea = monitor.get_workarea()
+        if workarea.width <= 0 or workarea.height <= 0:
+            self.set_default_size(width, height)
+            return
+
+        max_w = max(min_w, workarea.width - margin)
+        max_h = max(min_h, workarea.height - margin)
+
+        width = clamp(preferred_w, min_w, max_w)
+        height = clamp(preferred_h, min_h, max_h)
 
         self.set_default_size(width, height)
 
