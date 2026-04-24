@@ -22,7 +22,7 @@ POLICY_TEMPLATE="data/polkit/org.bodhi.updatemanager.policy.in"
 DESKTOP_OUTPUT="$APP_DIR/bodhi-update-manager.desktop"
 XDG_OUTPUT="$APP_DIR/bodhi-update-manager-tray.desktop"
 POLICY_OUTPUT="data/polkit/org.bodhi.updatemanager.policy"
-VERSION=$(PYTHONPATH=src python3 -c 'from src._version import __version__; print(__version__)')
+VERSION=$(PYTHONPATH=bodhi_update python3 -c 'from bodhi_update._version import __version__; print(__version__)')
 ISSUES="https://github.com/flux-abyss/bodhi-update-manager/issues"
 
 mapfile -t langs < <(grep -vE '^\s*($|#)' "$TRANSLATION_DIR/LINGUAS")
