@@ -62,7 +62,7 @@ Built with **Python**, **GTK3**, and **VTE**, the application provides a unified
 From the project root, run once
 
 ```bash
-echo "${PWD}" > $(python -m site --user-site)/bodhi_update.pth
+echo "${PWD}" > $(python3 -m site --user-site)/bodhi_update.pth
 ```
 This allows Python to import the necessary modules. Now to start the app:
 
