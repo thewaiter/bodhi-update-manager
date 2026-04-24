@@ -8,6 +8,7 @@ from gettext import bindtextdomain, gettext as _, textdomain
 import logging
 import os
 import subprocess
+import sys
 import threading
 from typing import Dict, List
 
@@ -1298,8 +1299,6 @@ class UpdateManagerApplication(Gtk.Application):
 
 def main() -> None:
     """Entry point: parse argv, create the application, and run."""
-    import sys  # noqa: PLC0415
-
     # --tray is consumed by do_command_line(); only look for a .deb path here.
     deb_path: str | None = None
     for arg in sys.argv[1:]:
@@ -1309,3 +1308,7 @@ def main() -> None:
 
     app = UpdateManagerApplication(deb_path=deb_path)
     app.run(sys.argv)
+
+if __name__ == "__main__":
+
+    raise SystemExit(main())
