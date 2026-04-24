@@ -1,5 +1,5 @@
-src/app.py
-src/dialogs.py
-src/hold_controller.py
-src/refresh_controller.py
-src/status_messages.py
+bodhi_update/app.py
+bodhi_update/dialogs.py
+bodhi_update/hold_controller.py
+bodhi_update/refresh_controller.py
+bodhi_update/status_messages.py
