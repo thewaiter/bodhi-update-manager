@@ -58,6 +58,19 @@ Built with **Python**, **GTK3**, and **VTE**, the application provides a unified
 
 ---
 
+## Run Locally
+From the project root, run once
+
+```bash
+echo "${PWD}" > $(python -m site --user-site)/bodhi_update.pth
+```
+This allows Python to import the necessary modules. Now to start the app:
+
+```bash
+python3 -m bodhi_update.app
+```
+Note: the app will not have a window icon as the icon is not installed. Running locally is only recommended for development.
+
 ## Build
 From the project root, install build dependencies (Debian/Ubuntu):
 
