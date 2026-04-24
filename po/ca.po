@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: bodhi-update-manager 0.1-3\n"
 "Report-Msgid-Bugs-To: https://github.com/flux-abyss/bodhi-update-manager/"
 "issues\n"
-"POT-Creation-Date: 2026-04-11 16:12-0400\n"
+"POT-Creation-Date: 2026-04-24 06:43-0400\n"
 "PO-Revision-Date: 2026-03-27 14:13-0400\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: Bodhi Team\n"
@@ -18,7 +18,223 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: src/app.py:45
+#: bodhi_update/app.py:89 bodhi_update/dialogs.py:66
+#: data/applications//bodhi-update-manager.in:5
+#: data/applications//bodhi-update-manager-tray.in:5
+msgid "Update Manager"
+msgstr "Gestor d'actualitzacions"
+
+#: bodhi_update/app.py:160
+msgid "File"
+msgstr "Fitxer"
+
+#: bodhi_update/app.py:163 bodhi_update/app.py:240
+msgid "Refresh"
+msgstr "Actualitza"
+
+#: bodhi_update/app.py:168 bodhi_update/app.py:244
+msgid "Install Selected"
+msgstr "Instal·la seleccionats"
+
+#: bodhi_update/app.py:175 bodhi_update/app.py:236
+msgid "Select All"
+msgstr "Selecciona-ho tot"
+
+#: bodhi_update/app.py:180 bodhi_update/app.py:232
+msgid "Clear"
+msgstr "Neteja"
+
+#: bodhi_update/app.py:187
+msgid "Quit"
+msgstr "Surt"
+
+#: bodhi_update/app.py:195
+msgid "Edit"
+msgstr "Edita"
+
+#: bodhi_update/app.py:198 bodhi_update/app.py:508
+msgid "Preferences"
+msgstr "Preferències"
+
+#: bodhi_update/app.py:206
+msgid "View"
+msgstr "Visualitza"
+
+#: bodhi_update/app.py:209
+msgid "Show Descriptions"
+msgstr "Mostra descripcions"
+
+#: bodhi_update/app.py:219
+msgid "Help"
+msgstr "Ajuda"
+
+#: bodhi_update/app.py:222 bodhi_update/dialogs.py:74
+msgid "About"
+msgstr "Quant a"
+
+#: bodhi_update/app.py:267
+msgid "A system restart is required to complete the update."
+msgstr "Cal reiniciar el sistema per completar l'actualització."
+
+#: bodhi_update/app.py:271
+msgid "Restart Now"
+msgstr "Reinicia ara"
+
+#: bodhi_update/app.py:317
+msgid "Type"
+msgstr "Tipus"
+
+#: bodhi_update/app.py:330
+msgid "Upgrade"
+msgstr "Actualització"
+
+#: bodhi_update/app.py:343
+msgid "Package"
+msgstr "Paquet"
+
+#: bodhi_update/app.py:353
+msgid "Installed"
+msgstr "Instal·lat"
+
+#: bodhi_update/app.py:358
+msgid "New"
+msgstr "Nou"
+
+#: bodhi_update/app.py:363
+msgid "Size"
+msgstr "Mida"
+
+#: bodhi_update/app.py:368
+msgid "Repository"
+msgstr "Repositori"
+
+#: bodhi_update/app.py:410 bodhi_update/app.py:417
+msgid "Waiting for authentication..."
+msgstr "S'està esperant l'autenticació..."
+
+#: bodhi_update/app.py:423 bodhi_update/app.py:1179
+msgid "Show Details"
+msgstr "Mostra els detalls"
+
+#: bodhi_update/app.py:427
+msgid "Back to Updates"
+msgstr "Torna a les actualitzacions"
+
+#: bodhi_update/app.py:478
+msgid "All"
+msgstr "Tot"
+
+#: bodhi_update/app.py:479
+msgid "Security"
+msgstr "Seguretat"
+
+#: bodhi_update/app.py:480
+msgid "Kernel"
+msgstr "Nucli"
+
+#: bodhi_update/app.py:481
+msgid "System"
+msgstr "Sistema"
+
+#: bodhi_update/app.py:499
+#, fuzzy, python-format
+msgid "Show %(name)s updates"
+msgstr "Mostra les actualitzacions de Snap"
+
+#: bodhi_update/app.py:509
+#, fuzzy
+msgid "Show notifications"
+msgstr "Mostra descripcions"
+
+#: bodhi_update/app.py:510
+msgid "Show held/blocked packages"
+msgstr ""
+
+#: bodhi_update/app.py:511
+msgid "Cancel"
+msgstr "Cancel·la"
+
+#: bodhi_update/app.py:512
+msgid "Apply"
+msgstr "Aplica"
+
+#: bodhi_update/app.py:552
+msgid "Preferences saved."
+msgstr "Preferències desades."
+
+#: bodhi_update/app.py:687 bodhi_update/refresh_controller.py:40
+#: bodhi_update/refresh_controller.py:117
+#, fuzzy
+msgid "Loading updates..."
+msgstr "S'estan instal·lant les actualitzacions..."
+
+#: bodhi_update/app.py:836
+msgid "Unhold package"
+msgstr ""
+
+#: bodhi_update/app.py:836
+#, fuzzy
+msgid "Hold package"
+msgstr "Paquet"
+
+#: bodhi_update/app.py:919
+#, fuzzy
+msgid "Held package"
+msgstr "Paquet del sistema"
+
+#: bodhi_update/app.py:928
+msgid "Blocked by held package or dependency constraints"
+msgstr ""
+
+#: bodhi_update/app.py:934 bodhi_update/app.py:974
+#: bodhi_update/hold_controller.py:124
+msgid "System package"
+msgstr "Paquet del sistema"
+
+#: bodhi_update/app.py:955
+msgid "N/A"
+msgstr "N/D"
+
+#: bodhi_update/app.py:1010
+msgid "Failed to read cached package information."
+msgstr "No s'han pogut llegir les dades dels paquets en memòria cau."
+
+#: bodhi_update/app.py:1031
+#, python-format
+msgid "Installing %(deb_name)s..."
+msgstr "S'està instal·lant %(deb_name)s..."
+
+#: bodhi_update/app.py:1036
+msgid "Failed"
+msgstr "Ha fallat"
+
+#: bodhi_update/app.py:1038
+#, python-format
+msgid "Validation failed: %(exc)s"
+msgstr "La validació ha fallat: %(exc)s"
+
+#: bodhi_update/app.py:1071
+msgid "No privilege tool found. Please reboot manually."
+msgstr "No s'ha trobat l'eina de privilegis. Si us plau, reinicieu manualment."
+
+#: bodhi_update/app.py:1079
+#, python-format
+msgid "Failed to initiate reboot: %(exc)s"
+msgstr "No s'ha pogut iniciar el reinici: %(exc)s"
+
+#: bodhi_update/app.py:1162
+msgid "No packages selected."
+msgstr "No s'han seleccionat paquets."
+
+#: bodhi_update/app.py:1173
+msgid "Installing selected updates..."
+msgstr "S'estan instal·lant les actualitzacions seleccionades..."
+
+#: bodhi_update/app.py:1179
+msgid "Hide Details"
+msgstr "Amaga detalls"
+
+#: bodhi_update/dialogs.py:17
 msgid ""
 "Update Manager\n"
 "\n"
@@ -28,7 +244,7 @@ msgstr ""
 "\n"
 "Un gestor d'actualitzacions lleuger per a distribucions basades en Debian."
 
-#: src/app.py:51
+#: bodhi_update/dialogs.py:23
 msgid ""
 "This program is free software: you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
@@ -58,173 +274,28 @@ msgstr ""
 "juntament amb aquest programa. Si no és així, vegeu <https://www.gnu.org/"
 "licenses/>."
 
-#: src/app.py:79 src/app.py:662 data/applications//bodhi-update-manager.in:5
-#: data/applications//bodhi-update-manager-tray.in:5
-msgid "Update Manager"
-msgstr "Gestor d'actualitzacions"
-
-#: src/app.py:176
-msgid "File"
-msgstr "Fitxer"
-
-#: src/app.py:179 src/app.py:256
-msgid "Refresh"
-msgstr "Actualitza"
-
-#: src/app.py:184 src/app.py:260
-msgid "Install Selected"
-msgstr "Instal·la seleccionats"
-
-#: src/app.py:191 src/app.py:252
-msgid "Select All"
-msgstr "Selecciona-ho tot"
-
-#: src/app.py:196 src/app.py:248
-msgid "Clear"
-msgstr "Neteja"
-
-#: src/app.py:203
-msgid "Quit"
-msgstr "Surt"
-
-#: src/app.py:211
-msgid "Edit"
-msgstr "Edita"
-
-#: src/app.py:214 src/app.py:504
-msgid "Preferences"
-msgstr "Preferències"
-
-#: src/app.py:222
-msgid "View"
-msgstr "Visualitza"
-
-#: src/app.py:225
-msgid "Show Descriptions"
-msgstr "Mostra descripcions"
-
-#: src/app.py:235
-msgid "Help"
-msgstr "Ajuda"
-
-#: src/app.py:238 src/app.py:586
-msgid "About"
-msgstr "Quant a"
-
-#: src/app.py:269
-msgid "All"
-msgstr "Tot"
-
-#: src/app.py:270
-msgid "Security"
-msgstr "Seguretat"
-
-#: src/app.py:271
-msgid "Kernel"
-msgstr "Nucli"
-
-#: src/app.py:272
-msgid "System"
-msgstr "Sistema"
-
-#: src/app.py:295
-msgid "A system restart is required to complete the update."
-msgstr "Cal reiniciar el sistema per completar l'actualització."
-
-#: src/app.py:299
-msgid "Restart Now"
-msgstr "Reinicia ara"
-
-#: src/app.py:346
-msgid "Type"
-msgstr "Tipus"
-
-#: src/app.py:359
-msgid "Upgrade"
-msgstr "Actualització"
-
-#: src/app.py:374
-msgid "Package"
-msgstr "Paquet"
-
-#: src/app.py:384
-msgid "Installed"
-msgstr "Instal·lat"
-
-#: src/app.py:389
-msgid "New"
-msgstr "Nou"
-
-#: src/app.py:394
-msgid "Size"
-msgstr "Mida"
-
-#: src/app.py:399
-msgid "Repository"
-msgstr "Repositori"
-
-#: src/app.py:441 src/app.py:448 src/app.py:1562 src/app.py:1565
-#: src/app.py:1670
-msgid "Waiting for authentication..."
-msgstr "S'està esperant l'autenticació..."
-
-#: src/app.py:454 src/app.py:1570 src/app.py:1981
-msgid "Show Details"
-msgstr "Mostra els detalls"
-
-#: src/app.py:458
-msgid "Back to Updates"
-msgstr "Torna a les actualitzacions"
-
-#: src/app.py:508
-msgid "Cancel"
-msgstr "Cancel·la"
-
-#: src/app.py:509
-msgid "Apply"
-msgstr "Aplica"
-
-#: src/app.py:520
+#: bodhi_update/dialogs.py:44
 #, fuzzy
-msgid "Show notifications"
-msgstr "Mostra descripcions"
-
-#: src/app.py:524
-msgid "Show held/blocked packages"
-msgstr ""
-
-#: src/app.py:532
-msgid "Show Snap updates"
-msgstr "Mostra les actualitzacions de Snap"
-
-#: src/app.py:537
-msgid "Show Flatpak updates"
-msgstr "Mostra les actualitzacions de Flatpak"
-
-#: src/app.py:577
-msgid "Preferences saved."
-msgstr "Preferències desades."
-
-#: src/app.py:640
 msgid ""
 "Website\n"
 "\n"
-"    https://github.com/flux-abyss/bodhi-update-manager"
+"https://github.com/flux-abyss/bodhi-update-manager"
 msgstr ""
 "Lloc web\n"
 "\n"
 "    https://github.com/flux-abyss/bodhi-update-manager"
 
-#: src/app.py:645
+#: bodhi_update/dialogs.py:49
+#, fuzzy
 msgid ""
 "Credits\n"
 "\n"
-"    Lead Developer:\n"
-"        Joseph “flux.abyss” Wiley\n"
+"Lead Developer:\n"
+"    Joseph “flux.abyss” Wiley\n"
 "\n"
-"    Contributors:\n"
-"        Robert “ylee” Wiley\n"
-"        Diego “diekrz2” K."
+"Contributors:\n"
+"    Robert “ylee” Wiley\n"
+"    Diego “diekrz2” K."
 msgstr ""
 "Crèdits\n"
 "\n"
@@ -235,303 +306,124 @@ msgstr ""
 "        Robert “ylee” Wiley\n"
 "        Diego “diekrz2” K."
 
-#: src/app.py:655
+#: bodhi_update/dialogs.py:59
+#, fuzzy
 msgid ""
 "Copyright © 2026 Joseph “flux.abyss” Wiley\n"
 "\n"
-"    "
 msgstr ""
 "Copyright © 2026 Joseph “flux.abyss” Wiley\n"
 "\n"
 "    "
 
-#: src/app.py:663
+#: bodhi_update/dialogs.py:67
 msgid "Website"
 msgstr "Lloc web"
 
-#: src/app.py:664
+#: bodhi_update/dialogs.py:68
 msgid "Credits"
 msgstr "Crèdits"
 
-#: src/app.py:665
+#: bodhi_update/dialogs.py:69
 msgid "License"
 msgstr "Llicència"
 
-#: src/app.py:841
+#: bodhi_update/dialogs.py:206
+msgid "Backends"
+msgstr ""
+
+#: bodhi_update/hold_controller.py:146
+msgid "Locking package..."
+msgstr ""
+
+#: bodhi_update/hold_controller.py:146
+msgid "Unlocking package..."
+msgstr ""
+
+#: bodhi_update/hold_controller.py:157 bodhi_update/refresh_controller.py:163
+#, fuzzy
+msgid "Waiting for authorization..."
+msgstr "S'està esperant l'autenticació..."
+
+#: bodhi_update/hold_controller.py:192
+msgid "apt-mark failed (unknown error)"
+msgstr ""
+
+#: bodhi_update/hold_controller.py:198
+#, python-format
+msgid "Package '%(name)s' is now held."
+msgstr ""
+
+#: bodhi_update/hold_controller.py:201
+#, python-format
+msgid "Package '%(name)s' is no longer held."
+msgstr ""
+
+#: bodhi_update/refresh_controller.py:84
+#, python-format
+msgid "%(current_status)s — Warning: %(message)s"
+msgstr "%(current_status)s — Avís: %(message)s"
+
+#: bodhi_update/refresh_controller.py:137
+#, python-format
+msgid "%(name)s get_updates failed. (%(exc)s)"
+msgstr ""
+
+#: bodhi_update/refresh_controller.py:145
+msgid "Package lists refreshed."
+msgstr "Llistes de paquets actualitzades."
+
+#: bodhi_update/status_messages.py:25
 msgid "Restart required."
 msgstr "Cal reiniciar."
 
-#: src/app.py:841 src/app.py:1766
+#: bodhi_update/status_messages.py:25
 msgid "Ready"
 msgstr "Preparat"
 
-#: src/app.py:874 src/app.py:1247 src/app.py:1504
-#, fuzzy
-msgid "Loading updates..."
-msgstr "S'estan instal·lant les actualitzacions..."
-
-#: src/app.py:898
+#: bodhi_update/status_messages.py:31
 #, python-format
 msgid "%(message)s  Restart required."
 msgstr "%(message)s Cal reiniciar."
 
-#: src/app.py:911
+#: bodhi_update/status_messages.py:46
 #, fuzzy
 msgid "System is up to date. No pending updates in cached package data."
 msgstr ""
 "El sistema està actualitzat. Es mostren les dades de paquets en memòria cau."
 
-#: src/app.py:913
+#: bodhi_update/status_messages.py:48
 msgid "System is up to date."
 msgstr "El sistema està actualitzat."
 
-#: src/app.py:922 src/app.py:1023
+#: bodhi_update/status_messages.py:52 bodhi_update/status_messages.py:103
 msgid "Unknown"
 msgstr "Desconegut"
 
-#: src/app.py:926
-#, python-format
+#: bodhi_update/status_messages.py:57
+#, fuzzy, python-format
 msgid "%(count)d update available · Download: %(size)s"
-msgid_plural "%(count)d updates available · Download: %(size)s"
-msgstr[0] "%(count)d actualització disponible · Baixada: %(size)s"
-msgstr[1] "%(count)d actualitzacions disponibles · Baixada: %(size)s"
+msgstr "%(count)d actualització disponible · Baixada: %(size)s"
 
-#: src/app.py:934
+#: bodhi_update/status_messages.py:67
 #, fuzzy, python-format
 msgid "%(message)s · Cached data — refresh to check for newer updates"
 msgstr "%(message)s · Dades de paquets en memòria cau"
 
-#: src/app.py:947
+#: bodhi_update/status_messages.py:71
 #, python-format
 msgid "%(message)s (includes %(extras)s)"
 msgstr "%(message)s (inclou %(extras)s)"
 
-#: src/app.py:958
+#: bodhi_update/status_messages.py:78
 #, python-format
 msgid "%(n)d held/blocked package hidden"
-msgid_plural "%(n)d held/blocked packages hidden"
-msgstr[0] ""
-msgstr[1] ""
+msgstr ""
 
-#: src/app.py:1025
-#, python-format
+#: bodhi_update/status_messages.py:106
+#, fuzzy, python-format
 msgid "%(count)d update selected · Download: %(size)s"
-msgid_plural "%(count)d updates selected · Download: %(size)s"
-msgstr[0] "%(count)d actualització seleccionada · Baixada: %(size)s"
-msgstr[1] "%(count)d actualitzacions seleccionades · Baixada: %(size)s"
-
-#: src/app.py:1060
-msgid "Unhold package"
-msgstr ""
-
-#: src/app.py:1060
-#, fuzzy
-msgid "Hold package"
-msgstr "Paquet"
-
-#: src/app.py:1112 src/app.py:1352 src/app.py:1386
-msgid "System package"
-msgstr "Paquet del sistema"
-
-#: src/app.py:1132
-msgid "Locking package..."
-msgstr ""
-
-#: src/app.py:1132
-msgid "Unlocking package..."
-msgstr ""
-
-#: src/app.py:1143 src/app.py:1566 src/app.py:1671 src/app.py:1912
-#, fuzzy
-msgid "Waiting for authorization..."
-msgstr "S'està esperant l'autenticació..."
-
-#: src/app.py:1172
-msgid "apt-mark failed (unknown error)"
-msgstr ""
-
-#: src/app.py:1176
-#, python-format
-msgid "Package '%(name)s' is now held."
-msgstr ""
-
-#: src/app.py:1178
-#, python-format
-msgid "Package '%(name)s' is no longer held."
-msgstr ""
-
-#: src/app.py:1337
-#, fuzzy
-msgid "Held package"
-msgstr "Paquet del sistema"
-
-#: src/app.py:1346
-msgid "Blocked by held package or dependency constraints"
-msgstr ""
-
-#: src/app.py:1369
-msgid "N/A"
-msgstr "N/D"
-
-#: src/app.py:1431
-msgid "Failed to read cached package information."
-msgstr "No s'han pogut llegir les dades dels paquets en memòria cau."
-
-#: src/app.py:1452
-#, python-format
-msgid "Refresh finished. %d updates. Success: %s"
-msgstr "Actualització finalitzada. %d actualitzacions. Èxit: %s"
-
-#: src/app.py:1469
-#, python-format
-msgid "%(current_status)s — Warning: %(message)s"
-msgstr "%(current_status)s — Avís: %(message)s"
-
-#: src/app.py:1526
-msgid "Package lists refreshed."
-msgstr "Llistes de paquets actualitzades."
-
-#: src/app.py:1530
-#, python-format
-msgid "Finished querying backends. Total updates: %d"
-msgstr "Consulta als servidors finalitzada. Actualitzacions totals: %d"
-
-#: src/app.py:1593
-msgid "This may take a few minutes."
-msgstr "Això pot trigar uns minuts."
-
-#: src/app.py:1595 src/app.py:1596
-msgid "Installing updates..."
-msgstr "S'estan instal·lant les actualitzacions..."
-
-#: src/app.py:1600 src/app.py:1627 src/app.py:1667 src/app.py:1786
-#: src/app.py:1981
-msgid "Hide Details"
-msgstr "Amaga detalls"
-
-#: src/app.py:1616
-#, python-format
-msgid "Spawn failed: %s"
-msgstr "No s'ha pogut executar: %s"
-
-#: src/app.py:1621 src/app.py:1752 src/app.py:1778
-msgid "Failed"
-msgstr "Ha fallat"
-
-#: src/app.py:1623
-msgid "Failed to start installation. See Details below."
-msgstr "No s'ha pogut iniciar la instal·lació. Vegeu Detalls a continuació."
-
-#: src/app.py:1628
-msgid "Failed to start installation."
-msgstr "No s'ha pogut iniciar la instal·lació."
-
-#: src/app.py:1631
-#, python-format
-msgid "Install process spawned (pid %s)."
-msgstr "Procés d'instal·lació executat (pid %s)."
-
-#: src/app.py:1659
-msgid ""
-"Enter your password in the terminal below. For security, nothing will appear "
-"while typing."
-msgstr ""
-"Introduïu la contrasenya al terminal a continuació. Per seguretat, no es "
-"mostrarà res mentre escriviu."
-
-#: src/app.py:1663
-msgid "Terminal auth in use — revealing VTE for password entry."
-msgstr ""
-"Autenticació per terminal en ús — es mostra el VTE per introduir la "
-"contrasenya."
-
-#: src/app.py:1714
-#, python-format
-msgid "Starting installation: %s"
-msgstr "S'està iniciant la instal·lació: %s"
-
-#: src/app.py:1715
-#, python-format
-msgid "Command: %s"
-msgstr "Ordre: %s"
-
-#: src/app.py:1749 src/app.py:1756
-#, python-format
-msgid "Installing %(deb_name)s..."
-msgstr "S'està instal·lant %(deb_name)s..."
-
-#: src/app.py:1754
-#, python-format
-msgid "Validation failed: %(exc)s"
-msgstr "La validació ha fallat: %(exc)s"
-
-#: src/app.py:1759
-msgid "Installation completed successfully."
-msgstr "La instal·lació s'ha completat correctament."
-
-#: src/app.py:1764
-msgid "Complete"
-msgstr "Completat"
-
-#: src/app.py:1765
-msgid "Updates installed successfully."
-msgstr "Actualitzacions instal·lades correctament."
-
-#: src/app.py:1773
-#, python-format
-msgid "Installation failed with exit code: %s"
-msgstr "La instal·lació ha fallat amb el codi de sortida: %s"
-
-#: src/app.py:1780
-#, python-format
-msgid "Update failed. Exit code: %(exit_code)s. See Details below."
-msgstr ""
-"L'actualització ha fallat. Codi de sortida: %(exit_code)s. Vegeu Detalls a "
-"continuació."
-
-#: src/app.py:1787
-#, python-format
-msgid "Update failed. Exit code: %(exit_code)s"
-msgstr "L'actualització ha fallat. Codi de sortida: %(exit_code)s"
-
-#: src/app.py:1816
-msgid "No privilege tool found. Please reboot manually."
-msgstr "No s'ha trobat l'eina de privilegis. Si us plau, reinicieu manualment."
-
-#: src/app.py:1824
-#, python-format
-msgid "Failed to initiate reboot: %(exc)s"
-msgstr "No s'ha pogut iniciar el reinici: %(exc)s"
-
-#: src/app.py:1920
-msgid "Starting background refresh for updates."
-msgstr "S'està iniciant l'actualització en segon pla."
-
-#: src/app.py:1938
-msgid "Primary backend (APT) is not configured."
-msgstr "El backend principal (APT) no està configurat."
-
-#: src/app.py:1942
-msgid ""
-"Installing from multiple package sources simultaneously is not yet "
-"supported. Please select packages from one source type only."
-msgstr ""
-"La instal·lació des de múltiples fonts de paquets simultàniament encara no "
-"està suportada. Si us plau, seleccioneu paquets d'un sol tipus de font."
-
-#: src/app.py:1952
-#, python-format
-msgid "Requested installation for unknown backend: %(backend_id)s"
-msgstr ""
-"S'ha sol·licitat la instal·lació per a un backend desconegut: %(backend_id)s"
-
-#: src/app.py:1965
-msgid "No packages selected."
-msgstr "No s'han seleccionat paquets."
-
-#: src/app.py:1975
-msgid "Installing selected updates..."
-msgstr "S'estan instal·lant les actualitzacions seleccionades..."
+msgstr "%(count)d actualització seleccionada · Baixada: %(size)s"
 
 #: data/applications//bodhi-update-manager.in:6
 #: data/applications//bodhi-update-manager-tray.in:6
@@ -545,6 +437,99 @@ msgstr ""
 #: data/polkit/org.bodhi.updatemanager.policy.in.h:2
 msgid "Authentication is required to install or update packages."
 msgstr ""
+
+#~ msgid "Show Flatpak updates"
+#~ msgstr "Mostra les actualitzacions de Flatpak"
+
+#, python-format
+#~ msgid "Refresh finished. %d updates. Success: %s"
+#~ msgstr "Actualització finalitzada. %d actualitzacions. Èxit: %s"
+
+#, python-format
+#~ msgid "Finished querying backends. Total updates: %d"
+#~ msgstr "Consulta als servidors finalitzada. Actualitzacions totals: %d"
+
+#~ msgid "This may take a few minutes."
+#~ msgstr "Això pot trigar uns minuts."
+
+#~ msgid "Installing updates..."
+#~ msgstr "S'estan instal·lant les actualitzacions..."
+
+#, python-format
+#~ msgid "Spawn failed: %s"
+#~ msgstr "No s'ha pogut executar: %s"
+
+#~ msgid "Failed to start installation. See Details below."
+#~ msgstr "No s'ha pogut iniciar la instal·lació. Vegeu Detalls a continuació."
+
+#~ msgid "Failed to start installation."
+#~ msgstr "No s'ha pogut iniciar la instal·lació."
+
+#, python-format
+#~ msgid "Install process spawned (pid %s)."
+#~ msgstr "Procés d'instal·lació executat (pid %s)."
+
+#~ msgid ""
+#~ "Enter your password in the terminal below. For security, nothing will "
+#~ "appear while typing."
+#~ msgstr ""
+#~ "Introduïu la contrasenya al terminal a continuació. Per seguretat, no es "
+#~ "mostrarà res mentre escriviu."
+
+#~ msgid "Terminal auth in use — revealing VTE for password entry."
+#~ msgstr ""
+#~ "Autenticació per terminal en ús — es mostra el VTE per introduir la "
+#~ "contrasenya."
+
+#, python-format
+#~ msgid "Starting installation: %s"
+#~ msgstr "S'està iniciant la instal·lació: %s"
+
+#, python-format
+#~ msgid "Command: %s"
+#~ msgstr "Ordre: %s"
+
+#~ msgid "Installation completed successfully."
+#~ msgstr "La instal·lació s'ha completat correctament."
+
+#~ msgid "Complete"
+#~ msgstr "Completat"
+
+#~ msgid "Updates installed successfully."
+#~ msgstr "Actualitzacions instal·lades correctament."
+
+#, python-format
+#~ msgid "Installation failed with exit code: %s"
+#~ msgstr "La instal·lació ha fallat amb el codi de sortida: %s"
+
+#, python-format
+#~ msgid "Update failed. Exit code: %(exit_code)s. See Details below."
+#~ msgstr ""
+#~ "L'actualització ha fallat. Codi de sortida: %(exit_code)s. Vegeu Detalls "
+#~ "a continuació."
+
+#, python-format
+#~ msgid "Update failed. Exit code: %(exit_code)s"
+#~ msgstr "L'actualització ha fallat. Codi de sortida: %(exit_code)s"
+
+#~ msgid "Starting background refresh for updates."
+#~ msgstr "S'està iniciant l'actualització en segon pla."
+
+#~ msgid "Primary backend (APT) is not configured."
+#~ msgstr "El backend principal (APT) no està configurat."
+
+#~ msgid ""
+#~ "Installing from multiple package sources simultaneously is not yet "
+#~ "supported. Please select packages from one source type only."
+#~ msgstr ""
+#~ "La instal·lació des de múltiples fonts de paquets simultàniament encara "
+#~ "no està suportada. Si us plau, seleccioneu paquets d'un sol tipus de font."
+
+#, python-format
+#~ msgid "Requested installation for unknown backend: %(backend_id)s"
+#~ msgstr ""
+#~ "S'ha sol·licitat la instal·lació per a un backend desconegut: "
+#~ "%(backend_id)s"
 
 #~ msgid "Checking for updates..."
 #~ msgstr "S'estan cercant actualitzacions..."

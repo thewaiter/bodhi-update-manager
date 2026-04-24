@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: bodhi-update-manager 0.1-3\n"
 "Report-Msgid-Bugs-To: https://github.com/flux-abyss/bodhi-update-manager/"
 "issues\n"
-"POT-Creation-Date: 2026-04-11 16:12-0400\n"
+"POT-Creation-Date: 2026-04-24 06:43-0400\n"
 "PO-Revision-Date: 2026-04-03 03:56+0530\n"
 "Last-Translator: Indraneel Rajeevan <https://github.com/indraneel12>\n"
 "Language-Team: Bodhi Team\n"
@@ -20,7 +20,223 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n==0 || n==1);\n"
 "X-Generator: Poedit 3.8\n"
 
-#: src/app.py:45
+#: bodhi_update/app.py:89 bodhi_update/dialogs.py:66
+#: data/applications//bodhi-update-manager.in:5
+#: data/applications//bodhi-update-manager-tray.in:5
+msgid "Update Manager"
+msgstr "अपडेट मैनेजर"
+
+#: bodhi_update/app.py:160
+msgid "File"
+msgstr "फ़ाइल"
+
+#: bodhi_update/app.py:163 bodhi_update/app.py:240
+msgid "Refresh"
+msgstr "रि्फ़्रेष करें"
+
+#: bodhi_update/app.py:168 bodhi_update/app.py:244
+msgid "Install Selected"
+msgstr "चयनित इंस्टॉल करें"
+
+#: bodhi_update/app.py:175 bodhi_update/app.py:236
+msgid "Select All"
+msgstr "सभी चुनें"
+
+#: bodhi_update/app.py:180 bodhi_update/app.py:232
+msgid "Clear"
+msgstr "साफ़ करें"
+
+#: bodhi_update/app.py:187
+msgid "Quit"
+msgstr "बाहर निकलें"
+
+#: bodhi_update/app.py:195
+msgid "Edit"
+msgstr "संपादन करें"
+
+#: bodhi_update/app.py:198 bodhi_update/app.py:508
+msgid "Preferences"
+msgstr "पसंद"
+
+#: bodhi_update/app.py:206
+msgid "View"
+msgstr "देखें"
+
+#: bodhi_update/app.py:209
+msgid "Show Descriptions"
+msgstr "विवरण दिखाएं"
+
+#: bodhi_update/app.py:219
+msgid "Help"
+msgstr "सहायता"
+
+#: bodhi_update/app.py:222 bodhi_update/dialogs.py:74
+msgid "About"
+msgstr "विवरण"
+
+#: bodhi_update/app.py:267
+msgid "A system restart is required to complete the update."
+msgstr "अपडेट पूरा करने के लिए सिस्टम को पुनरारंभ करना आवश्यक है।"
+
+#: bodhi_update/app.py:271
+msgid "Restart Now"
+msgstr "अभी पुनरारंभ करें"
+
+#: bodhi_update/app.py:317
+msgid "Type"
+msgstr "प्रकार"
+
+#: bodhi_update/app.py:330
+msgid "Upgrade"
+msgstr "अपग्रेड"
+
+#: bodhi_update/app.py:343
+msgid "Package"
+msgstr "पैकेज"
+
+#: bodhi_update/app.py:353
+msgid "Installed"
+msgstr "इंस्टॉल किया गया"
+
+#: bodhi_update/app.py:358
+msgid "New"
+msgstr "नया"
+
+#: bodhi_update/app.py:363
+msgid "Size"
+msgstr "परिमाण"
+
+#: bodhi_update/app.py:368
+msgid "Repository"
+msgstr "रिपॉजिटरी"
+
+#: bodhi_update/app.py:410 bodhi_update/app.py:417
+msgid "Waiting for authentication..."
+msgstr "प्रमाणीकरण की प्रतीक्षा कर रहे हैं..."
+
+#: bodhi_update/app.py:423 bodhi_update/app.py:1179
+msgid "Show Details"
+msgstr "विवरण दिखाएं"
+
+#: bodhi_update/app.py:427
+msgid "Back to Updates"
+msgstr "अपडेट पर वापस जाएं"
+
+#: bodhi_update/app.py:478
+msgid "All"
+msgstr "सभी"
+
+#: bodhi_update/app.py:479
+msgid "Security"
+msgstr "सुरक्षा"
+
+#: bodhi_update/app.py:480
+msgid "Kernel"
+msgstr "कर्नेल"
+
+#: bodhi_update/app.py:481
+msgid "System"
+msgstr "सिस्टम"
+
+#: bodhi_update/app.py:499
+#, fuzzy, python-format
+msgid "Show %(name)s updates"
+msgstr "स्नैप अपडेट दिखाएं"
+
+#: bodhi_update/app.py:509
+#, fuzzy
+msgid "Show notifications"
+msgstr "विवरण दिखाएं"
+
+#: bodhi_update/app.py:510
+msgid "Show held/blocked packages"
+msgstr ""
+
+#: bodhi_update/app.py:511
+msgid "Cancel"
+msgstr "रद्द करें"
+
+#: bodhi_update/app.py:512
+msgid "Apply"
+msgstr "लागू करें"
+
+#: bodhi_update/app.py:552
+msgid "Preferences saved."
+msgstr "पसंद सहेजी गईं।"
+
+#: bodhi_update/app.py:687 bodhi_update/refresh_controller.py:40
+#: bodhi_update/refresh_controller.py:117
+#, fuzzy
+msgid "Loading updates..."
+msgstr "अपडेट स्थापित किए जा रहे हैं..."
+
+#: bodhi_update/app.py:836
+msgid "Unhold package"
+msgstr ""
+
+#: bodhi_update/app.py:836
+#, fuzzy
+msgid "Hold package"
+msgstr "पैकेज"
+
+#: bodhi_update/app.py:919
+#, fuzzy
+msgid "Held package"
+msgstr "सिस्टम पैकेज"
+
+#: bodhi_update/app.py:928
+msgid "Blocked by held package or dependency constraints"
+msgstr ""
+
+#: bodhi_update/app.py:934 bodhi_update/app.py:974
+#: bodhi_update/hold_controller.py:124
+msgid "System package"
+msgstr "सिस्टम पैकेज"
+
+#: bodhi_update/app.py:955
+msgid "N/A"
+msgstr "अनुपलब्ध"
+
+#: bodhi_update/app.py:1010
+msgid "Failed to read cached package information."
+msgstr "कैश्ड पैकेज जानकारी पढ़ने में विफल।"
+
+#: bodhi_update/app.py:1031
+#, python-format
+msgid "Installing %(deb_name)s..."
+msgstr "%(deb_name)s स्थापित किया जा रहा है..."
+
+#: bodhi_update/app.py:1036
+msgid "Failed"
+msgstr "विफल"
+
+#: bodhi_update/app.py:1038
+#, python-format
+msgid "Validation failed: %(exc)s"
+msgstr "सत्यापन विफल: %(exc)s"
+
+#: bodhi_update/app.py:1071
+msgid "No privilege tool found. Please reboot manually."
+msgstr "कोई विशेषाधिकार उपकरण नहीं मिला। कृपया मैन्युअल रूप से रीबूट करें।"
+
+#: bodhi_update/app.py:1079
+#, python-format
+msgid "Failed to initiate reboot: %(exc)s"
+msgstr "रीबूट शुरू करने में विफल: %(exc)s"
+
+#: bodhi_update/app.py:1162
+msgid "No packages selected."
+msgstr "कोई पैकेज चयनित नहीं है।"
+
+#: bodhi_update/app.py:1173
+msgid "Installing selected updates..."
+msgstr "चयनित अपडेट स्थापित किए जा रहे हैं..."
+
+#: bodhi_update/app.py:1179
+msgid "Hide Details"
+msgstr "विवरण छुपाएं"
+
+#: bodhi_update/dialogs.py:17
 msgid ""
 "Update Manager\n"
 "\n"
@@ -30,7 +246,7 @@ msgstr ""
 "\n"
 "डेबियन आधारित डिस्ट्रो के लिए एक हल्का ग्राफिकल अपडेट मैनेजर।"
 
-#: src/app.py:51
+#: bodhi_update/dialogs.py:23
 msgid ""
 "This program is free software: you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
@@ -58,173 +274,28 @@ msgstr ""
 "आपको इस प्रोग्राम के साथ GNU जनरल पब्लिक लाइसेंस की एक प्रति प्राप्त होनी चाहिए।\n"
 "यदि नहीं, तो देखें <https://www.gnu.org/licenses/>।"
 
-#: src/app.py:79 src/app.py:662 data/applications//bodhi-update-manager.in:5
-#: data/applications//bodhi-update-manager-tray.in:5
-msgid "Update Manager"
-msgstr "अपडेट मैनेजर"
-
-#: src/app.py:176
-msgid "File"
-msgstr "फ़ाइल"
-
-#: src/app.py:179 src/app.py:256
-msgid "Refresh"
-msgstr "रि्फ़्रेष करें"
-
-#: src/app.py:184 src/app.py:260
-msgid "Install Selected"
-msgstr "चयनित इंस्टॉल करें"
-
-#: src/app.py:191 src/app.py:252
-msgid "Select All"
-msgstr "सभी चुनें"
-
-#: src/app.py:196 src/app.py:248
-msgid "Clear"
-msgstr "साफ़ करें"
-
-#: src/app.py:203
-msgid "Quit"
-msgstr "बाहर निकलें"
-
-#: src/app.py:211
-msgid "Edit"
-msgstr "संपादन करें"
-
-#: src/app.py:214 src/app.py:504
-msgid "Preferences"
-msgstr "पसंद"
-
-#: src/app.py:222
-msgid "View"
-msgstr "देखें"
-
-#: src/app.py:225
-msgid "Show Descriptions"
-msgstr "विवरण दिखाएं"
-
-#: src/app.py:235
-msgid "Help"
-msgstr "सहायता"
-
-#: src/app.py:238 src/app.py:586
-msgid "About"
-msgstr "विवरण"
-
-#: src/app.py:269
-msgid "All"
-msgstr "सभी"
-
-#: src/app.py:270
-msgid "Security"
-msgstr "सुरक्षा"
-
-#: src/app.py:271
-msgid "Kernel"
-msgstr "कर्नेल"
-
-#: src/app.py:272
-msgid "System"
-msgstr "सिस्टम"
-
-#: src/app.py:295
-msgid "A system restart is required to complete the update."
-msgstr "अपडेट पूरा करने के लिए सिस्टम को पुनरारंभ करना आवश्यक है।"
-
-#: src/app.py:299
-msgid "Restart Now"
-msgstr "अभी पुनरारंभ करें"
-
-#: src/app.py:346
-msgid "Type"
-msgstr "प्रकार"
-
-#: src/app.py:359
-msgid "Upgrade"
-msgstr "अपग्रेड"
-
-#: src/app.py:374
-msgid "Package"
-msgstr "पैकेज"
-
-#: src/app.py:384
-msgid "Installed"
-msgstr "इंस्टॉल किया गया"
-
-#: src/app.py:389
-msgid "New"
-msgstr "नया"
-
-#: src/app.py:394
-msgid "Size"
-msgstr "परिमाण"
-
-#: src/app.py:399
-msgid "Repository"
-msgstr "रिपॉजिटरी"
-
-#: src/app.py:441 src/app.py:448 src/app.py:1562 src/app.py:1565
-#: src/app.py:1670
-msgid "Waiting for authentication..."
-msgstr "प्रमाणीकरण की प्रतीक्षा कर रहे हैं..."
-
-#: src/app.py:454 src/app.py:1570 src/app.py:1981
-msgid "Show Details"
-msgstr "विवरण दिखाएं"
-
-#: src/app.py:458
-msgid "Back to Updates"
-msgstr "अपडेट पर वापस जाएं"
-
-#: src/app.py:508
-msgid "Cancel"
-msgstr "रद्द करें"
-
-#: src/app.py:509
-msgid "Apply"
-msgstr "लागू करें"
-
-#: src/app.py:520
+#: bodhi_update/dialogs.py:44
 #, fuzzy
-msgid "Show notifications"
-msgstr "विवरण दिखाएं"
-
-#: src/app.py:524
-msgid "Show held/blocked packages"
-msgstr ""
-
-#: src/app.py:532
-msgid "Show Snap updates"
-msgstr "स्नैप अपडेट दिखाएं"
-
-#: src/app.py:537
-msgid "Show Flatpak updates"
-msgstr "फ्लैटपैक अपडेट दिखाएं"
-
-#: src/app.py:577
-msgid "Preferences saved."
-msgstr "पसंद सहेजी गईं।"
-
-#: src/app.py:640
 msgid ""
 "Website\n"
 "\n"
-"    https://github.com/flux-abyss/bodhi-update-manager"
+"https://github.com/flux-abyss/bodhi-update-manager"
 msgstr ""
 "वेबसाइट\n"
 "\n"
 "    https://github.com/flux-abyss/bodhi-update-manager"
 
-#: src/app.py:645
+#: bodhi_update/dialogs.py:49
+#, fuzzy
 msgid ""
 "Credits\n"
 "\n"
-"    Lead Developer:\n"
-"        Joseph “flux.abyss” Wiley\n"
+"Lead Developer:\n"
+"    Joseph “flux.abyss” Wiley\n"
 "\n"
-"    Contributors:\n"
-"        Robert “ylee” Wiley\n"
-"        Diego “diekrz2” K."
+"Contributors:\n"
+"    Robert “ylee” Wiley\n"
+"    Diego “diekrz2” K."
 msgstr ""
 "क्रेडिट्स\n"
 "\n"
@@ -235,298 +306,123 @@ msgstr ""
 "        राह्बेर्ट “ylee” वैली\n"
 "        डीयेय्गो “diekrz2” के."
 
-#: src/app.py:655
+#: bodhi_update/dialogs.py:59
+#, fuzzy
 msgid ""
 "Copyright © 2026 Joseph “flux.abyss” Wiley\n"
 "\n"
-"    "
 msgstr ""
 "कॉपीराइट © 2026 जोह्सेफ़ “flux.abyss” वैली\n"
 "\n"
 "    "
 
-#: src/app.py:663
+#: bodhi_update/dialogs.py:67
 msgid "Website"
 msgstr "वेबसाइट"
 
-#: src/app.py:664
+#: bodhi_update/dialogs.py:68
 msgid "Credits"
 msgstr "क्रेडिट्स"
 
-#: src/app.py:665
+#: bodhi_update/dialogs.py:69
 msgid "License"
 msgstr "लाइसेंस"
 
-#: src/app.py:841
-msgid "Restart required."
-msgstr "रीस्टार्ट करना आवश्यक है।"
-
-#: src/app.py:841 src/app.py:1766
-msgid "Ready"
-msgstr "तैयार"
-
-#: src/app.py:874 src/app.py:1247 src/app.py:1504
-#, fuzzy
-msgid "Loading updates..."
-msgstr "अपडेट स्थापित किए जा रहे हैं..."
-
-#: src/app.py:898
-#, python-format
-msgid "%(message)s  Restart required."
-msgstr "%(message)s  रीस्टार्ट करना आवश्यक है।"
-
-#: src/app.py:911
-#, fuzzy
-msgid "System is up to date. No pending updates in cached package data."
-msgstr "सिस्टम अप-टू-डेट है। कैश्ड पैकेज डेटा दिखाया गया है।"
-
-#: src/app.py:913
-msgid "System is up to date."
-msgstr "सिस्टम अप-टू-डेट है।"
-
-#: src/app.py:922 src/app.py:1023
-msgid "Unknown"
-msgstr "अज्ञात"
-
-#: src/app.py:926
-#, python-format
-msgid "%(count)d update available · Download: %(size)s"
-msgid_plural "%(count)d updates available · Download: %(size)s"
-msgstr[0] "%(count)d अपडेट उपलब्ध · डाउनलोड: %(size)s"
-msgstr[1] "%(count)d अपडेट उपलब्ध · डाउनलोड: %(size)s"
-
-#: src/app.py:934
-#, fuzzy, python-format
-msgid "%(message)s · Cached data — refresh to check for newer updates"
-msgstr "%(message)s · कैश्ड पैकेज डेटा"
-
-#: src/app.py:947
-#, python-format
-msgid "%(message)s (includes %(extras)s)"
-msgstr "%(message)s (शामिल %(extras)s)"
-
-#: src/app.py:958
-#, python-format
-msgid "%(n)d held/blocked package hidden"
-msgid_plural "%(n)d held/blocked packages hidden"
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/app.py:1025
-#, python-format
-msgid "%(count)d update selected · Download: %(size)s"
-msgid_plural "%(count)d updates selected · Download: %(size)s"
-msgstr[0] "%(count)d अपडेट चुना गया · डाउनलोड: %(size)s"
-msgstr[1] "%(count)d अपडेट चुने गए · डाउनलोड: %(size)s"
-
-#: src/app.py:1060
-msgid "Unhold package"
+#: bodhi_update/dialogs.py:206
+msgid "Backends"
 msgstr ""
 
-#: src/app.py:1060
-#, fuzzy
-msgid "Hold package"
-msgstr "पैकेज"
-
-#: src/app.py:1112 src/app.py:1352 src/app.py:1386
-msgid "System package"
-msgstr "सिस्टम पैकेज"
-
-#: src/app.py:1132
+#: bodhi_update/hold_controller.py:146
 msgid "Locking package..."
 msgstr ""
 
-#: src/app.py:1132
+#: bodhi_update/hold_controller.py:146
 msgid "Unlocking package..."
 msgstr ""
 
-#: src/app.py:1143 src/app.py:1566 src/app.py:1671 src/app.py:1912
+#: bodhi_update/hold_controller.py:157 bodhi_update/refresh_controller.py:163
 #, fuzzy
 msgid "Waiting for authorization..."
 msgstr "प्रमाणीकरण की प्रतीक्षा कर रहे हैं..."
 
-#: src/app.py:1172
+#: bodhi_update/hold_controller.py:192
 msgid "apt-mark failed (unknown error)"
 msgstr ""
 
-#: src/app.py:1176
+#: bodhi_update/hold_controller.py:198
 #, python-format
 msgid "Package '%(name)s' is now held."
 msgstr ""
 
-#: src/app.py:1178
+#: bodhi_update/hold_controller.py:201
 #, python-format
 msgid "Package '%(name)s' is no longer held."
 msgstr ""
 
-#: src/app.py:1337
-#, fuzzy
-msgid "Held package"
-msgstr "सिस्टम पैकेज"
-
-#: src/app.py:1346
-msgid "Blocked by held package or dependency constraints"
-msgstr ""
-
-#: src/app.py:1369
-msgid "N/A"
-msgstr "अनुपलब्ध"
-
-#: src/app.py:1431
-msgid "Failed to read cached package information."
-msgstr "कैश्ड पैकेज जानकारी पढ़ने में विफल।"
-
-#: src/app.py:1452
-#, python-format
-msgid "Refresh finished. %d updates. Success: %s"
-msgstr "ताज़ा करना समाप्त। %d अपडेट। सफलता: %s"
-
-#: src/app.py:1469
+#: bodhi_update/refresh_controller.py:84
 #, python-format
 msgid "%(current_status)s — Warning: %(message)s"
 msgstr "%(current_status)s — चेतावनी: %(message)s"
 
-#: src/app.py:1526
+#: bodhi_update/refresh_controller.py:137
+#, python-format
+msgid "%(name)s get_updates failed. (%(exc)s)"
+msgstr ""
+
+#: bodhi_update/refresh_controller.py:145
 msgid "Package lists refreshed."
 msgstr "पैकेज सूची ताज़ा की गई।"
 
-#: src/app.py:1530
+#: bodhi_update/status_messages.py:25
+msgid "Restart required."
+msgstr "रीस्टार्ट करना आवश्यक है।"
+
+#: bodhi_update/status_messages.py:25
+msgid "Ready"
+msgstr "तैयार"
+
+#: bodhi_update/status_messages.py:31
 #, python-format
-msgid "Finished querying backends. Total updates: %d"
-msgstr "बैकेंड क्वेरी समाप्त। कुल अपडेट: %d"
+msgid "%(message)s  Restart required."
+msgstr "%(message)s  रीस्टार्ट करना आवश्यक है।"
 
-#: src/app.py:1593
-msgid "This may take a few minutes."
-msgstr "इसमें कुछ मिनट लग सकते हैं।"
+#: bodhi_update/status_messages.py:46
+#, fuzzy
+msgid "System is up to date. No pending updates in cached package data."
+msgstr "सिस्टम अप-टू-डेट है। कैश्ड पैकेज डेटा दिखाया गया है।"
 
-#: src/app.py:1595 src/app.py:1596
-msgid "Installing updates..."
-msgstr "अपडेट स्थापित किए जा रहे हैं..."
+#: bodhi_update/status_messages.py:48
+msgid "System is up to date."
+msgstr "सिस्टम अप-टू-डेट है।"
 
-#: src/app.py:1600 src/app.py:1627 src/app.py:1667 src/app.py:1786
-#: src/app.py:1981
-msgid "Hide Details"
-msgstr "विवरण छुपाएं"
+#: bodhi_update/status_messages.py:52 bodhi_update/status_messages.py:103
+msgid "Unknown"
+msgstr "अज्ञात"
 
-#: src/app.py:1616
+#: bodhi_update/status_messages.py:57
+#, fuzzy, python-format
+msgid "%(count)d update available · Download: %(size)s"
+msgstr "%(count)d अपडेट उपलब्ध · डाउनलोड: %(size)s"
+
+#: bodhi_update/status_messages.py:67
+#, fuzzy, python-format
+msgid "%(message)s · Cached data — refresh to check for newer updates"
+msgstr "%(message)s · कैश्ड पैकेज डेटा"
+
+#: bodhi_update/status_messages.py:71
 #, python-format
-msgid "Spawn failed: %s"
-msgstr "स्पॉन विफल: %s"
+msgid "%(message)s (includes %(extras)s)"
+msgstr "%(message)s (शामिल %(extras)s)"
 
-#: src/app.py:1621 src/app.py:1752 src/app.py:1778
-msgid "Failed"
-msgstr "विफल"
-
-#: src/app.py:1623
-msgid "Failed to start installation. See Details below."
-msgstr "स्थापना शुरू करने में विफल। नीचे विवरण देखें।"
-
-#: src/app.py:1628
-msgid "Failed to start installation."
-msgstr "स्थापना शुरू करने में विफल।"
-
-#: src/app.py:1631
+#: bodhi_update/status_messages.py:78
 #, python-format
-msgid "Install process spawned (pid %s)."
-msgstr "इंस्टॉल प्रक्रिया स्पॉन की गई (pid %s)।"
-
-#: src/app.py:1659
-msgid ""
-"Enter your password in the terminal below. For security, nothing will appear "
-"while typing."
+msgid "%(n)d held/blocked package hidden"
 msgstr ""
-"नीचे दिए टर्मिनल में अपना पासवर्ड दर्ज करें। सुरक्षा के लिए, टाइप करते समय कुछ भी दिखाई "
-"नहीं देगा।"
 
-#: src/app.py:1663
-msgid "Terminal auth in use — revealing VTE for password entry."
-msgstr ""
-"टर्मिनल प्रमाणीकरण उपयोग में — पासवर्ड प्रविष्टि के लिए VTE प्रकट किया जा रहा है।"
-
-#: src/app.py:1714
-#, python-format
-msgid "Starting installation: %s"
-msgstr "स्थापना शुरू की जा रही है: %s"
-
-#: src/app.py:1715
-#, python-format
-msgid "Command: %s"
-msgstr "कमांड: %s"
-
-#: src/app.py:1749 src/app.py:1756
-#, python-format
-msgid "Installing %(deb_name)s..."
-msgstr "%(deb_name)s स्थापित किया जा रहा है..."
-
-#: src/app.py:1754
-#, python-format
-msgid "Validation failed: %(exc)s"
-msgstr "सत्यापन विफल: %(exc)s"
-
-#: src/app.py:1759
-msgid "Installation completed successfully."
-msgstr "स्थापना सफलतापूर्वक पूरी हुई।"
-
-#: src/app.py:1764
-msgid "Complete"
-msgstr "पूर्ण"
-
-#: src/app.py:1765
-msgid "Updates installed successfully."
-msgstr "अपडेट सफलतापूर्वक स्थापित किए गए।"
-
-#: src/app.py:1773
-#, python-format
-msgid "Installation failed with exit code: %s"
-msgstr "इंस्टालेशन विफल होने पर एग्जिट कोड: %s"
-
-#: src/app.py:1780
-#, python-format
-msgid "Update failed. Exit code: %(exit_code)s. See Details below."
-msgstr "अपडेट विफल हुआ। एग्जिट कोड: %(exit_code)s। नीचे विवरण देखें।"
-
-#: src/app.py:1787
-#, python-format
-msgid "Update failed. Exit code: %(exit_code)s"
-msgstr "अपडेट विफल हुआ। एग्जिट कोड: %(exit_code)s"
-
-#: src/app.py:1816
-msgid "No privilege tool found. Please reboot manually."
-msgstr "कोई विशेषाधिकार उपकरण नहीं मिला। कृपया मैन्युअल रूप से रीबूट करें।"
-
-#: src/app.py:1824
-#, python-format
-msgid "Failed to initiate reboot: %(exc)s"
-msgstr "रीबूट शुरू करने में विफल: %(exc)s"
-
-#: src/app.py:1920
-msgid "Starting background refresh for updates."
-msgstr "अपडेट के लिए बैकग्राउंड रिफ्रेश शुरू हो रहा है।"
-
-#: src/app.py:1938
-msgid "Primary backend (APT) is not configured."
-msgstr "प्राथमिक बैकेंड (APT) कॉन्फ़िगर नहीं है।"
-
-#: src/app.py:1942
-msgid ""
-"Installing from multiple package sources simultaneously is not yet "
-"supported. Please select packages from one source type only."
-msgstr ""
-"एक साथ कई पैकेज स्रोतों से स्थापना अभी तक समर्थित नहीं है। कृपया केवल एक स्रोत प्रकार से "
-"पैकेज चुनें।"
-
-#: src/app.py:1952
-#, python-format
-msgid "Requested installation for unknown backend: %(backend_id)s"
-msgstr "अज्ञात बैकेंड के लिए स्थापना अनुरोधित: %(backend_id)s"
-
-#: src/app.py:1965
-msgid "No packages selected."
-msgstr "कोई पैकेज चयनित नहीं है।"
-
-#: src/app.py:1975
-msgid "Installing selected updates..."
-msgstr "चयनित अपडेट स्थापित किए जा रहे हैं..."
+#: bodhi_update/status_messages.py:106
+#, fuzzy, python-format
+msgid "%(count)d update selected · Download: %(size)s"
+msgstr "%(count)d अपडेट चुना गया · डाउनलोड: %(size)s"
 
 #: data/applications//bodhi-update-manager.in:6
 #: data/applications//bodhi-update-manager-tray.in:6
@@ -540,6 +436,94 @@ msgstr ""
 #: data/polkit/org.bodhi.updatemanager.policy.in.h:2
 msgid "Authentication is required to install or update packages."
 msgstr ""
+
+#~ msgid "Show Flatpak updates"
+#~ msgstr "फ्लैटपैक अपडेट दिखाएं"
+
+#, python-format
+#~ msgid "Refresh finished. %d updates. Success: %s"
+#~ msgstr "ताज़ा करना समाप्त। %d अपडेट। सफलता: %s"
+
+#, python-format
+#~ msgid "Finished querying backends. Total updates: %d"
+#~ msgstr "बैकेंड क्वेरी समाप्त। कुल अपडेट: %d"
+
+#~ msgid "This may take a few minutes."
+#~ msgstr "इसमें कुछ मिनट लग सकते हैं।"
+
+#~ msgid "Installing updates..."
+#~ msgstr "अपडेट स्थापित किए जा रहे हैं..."
+
+#, python-format
+#~ msgid "Spawn failed: %s"
+#~ msgstr "स्पॉन विफल: %s"
+
+#~ msgid "Failed to start installation. See Details below."
+#~ msgstr "स्थापना शुरू करने में विफल। नीचे विवरण देखें।"
+
+#~ msgid "Failed to start installation."
+#~ msgstr "स्थापना शुरू करने में विफल।"
+
+#, python-format
+#~ msgid "Install process spawned (pid %s)."
+#~ msgstr "इंस्टॉल प्रक्रिया स्पॉन की गई (pid %s)।"
+
+#~ msgid ""
+#~ "Enter your password in the terminal below. For security, nothing will "
+#~ "appear while typing."
+#~ msgstr ""
+#~ "नीचे दिए टर्मिनल में अपना पासवर्ड दर्ज करें। सुरक्षा के लिए, टाइप करते समय कुछ भी "
+#~ "दिखाई नहीं देगा।"
+
+#~ msgid "Terminal auth in use — revealing VTE for password entry."
+#~ msgstr ""
+#~ "टर्मिनल प्रमाणीकरण उपयोग में — पासवर्ड प्रविष्टि के लिए VTE प्रकट किया जा रहा है।"
+
+#, python-format
+#~ msgid "Starting installation: %s"
+#~ msgstr "स्थापना शुरू की जा रही है: %s"
+
+#, python-format
+#~ msgid "Command: %s"
+#~ msgstr "कमांड: %s"
+
+#~ msgid "Installation completed successfully."
+#~ msgstr "स्थापना सफलतापूर्वक पूरी हुई।"
+
+#~ msgid "Complete"
+#~ msgstr "पूर्ण"
+
+#~ msgid "Updates installed successfully."
+#~ msgstr "अपडेट सफलतापूर्वक स्थापित किए गए।"
+
+#, python-format
+#~ msgid "Installation failed with exit code: %s"
+#~ msgstr "इंस्टालेशन विफल होने पर एग्जिट कोड: %s"
+
+#, python-format
+#~ msgid "Update failed. Exit code: %(exit_code)s. See Details below."
+#~ msgstr "अपडेट विफल हुआ। एग्जिट कोड: %(exit_code)s। नीचे विवरण देखें।"
+
+#, python-format
+#~ msgid "Update failed. Exit code: %(exit_code)s"
+#~ msgstr "अपडेट विफल हुआ। एग्जिट कोड: %(exit_code)s"
+
+#~ msgid "Starting background refresh for updates."
+#~ msgstr "अपडेट के लिए बैकग्राउंड रिफ्रेश शुरू हो रहा है।"
+
+#~ msgid "Primary backend (APT) is not configured."
+#~ msgstr "प्राथमिक बैकेंड (APT) कॉन्फ़िगर नहीं है।"
+
+#~ msgid ""
+#~ "Installing from multiple package sources simultaneously is not yet "
+#~ "supported. Please select packages from one source type only."
+#~ msgstr ""
+#~ "एक साथ कई पैकेज स्रोतों से स्थापना अभी तक समर्थित नहीं है। कृपया केवल एक स्रोत प्रकार "
+#~ "से पैकेज चुनें।"
+
+#, python-format
+#~ msgid "Requested installation for unknown backend: %(backend_id)s"
+#~ msgstr "अज्ञात बैकेंड के लिए स्थापना अनुरोधित: %(backend_id)s"
 
 #~ msgid "Checking for updates..."
 #~ msgstr "अपडेट के लिए जाँच की जा रही है..."

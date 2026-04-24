@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: bodhi-update-manager 0.1-3\n"
 "Report-Msgid-Bugs-To: https://github.com/flux-abyss/bodhi-update-manager/"
 "issues\n"
-"POT-Creation-Date: 2026-04-11 16:12-0400\n"
+"POT-Creation-Date: 2026-04-24 06:43-0400\n"
 "PO-Revision-Date: 2026-03-27 14:13-0400\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: Bodhi Team\n"
@@ -18,7 +18,225 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/app.py:45
+#: bodhi_update/app.py:89 bodhi_update/dialogs.py:66
+#: data/applications//bodhi-update-manager.in:5
+#: data/applications//bodhi-update-manager-tray.in:5
+msgid "Update Manager"
+msgstr "Päivitysten hallinta"
+
+#: bodhi_update/app.py:160
+msgid "File"
+msgstr "Tiedosto"
+
+#: bodhi_update/app.py:163 bodhi_update/app.py:240
+msgid "Refresh"
+msgstr "Päivitä"
+
+#: bodhi_update/app.py:168 bodhi_update/app.py:244
+msgid "Install Selected"
+msgstr "Asenna valitut"
+
+#: bodhi_update/app.py:175 bodhi_update/app.py:236
+msgid "Select All"
+msgstr "Valitse kaikki"
+
+#: bodhi_update/app.py:180 bodhi_update/app.py:232
+msgid "Clear"
+msgstr "Tyhjennä"
+
+#: bodhi_update/app.py:187
+msgid "Quit"
+msgstr "Poistu"
+
+#: bodhi_update/app.py:195
+msgid "Edit"
+msgstr "Muokkaa"
+
+#: bodhi_update/app.py:198 bodhi_update/app.py:508
+msgid "Preferences"
+msgstr "Asetukset"
+
+#: bodhi_update/app.py:206
+msgid "View"
+msgstr "Näkymä"
+
+#: bodhi_update/app.py:209
+msgid "Show Descriptions"
+msgstr "Näytä kuvaukset"
+
+#: bodhi_update/app.py:219
+msgid "Help"
+msgstr "Ohje"
+
+#: bodhi_update/app.py:222 bodhi_update/dialogs.py:74
+msgid "About"
+msgstr "Tietoja"
+
+#: bodhi_update/app.py:267
+msgid "A system restart is required to complete the update."
+msgstr ""
+"Järjestelmän uudelleenkäynnistys vaaditaan päivityksen viimeistelemiseksi."
+
+#: bodhi_update/app.py:271
+msgid "Restart Now"
+msgstr "Käynnistä uudelleen nyt"
+
+#: bodhi_update/app.py:317
+msgid "Type"
+msgstr "Tyyppi"
+
+#: bodhi_update/app.py:330
+msgid "Upgrade"
+msgstr "Päivitys"
+
+#: bodhi_update/app.py:343
+msgid "Package"
+msgstr "Paketti"
+
+#: bodhi_update/app.py:353
+msgid "Installed"
+msgstr "Asennettu"
+
+#: bodhi_update/app.py:358
+msgid "New"
+msgstr "Uusi"
+
+#: bodhi_update/app.py:363
+msgid "Size"
+msgstr "Koko"
+
+#: bodhi_update/app.py:368
+msgid "Repository"
+msgstr "Arkisto"
+
+#: bodhi_update/app.py:410 bodhi_update/app.py:417
+msgid "Waiting for authentication..."
+msgstr "Odotetaan tunnistautumista..."
+
+#: bodhi_update/app.py:423 bodhi_update/app.py:1179
+msgid "Show Details"
+msgstr "Näytä tiedot"
+
+#: bodhi_update/app.py:427
+msgid "Back to Updates"
+msgstr "Takaisin päivityksiin"
+
+#: bodhi_update/app.py:478
+msgid "All"
+msgstr "Kaikki"
+
+#: bodhi_update/app.py:479
+msgid "Security"
+msgstr "Turvallisuus"
+
+#: bodhi_update/app.py:480
+msgid "Kernel"
+msgstr "Ydin"
+
+#: bodhi_update/app.py:481
+msgid "System"
+msgstr "Järjestelmä"
+
+#: bodhi_update/app.py:499
+#, fuzzy, python-format
+msgid "Show %(name)s updates"
+msgstr "Näytä Snap-päivitykset"
+
+#: bodhi_update/app.py:509
+#, fuzzy
+msgid "Show notifications"
+msgstr "Näytä kuvaukset"
+
+#: bodhi_update/app.py:510
+msgid "Show held/blocked packages"
+msgstr ""
+
+#: bodhi_update/app.py:511
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: bodhi_update/app.py:512
+msgid "Apply"
+msgstr "Käytä"
+
+#: bodhi_update/app.py:552
+msgid "Preferences saved."
+msgstr "Asetukset tallennettu."
+
+#: bodhi_update/app.py:687 bodhi_update/refresh_controller.py:40
+#: bodhi_update/refresh_controller.py:117
+#, fuzzy
+msgid "Loading updates..."
+msgstr "Asennetaan päivityksiä..."
+
+#: bodhi_update/app.py:836
+msgid "Unhold package"
+msgstr ""
+
+#: bodhi_update/app.py:836
+#, fuzzy
+msgid "Hold package"
+msgstr "Paketti"
+
+#: bodhi_update/app.py:919
+#, fuzzy
+msgid "Held package"
+msgstr "Järjestelmäpaketti"
+
+#: bodhi_update/app.py:928
+msgid "Blocked by held package or dependency constraints"
+msgstr ""
+
+#: bodhi_update/app.py:934 bodhi_update/app.py:974
+#: bodhi_update/hold_controller.py:124
+msgid "System package"
+msgstr "Järjestelmäpaketti"
+
+#: bodhi_update/app.py:955
+msgid "N/A"
+msgstr "Ei saatavilla"
+
+#: bodhi_update/app.py:1010
+msgid "Failed to read cached package information."
+msgstr "Välimuistissa olevien pakettitietojen lukeminen epäonnistui."
+
+#: bodhi_update/app.py:1031
+#, python-format
+msgid "Installing %(deb_name)s..."
+msgstr "Asennetaan %(deb_name)s..."
+
+#: bodhi_update/app.py:1036
+msgid "Failed"
+msgstr "Epäonnistui"
+
+#: bodhi_update/app.py:1038
+#, python-format
+msgid "Validation failed: %(exc)s"
+msgstr "Vahvistus epäonnistui: %(exc)s"
+
+#: bodhi_update/app.py:1071
+msgid "No privilege tool found. Please reboot manually."
+msgstr ""
+"Etuoikeustyökalua ei löytynyt. Käynnistä järjestelmä uudelleen manuaalisesti."
+
+#: bodhi_update/app.py:1079
+#, python-format
+msgid "Failed to initiate reboot: %(exc)s"
+msgstr "Uudelleenkäynnistys epäonnistui: %(exc)s"
+
+#: bodhi_update/app.py:1162
+msgid "No packages selected."
+msgstr "Ei valittuja paketteja."
+
+#: bodhi_update/app.py:1173
+msgid "Installing selected updates..."
+msgstr "Asennetaan valittuja päivityksiä..."
+
+#: bodhi_update/app.py:1179
+msgid "Hide Details"
+msgstr "Piilota tiedot"
+
+#: bodhi_update/dialogs.py:17
 msgid ""
 "Update Manager\n"
 "\n"
@@ -28,7 +246,7 @@ msgstr ""
 "\n"
 "Kevyt graafinen päivitysten hallinta Debian-pohjaisille jakeluille."
 
-#: src/app.py:51
+#: bodhi_update/dialogs.py:23
 msgid ""
 "This program is free software: you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
@@ -57,174 +275,28 @@ msgstr ""
 "tämän ohjelman mukana. Jos et ole saanut, katso <https://www.gnu.org/"
 "licenses/>."
 
-#: src/app.py:79 src/app.py:662 data/applications//bodhi-update-manager.in:5
-#: data/applications//bodhi-update-manager-tray.in:5
-msgid "Update Manager"
-msgstr "Päivitysten hallinta"
-
-#: src/app.py:176
-msgid "File"
-msgstr "Tiedosto"
-
-#: src/app.py:179 src/app.py:256
-msgid "Refresh"
-msgstr "Päivitä"
-
-#: src/app.py:184 src/app.py:260
-msgid "Install Selected"
-msgstr "Asenna valitut"
-
-#: src/app.py:191 src/app.py:252
-msgid "Select All"
-msgstr "Valitse kaikki"
-
-#: src/app.py:196 src/app.py:248
-msgid "Clear"
-msgstr "Tyhjennä"
-
-#: src/app.py:203
-msgid "Quit"
-msgstr "Poistu"
-
-#: src/app.py:211
-msgid "Edit"
-msgstr "Muokkaa"
-
-#: src/app.py:214 src/app.py:504
-msgid "Preferences"
-msgstr "Asetukset"
-
-#: src/app.py:222
-msgid "View"
-msgstr "Näkymä"
-
-#: src/app.py:225
-msgid "Show Descriptions"
-msgstr "Näytä kuvaukset"
-
-#: src/app.py:235
-msgid "Help"
-msgstr "Ohje"
-
-#: src/app.py:238 src/app.py:586
-msgid "About"
-msgstr "Tietoja"
-
-#: src/app.py:269
-msgid "All"
-msgstr "Kaikki"
-
-#: src/app.py:270
-msgid "Security"
-msgstr "Turvallisuus"
-
-#: src/app.py:271
-msgid "Kernel"
-msgstr "Ydin"
-
-#: src/app.py:272
-msgid "System"
-msgstr "Järjestelmä"
-
-#: src/app.py:295
-msgid "A system restart is required to complete the update."
-msgstr ""
-"Järjestelmän uudelleenkäynnistys vaaditaan päivityksen viimeistelemiseksi."
-
-#: src/app.py:299
-msgid "Restart Now"
-msgstr "Käynnistä uudelleen nyt"
-
-#: src/app.py:346
-msgid "Type"
-msgstr "Tyyppi"
-
-#: src/app.py:359
-msgid "Upgrade"
-msgstr "Päivitys"
-
-#: src/app.py:374
-msgid "Package"
-msgstr "Paketti"
-
-#: src/app.py:384
-msgid "Installed"
-msgstr "Asennettu"
-
-#: src/app.py:389
-msgid "New"
-msgstr "Uusi"
-
-#: src/app.py:394
-msgid "Size"
-msgstr "Koko"
-
-#: src/app.py:399
-msgid "Repository"
-msgstr "Arkisto"
-
-#: src/app.py:441 src/app.py:448 src/app.py:1562 src/app.py:1565
-#: src/app.py:1670
-msgid "Waiting for authentication..."
-msgstr "Odotetaan tunnistautumista..."
-
-#: src/app.py:454 src/app.py:1570 src/app.py:1981
-msgid "Show Details"
-msgstr "Näytä tiedot"
-
-#: src/app.py:458
-msgid "Back to Updates"
-msgstr "Takaisin päivityksiin"
-
-#: src/app.py:508
-msgid "Cancel"
-msgstr "Peruuta"
-
-#: src/app.py:509
-msgid "Apply"
-msgstr "Käytä"
-
-#: src/app.py:520
+#: bodhi_update/dialogs.py:44
 #, fuzzy
-msgid "Show notifications"
-msgstr "Näytä kuvaukset"
-
-#: src/app.py:524
-msgid "Show held/blocked packages"
-msgstr ""
-
-#: src/app.py:532
-msgid "Show Snap updates"
-msgstr "Näytä Snap-päivitykset"
-
-#: src/app.py:537
-msgid "Show Flatpak updates"
-msgstr "Näytä Flatpak-päivitykset"
-
-#: src/app.py:577
-msgid "Preferences saved."
-msgstr "Asetukset tallennettu."
-
-#: src/app.py:640
 msgid ""
 "Website\n"
 "\n"
-"    https://github.com/flux-abyss/bodhi-update-manager"
+"https://github.com/flux-abyss/bodhi-update-manager"
 msgstr ""
 "Kotisivu\n"
 "\n"
 "    https://github.com/flux-abyss/bodhi-update-manager"
 
-#: src/app.py:645
+#: bodhi_update/dialogs.py:49
+#, fuzzy
 msgid ""
 "Credits\n"
 "\n"
-"    Lead Developer:\n"
-"        Joseph “flux.abyss” Wiley\n"
+"Lead Developer:\n"
+"    Joseph “flux.abyss” Wiley\n"
 "\n"
-"    Contributors:\n"
-"        Robert “ylee” Wiley\n"
-"        Diego “diekrz2” K."
+"Contributors:\n"
+"    Robert “ylee” Wiley\n"
+"    Diego “diekrz2” K."
 msgstr ""
 "Tekijät\n"
 "\n"
@@ -235,300 +307,124 @@ msgstr ""
 "        Robert ”ylee” Wiley\n"
 "        Diego ”diekrz2” K."
 
-#: src/app.py:655
+#: bodhi_update/dialogs.py:59
+#, fuzzy
 msgid ""
 "Copyright © 2026 Joseph “flux.abyss” Wiley\n"
 "\n"
-"    "
 msgstr ""
 "Tekijänoikeus © 2026 Joseph ”flux.abyss” Wiley\n"
 "\n"
 "    "
 
-#: src/app.py:663
+#: bodhi_update/dialogs.py:67
 msgid "Website"
 msgstr "Kotisivu"
 
-#: src/app.py:664
+#: bodhi_update/dialogs.py:68
 msgid "Credits"
 msgstr "Tekijät"
 
-#: src/app.py:665
+#: bodhi_update/dialogs.py:69
 msgid "License"
 msgstr "Lisenssi"
 
-#: src/app.py:841
+#: bodhi_update/dialogs.py:206
+msgid "Backends"
+msgstr ""
+
+#: bodhi_update/hold_controller.py:146
+msgid "Locking package..."
+msgstr ""
+
+#: bodhi_update/hold_controller.py:146
+msgid "Unlocking package..."
+msgstr ""
+
+#: bodhi_update/hold_controller.py:157 bodhi_update/refresh_controller.py:163
+#, fuzzy
+msgid "Waiting for authorization..."
+msgstr "Odotetaan tunnistautumista..."
+
+#: bodhi_update/hold_controller.py:192
+msgid "apt-mark failed (unknown error)"
+msgstr ""
+
+#: bodhi_update/hold_controller.py:198
+#, python-format
+msgid "Package '%(name)s' is now held."
+msgstr ""
+
+#: bodhi_update/hold_controller.py:201
+#, python-format
+msgid "Package '%(name)s' is no longer held."
+msgstr ""
+
+#: bodhi_update/refresh_controller.py:84
+#, python-format
+msgid "%(current_status)s — Warning: %(message)s"
+msgstr "%(current_status)s — Varoitus: %(message)s"
+
+#: bodhi_update/refresh_controller.py:137
+#, python-format
+msgid "%(name)s get_updates failed. (%(exc)s)"
+msgstr ""
+
+#: bodhi_update/refresh_controller.py:145
+msgid "Package lists refreshed."
+msgstr "Pakettiluettelot päivitetty."
+
+#: bodhi_update/status_messages.py:25
 msgid "Restart required."
 msgstr "Järjestelmä on käynnistettävä uudelleen."
 
-#: src/app.py:841 src/app.py:1766
+#: bodhi_update/status_messages.py:25
 msgid "Ready"
 msgstr "Valmis"
 
-#: src/app.py:874 src/app.py:1247 src/app.py:1504
-#, fuzzy
-msgid "Loading updates..."
-msgstr "Asennetaan päivityksiä..."
-
-#: src/app.py:898
+#: bodhi_update/status_messages.py:31
 #, python-format
 msgid "%(message)s  Restart required."
 msgstr "%(message)s  Järjestelmä on käynnistettävä uudelleen."
 
-#: src/app.py:911
+#: bodhi_update/status_messages.py:46
 #, fuzzy
 msgid "System is up to date. No pending updates in cached package data."
 msgstr ""
 "Järjestelmä on ajan tasalla. Näytetään välimuistissa olevat pakettitiedot."
 
-#: src/app.py:913
+#: bodhi_update/status_messages.py:48
 msgid "System is up to date."
 msgstr "Järjestelmä on ajan tasalla."
 
-#: src/app.py:922 src/app.py:1023
+#: bodhi_update/status_messages.py:52 bodhi_update/status_messages.py:103
 msgid "Unknown"
 msgstr "Tuntematon"
 
-#: src/app.py:926
-#, python-format
+#: bodhi_update/status_messages.py:57
+#, fuzzy, python-format
 msgid "%(count)d update available · Download: %(size)s"
-msgid_plural "%(count)d updates available · Download: %(size)s"
-msgstr[0] "%(count)d päivitys saatavilla · Latauskoko: %(size)s"
-msgstr[1] "%(count)d päivitystä saatavilla · Latauskoko: %(size)s"
+msgstr "%(count)d päivitys saatavilla · Latauskoko: %(size)s"
 
-#: src/app.py:934
+#: bodhi_update/status_messages.py:67
 #, fuzzy, python-format
 msgid "%(message)s · Cached data — refresh to check for newer updates"
 msgstr "%(message)s · Välimuistissa olevat pakettitiedot"
 
-#: src/app.py:947
+#: bodhi_update/status_messages.py:71
 #, python-format
 msgid "%(message)s (includes %(extras)s)"
 msgstr "%(message)s (sisältää %(extras)s)"
 
-#: src/app.py:958
+#: bodhi_update/status_messages.py:78
 #, python-format
 msgid "%(n)d held/blocked package hidden"
-msgid_plural "%(n)d held/blocked packages hidden"
-msgstr[0] ""
-msgstr[1] ""
+msgstr ""
 
-#: src/app.py:1025
-#, python-format
+#: bodhi_update/status_messages.py:106
+#, fuzzy, python-format
 msgid "%(count)d update selected · Download: %(size)s"
-msgid_plural "%(count)d updates selected · Download: %(size)s"
-msgstr[0] "%(count)d päivitys valittu · Lataus: %(size)s"
-msgstr[1] "%(count)d päivitystä valittu · Lataus: %(size)s"
-
-#: src/app.py:1060
-msgid "Unhold package"
-msgstr ""
-
-#: src/app.py:1060
-#, fuzzy
-msgid "Hold package"
-msgstr "Paketti"
-
-#: src/app.py:1112 src/app.py:1352 src/app.py:1386
-msgid "System package"
-msgstr "Järjestelmäpaketti"
-
-#: src/app.py:1132
-msgid "Locking package..."
-msgstr ""
-
-#: src/app.py:1132
-msgid "Unlocking package..."
-msgstr ""
-
-#: src/app.py:1143 src/app.py:1566 src/app.py:1671 src/app.py:1912
-#, fuzzy
-msgid "Waiting for authorization..."
-msgstr "Odotetaan tunnistautumista..."
-
-#: src/app.py:1172
-msgid "apt-mark failed (unknown error)"
-msgstr ""
-
-#: src/app.py:1176
-#, python-format
-msgid "Package '%(name)s' is now held."
-msgstr ""
-
-#: src/app.py:1178
-#, python-format
-msgid "Package '%(name)s' is no longer held."
-msgstr ""
-
-#: src/app.py:1337
-#, fuzzy
-msgid "Held package"
-msgstr "Järjestelmäpaketti"
-
-#: src/app.py:1346
-msgid "Blocked by held package or dependency constraints"
-msgstr ""
-
-#: src/app.py:1369
-msgid "N/A"
-msgstr "Ei saatavilla"
-
-#: src/app.py:1431
-msgid "Failed to read cached package information."
-msgstr "Välimuistissa olevien pakettitietojen lukeminen epäonnistui."
-
-#: src/app.py:1452
-#, python-format
-msgid "Refresh finished. %d updates. Success: %s"
-msgstr "Päivitys valmis. %d päivitystä. Onnistuneesti: %s"
-
-#: src/app.py:1469
-#, python-format
-msgid "%(current_status)s — Warning: %(message)s"
-msgstr "%(current_status)s — Varoitus: %(message)s"
-
-#: src/app.py:1526
-msgid "Package lists refreshed."
-msgstr "Pakettiluettelot päivitetty."
-
-#: src/app.py:1530
-#, python-format
-msgid "Finished querying backends. Total updates: %d"
-msgstr "Taustajärjestelmien kysely valmis. Päivityksiä yhteensä: %d"
-
-#: src/app.py:1593
-msgid "This may take a few minutes."
-msgstr "Tämä voi kestää muutaman minuutin."
-
-#: src/app.py:1595 src/app.py:1596
-msgid "Installing updates..."
-msgstr "Asennetaan päivityksiä..."
-
-#: src/app.py:1600 src/app.py:1627 src/app.py:1667 src/app.py:1786
-#: src/app.py:1981
-msgid "Hide Details"
-msgstr "Piilota tiedot"
-
-#: src/app.py:1616
-#, python-format
-msgid "Spawn failed: %s"
-msgstr "Käynnistys epäonnistui: %s"
-
-#: src/app.py:1621 src/app.py:1752 src/app.py:1778
-msgid "Failed"
-msgstr "Epäonnistui"
-
-#: src/app.py:1623
-msgid "Failed to start installation. See Details below."
-msgstr "Asennuksen käynnistäminen epäonnistui. Katso tiedot alta."
-
-#: src/app.py:1628
-msgid "Failed to start installation."
-msgstr "Asennuksen käynnistäminen epäonnistui."
-
-#: src/app.py:1631
-#, python-format
-msgid "Install process spawned (pid %s)."
-msgstr "Asennusprosessi käynnistetty (pid %s)."
-
-#: src/app.py:1659
-msgid ""
-"Enter your password in the terminal below. For security, nothing will appear "
-"while typing."
-msgstr ""
-"Kirjoita salasanasi alla olevaan terminaaliin. Turvallisuussyistä mitään ei "
-"näy kirjoitettaessa."
-
-#: src/app.py:1663
-msgid "Terminal auth in use — revealing VTE for password entry."
-msgstr "Terminaalitodennus käytössä — VTE näytetään salasanan syöttöä varten."
-
-#: src/app.py:1714
-#, python-format
-msgid "Starting installation: %s"
-msgstr "Asennus alkaa: %s"
-
-#: src/app.py:1715
-#, python-format
-msgid "Command: %s"
-msgstr "Komento: %s"
-
-#: src/app.py:1749 src/app.py:1756
-#, python-format
-msgid "Installing %(deb_name)s..."
-msgstr "Asennetaan %(deb_name)s..."
-
-#: src/app.py:1754
-#, python-format
-msgid "Validation failed: %(exc)s"
-msgstr "Vahvistus epäonnistui: %(exc)s"
-
-#: src/app.py:1759
-msgid "Installation completed successfully."
-msgstr "Asennus suoritettiin onnistuneesti."
-
-#: src/app.py:1764
-msgid "Complete"
-msgstr "Valmis"
-
-#: src/app.py:1765
-msgid "Updates installed successfully."
-msgstr "Päivitykset asennettu onnistuneesti."
-
-#: src/app.py:1773
-#, python-format
-msgid "Installation failed with exit code: %s"
-msgstr "Asennus epäonnistui. Poistumiskoodi: %s"
-
-#: src/app.py:1780
-#, python-format
-msgid "Update failed. Exit code: %(exit_code)s. See Details below."
-msgstr ""
-"Päivitys epäonnistui. Poistumiskoodi: %(exit_code)s. Katso tiedot alta."
-
-#: src/app.py:1787
-#, python-format
-msgid "Update failed. Exit code: %(exit_code)s"
-msgstr "Päivitys epäonnistui. Poistumiskoodi: %(exit_code)s"
-
-#: src/app.py:1816
-msgid "No privilege tool found. Please reboot manually."
-msgstr ""
-"Etuoikeustyökalua ei löytynyt. Käynnistä järjestelmä uudelleen manuaalisesti."
-
-#: src/app.py:1824
-#, python-format
-msgid "Failed to initiate reboot: %(exc)s"
-msgstr "Uudelleenkäynnistys epäonnistui: %(exc)s"
-
-#: src/app.py:1920
-msgid "Starting background refresh for updates."
-msgstr "Käynnistetään päivitysten taustapäivitys."
-
-#: src/app.py:1938
-msgid "Primary backend (APT) is not configured."
-msgstr "Ensisijainen taustajärjestelmä (APT) ei ole määritetty."
-
-#: src/app.py:1942
-msgid ""
-"Installing from multiple package sources simultaneously is not yet "
-"supported. Please select packages from one source type only."
-msgstr ""
-"Useista pakettilähteistä samanaikainen asennus ei ole vielä tuettu. Valitse "
-"paketit vain yhdestä lähteestä."
-
-#: src/app.py:1952
-#, python-format
-msgid "Requested installation for unknown backend: %(backend_id)s"
-msgstr "Pyydetty asennus tuntemattomasta taustajärjestelmästä: %(backend_id)s"
-
-#: src/app.py:1965
-msgid "No packages selected."
-msgstr "Ei valittuja paketteja."
-
-#: src/app.py:1975
-msgid "Installing selected updates..."
-msgstr "Asennetaan valittuja päivityksiä..."
+msgstr "%(count)d päivitys valittu · Lataus: %(size)s"
 
 #: data/applications//bodhi-update-manager.in:6
 #: data/applications//bodhi-update-manager-tray.in:6
@@ -542,6 +438,96 @@ msgstr ""
 #: data/polkit/org.bodhi.updatemanager.policy.in.h:2
 msgid "Authentication is required to install or update packages."
 msgstr ""
+
+#~ msgid "Show Flatpak updates"
+#~ msgstr "Näytä Flatpak-päivitykset"
+
+#, python-format
+#~ msgid "Refresh finished. %d updates. Success: %s"
+#~ msgstr "Päivitys valmis. %d päivitystä. Onnistuneesti: %s"
+
+#, python-format
+#~ msgid "Finished querying backends. Total updates: %d"
+#~ msgstr "Taustajärjestelmien kysely valmis. Päivityksiä yhteensä: %d"
+
+#~ msgid "This may take a few minutes."
+#~ msgstr "Tämä voi kestää muutaman minuutin."
+
+#~ msgid "Installing updates..."
+#~ msgstr "Asennetaan päivityksiä..."
+
+#, python-format
+#~ msgid "Spawn failed: %s"
+#~ msgstr "Käynnistys epäonnistui: %s"
+
+#~ msgid "Failed to start installation. See Details below."
+#~ msgstr "Asennuksen käynnistäminen epäonnistui. Katso tiedot alta."
+
+#~ msgid "Failed to start installation."
+#~ msgstr "Asennuksen käynnistäminen epäonnistui."
+
+#, python-format
+#~ msgid "Install process spawned (pid %s)."
+#~ msgstr "Asennusprosessi käynnistetty (pid %s)."
+
+#~ msgid ""
+#~ "Enter your password in the terminal below. For security, nothing will "
+#~ "appear while typing."
+#~ msgstr ""
+#~ "Kirjoita salasanasi alla olevaan terminaaliin. Turvallisuussyistä mitään "
+#~ "ei näy kirjoitettaessa."
+
+#~ msgid "Terminal auth in use — revealing VTE for password entry."
+#~ msgstr ""
+#~ "Terminaalitodennus käytössä — VTE näytetään salasanan syöttöä varten."
+
+#, python-format
+#~ msgid "Starting installation: %s"
+#~ msgstr "Asennus alkaa: %s"
+
+#, python-format
+#~ msgid "Command: %s"
+#~ msgstr "Komento: %s"
+
+#~ msgid "Installation completed successfully."
+#~ msgstr "Asennus suoritettiin onnistuneesti."
+
+#~ msgid "Complete"
+#~ msgstr "Valmis"
+
+#~ msgid "Updates installed successfully."
+#~ msgstr "Päivitykset asennettu onnistuneesti."
+
+#, python-format
+#~ msgid "Installation failed with exit code: %s"
+#~ msgstr "Asennus epäonnistui. Poistumiskoodi: %s"
+
+#, python-format
+#~ msgid "Update failed. Exit code: %(exit_code)s. See Details below."
+#~ msgstr ""
+#~ "Päivitys epäonnistui. Poistumiskoodi: %(exit_code)s. Katso tiedot alta."
+
+#, python-format
+#~ msgid "Update failed. Exit code: %(exit_code)s"
+#~ msgstr "Päivitys epäonnistui. Poistumiskoodi: %(exit_code)s"
+
+#~ msgid "Starting background refresh for updates."
+#~ msgstr "Käynnistetään päivitysten taustapäivitys."
+
+#~ msgid "Primary backend (APT) is not configured."
+#~ msgstr "Ensisijainen taustajärjestelmä (APT) ei ole määritetty."
+
+#~ msgid ""
+#~ "Installing from multiple package sources simultaneously is not yet "
+#~ "supported. Please select packages from one source type only."
+#~ msgstr ""
+#~ "Useista pakettilähteistä samanaikainen asennus ei ole vielä tuettu. "
+#~ "Valitse paketit vain yhdestä lähteestä."
+
+#, python-format
+#~ msgid "Requested installation for unknown backend: %(backend_id)s"
+#~ msgstr ""
+#~ "Pyydetty asennus tuntemattomasta taustajärjestelmästä: %(backend_id)s"
 
 #~ msgid "Checking for updates..."
 #~ msgstr "Tarkistetaan päivityksiä..."

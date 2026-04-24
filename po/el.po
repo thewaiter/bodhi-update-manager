@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: bodhi-update-manager 0.1-3\n"
 "Report-Msgid-Bugs-To: https://github.com/flux-abyss/bodhi-update-manager/"
 "issues\n"
-"POT-Creation-Date: 2026-04-11 16:12-0400\n"
+"POT-Creation-Date: 2026-04-24 06:43-0400\n"
 "PO-Revision-Date: 2026-03-27 14:13-0400\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: Bodhi Team\n"
@@ -18,7 +18,224 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/app.py:45
+#: bodhi_update/app.py:89 bodhi_update/dialogs.py:66
+#: data/applications//bodhi-update-manager.in:5
+#: data/applications//bodhi-update-manager-tray.in:5
+msgid "Update Manager"
+msgstr "Διαχειριστής Ενημερώσεων"
+
+#: bodhi_update/app.py:160
+msgid "File"
+msgstr "Αρχείο"
+
+#: bodhi_update/app.py:163 bodhi_update/app.py:240
+msgid "Refresh"
+msgstr "Ανανέωση"
+
+#: bodhi_update/app.py:168 bodhi_update/app.py:244
+msgid "Install Selected"
+msgstr "Εγκατάσταση Επιλεγμένων"
+
+#: bodhi_update/app.py:175 bodhi_update/app.py:236
+msgid "Select All"
+msgstr "Επιλογή Όλων"
+
+#: bodhi_update/app.py:180 bodhi_update/app.py:232
+msgid "Clear"
+msgstr "Καθαρισμός"
+
+#: bodhi_update/app.py:187
+msgid "Quit"
+msgstr "Έξοδος"
+
+#: bodhi_update/app.py:195
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+#: bodhi_update/app.py:198 bodhi_update/app.py:508
+msgid "Preferences"
+msgstr "Προτιμήσεις"
+
+#: bodhi_update/app.py:206
+msgid "View"
+msgstr "Προβολή"
+
+#: bodhi_update/app.py:209
+msgid "Show Descriptions"
+msgstr "Εμφάνιση Περιγραφών"
+
+#: bodhi_update/app.py:219
+msgid "Help"
+msgstr "Βοήθεια"
+
+#: bodhi_update/app.py:222 bodhi_update/dialogs.py:74
+msgid "About"
+msgstr "Σχετικά"
+
+#: bodhi_update/app.py:267
+msgid "A system restart is required to complete the update."
+msgstr "Απαιτείται επανεκκίνηση του συστήματος για να ολοκληρωθεί η ενημέρωση."
+
+#: bodhi_update/app.py:271
+msgid "Restart Now"
+msgstr "Επανεκκίνηση Τώρα"
+
+#: bodhi_update/app.py:317
+msgid "Type"
+msgstr "Τύπος"
+
+#: bodhi_update/app.py:330
+msgid "Upgrade"
+msgstr "Αναβάθμιση"
+
+#: bodhi_update/app.py:343
+msgid "Package"
+msgstr "Πακέτο"
+
+#: bodhi_update/app.py:353
+msgid "Installed"
+msgstr "Εγκατεστημένο"
+
+#: bodhi_update/app.py:358
+msgid "New"
+msgstr "Νέο"
+
+#: bodhi_update/app.py:363
+msgid "Size"
+msgstr "Μέγεθος"
+
+#: bodhi_update/app.py:368
+msgid "Repository"
+msgstr "Αποθετήριο"
+
+#: bodhi_update/app.py:410 bodhi_update/app.py:417
+msgid "Waiting for authentication..."
+msgstr "Αναμονή για πιστοποίηση..."
+
+#: bodhi_update/app.py:423 bodhi_update/app.py:1179
+msgid "Show Details"
+msgstr "Εμφάνιση λεπτομερειών"
+
+#: bodhi_update/app.py:427
+msgid "Back to Updates"
+msgstr "Επιστροφή στις ενημερώσεις"
+
+#: bodhi_update/app.py:478
+msgid "All"
+msgstr "Όλα"
+
+#: bodhi_update/app.py:479
+msgid "Security"
+msgstr "Ασφάλεια"
+
+#: bodhi_update/app.py:480
+msgid "Kernel"
+msgstr "Πυρήνας"
+
+#: bodhi_update/app.py:481
+msgid "System"
+msgstr "Σύστημα"
+
+#: bodhi_update/app.py:499
+#, fuzzy, python-format
+msgid "Show %(name)s updates"
+msgstr "Εμφάνιση ενημερώσεων Snap"
+
+#: bodhi_update/app.py:509
+#, fuzzy
+msgid "Show notifications"
+msgstr "Εμφάνιση Περιγραφών"
+
+#: bodhi_update/app.py:510
+msgid "Show held/blocked packages"
+msgstr ""
+
+#: bodhi_update/app.py:511
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+#: bodhi_update/app.py:512
+msgid "Apply"
+msgstr "Εφαρμογή"
+
+#: bodhi_update/app.py:552
+msgid "Preferences saved."
+msgstr "Οι προτιμήσεις αποθηκεύτηκαν."
+
+#: bodhi_update/app.py:687 bodhi_update/refresh_controller.py:40
+#: bodhi_update/refresh_controller.py:117
+#, fuzzy
+msgid "Loading updates..."
+msgstr "Εγκατάσταση ενημερώσεων..."
+
+#: bodhi_update/app.py:836
+msgid "Unhold package"
+msgstr ""
+
+#: bodhi_update/app.py:836
+#, fuzzy
+msgid "Hold package"
+msgstr "Πακέτο"
+
+#: bodhi_update/app.py:919
+#, fuzzy
+msgid "Held package"
+msgstr "Πακέτο συστήματος"
+
+#: bodhi_update/app.py:928
+msgid "Blocked by held package or dependency constraints"
+msgstr ""
+
+#: bodhi_update/app.py:934 bodhi_update/app.py:974
+#: bodhi_update/hold_controller.py:124
+msgid "System package"
+msgstr "Πακέτο συστήματος"
+
+#: bodhi_update/app.py:955
+msgid "N/A"
+msgstr "Δ/Υ"
+
+#: bodhi_update/app.py:1010
+msgid "Failed to read cached package information."
+msgstr "Αποτυχία ανάγνωσης προσωρινά αποθηκευμένων πληροφοριών πακέτου."
+
+#: bodhi_update/app.py:1031
+#, python-format
+msgid "Installing %(deb_name)s..."
+msgstr "Εγκατάσταση %(deb_name)s..."
+
+#: bodhi_update/app.py:1036
+msgid "Failed"
+msgstr "Απέτυχε"
+
+#: bodhi_update/app.py:1038
+#, python-format
+msgid "Validation failed: %(exc)s"
+msgstr "Αποτυχία επικύρωσης: %(exc)s"
+
+#: bodhi_update/app.py:1071
+msgid "No privilege tool found. Please reboot manually."
+msgstr ""
+"Δεν βρέθηκε εργαλείο δικαιωμάτων. Παρακαλώ κάντε επανεκκίνηση χειροκίνητα."
+
+#: bodhi_update/app.py:1079
+#, python-format
+msgid "Failed to initiate reboot: %(exc)s"
+msgstr "Αποτυχία έναρξης επανεκκίνησης: %(exc)s"
+
+#: bodhi_update/app.py:1162
+msgid "No packages selected."
+msgstr "Δεν έχουν επιλεγεί πακέτα."
+
+#: bodhi_update/app.py:1173
+msgid "Installing selected updates..."
+msgstr "Γίνεται εγκατάσταση των επιλεγμένων ενημερώσεων..."
+
+#: bodhi_update/app.py:1179
+msgid "Hide Details"
+msgstr "Απόκρυψη λεπτομερειών"
+
+#: bodhi_update/dialogs.py:17
 msgid ""
 "Update Manager\n"
 "\n"
@@ -29,7 +246,7 @@ msgstr ""
 "Ένας ελαφρύς γραφικός διαχειριστής ενημερώσεων για διανομές βασισμένες στο "
 "Debian."
 
-#: src/app.py:51
+#: bodhi_update/dialogs.py:23
 msgid ""
 "This program is free software: you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
@@ -58,173 +275,28 @@ msgstr ""
 "Θα πρέπει να έχετε λάβει ένα αντίγραφο της GNU General Public License\n"
 "μαζί με αυτό το πρόγραμμα. Αν όχι, δείτε <https://www.gnu.org/licenses/>."
 
-#: src/app.py:79 src/app.py:662 data/applications//bodhi-update-manager.in:5
-#: data/applications//bodhi-update-manager-tray.in:5
-msgid "Update Manager"
-msgstr "Διαχειριστής Ενημερώσεων"
-
-#: src/app.py:176
-msgid "File"
-msgstr "Αρχείο"
-
-#: src/app.py:179 src/app.py:256
-msgid "Refresh"
-msgstr "Ανανέωση"
-
-#: src/app.py:184 src/app.py:260
-msgid "Install Selected"
-msgstr "Εγκατάσταση Επιλεγμένων"
-
-#: src/app.py:191 src/app.py:252
-msgid "Select All"
-msgstr "Επιλογή Όλων"
-
-#: src/app.py:196 src/app.py:248
-msgid "Clear"
-msgstr "Καθαρισμός"
-
-#: src/app.py:203
-msgid "Quit"
-msgstr "Έξοδος"
-
-#: src/app.py:211
-msgid "Edit"
-msgstr "Επεξεργασία"
-
-#: src/app.py:214 src/app.py:504
-msgid "Preferences"
-msgstr "Προτιμήσεις"
-
-#: src/app.py:222
-msgid "View"
-msgstr "Προβολή"
-
-#: src/app.py:225
-msgid "Show Descriptions"
-msgstr "Εμφάνιση Περιγραφών"
-
-#: src/app.py:235
-msgid "Help"
-msgstr "Βοήθεια"
-
-#: src/app.py:238 src/app.py:586
-msgid "About"
-msgstr "Σχετικά"
-
-#: src/app.py:269
-msgid "All"
-msgstr "Όλα"
-
-#: src/app.py:270
-msgid "Security"
-msgstr "Ασφάλεια"
-
-#: src/app.py:271
-msgid "Kernel"
-msgstr "Πυρήνας"
-
-#: src/app.py:272
-msgid "System"
-msgstr "Σύστημα"
-
-#: src/app.py:295
-msgid "A system restart is required to complete the update."
-msgstr "Απαιτείται επανεκκίνηση του συστήματος για να ολοκληρωθεί η ενημέρωση."
-
-#: src/app.py:299
-msgid "Restart Now"
-msgstr "Επανεκκίνηση Τώρα"
-
-#: src/app.py:346
-msgid "Type"
-msgstr "Τύπος"
-
-#: src/app.py:359
-msgid "Upgrade"
-msgstr "Αναβάθμιση"
-
-#: src/app.py:374
-msgid "Package"
-msgstr "Πακέτο"
-
-#: src/app.py:384
-msgid "Installed"
-msgstr "Εγκατεστημένο"
-
-#: src/app.py:389
-msgid "New"
-msgstr "Νέο"
-
-#: src/app.py:394
-msgid "Size"
-msgstr "Μέγεθος"
-
-#: src/app.py:399
-msgid "Repository"
-msgstr "Αποθετήριο"
-
-#: src/app.py:441 src/app.py:448 src/app.py:1562 src/app.py:1565
-#: src/app.py:1670
-msgid "Waiting for authentication..."
-msgstr "Αναμονή για πιστοποίηση..."
-
-#: src/app.py:454 src/app.py:1570 src/app.py:1981
-msgid "Show Details"
-msgstr "Εμφάνιση λεπτομερειών"
-
-#: src/app.py:458
-msgid "Back to Updates"
-msgstr "Επιστροφή στις ενημερώσεις"
-
-#: src/app.py:508
-msgid "Cancel"
-msgstr "Ακύρωση"
-
-#: src/app.py:509
-msgid "Apply"
-msgstr "Εφαρμογή"
-
-#: src/app.py:520
+#: bodhi_update/dialogs.py:44
 #, fuzzy
-msgid "Show notifications"
-msgstr "Εμφάνιση Περιγραφών"
-
-#: src/app.py:524
-msgid "Show held/blocked packages"
-msgstr ""
-
-#: src/app.py:532
-msgid "Show Snap updates"
-msgstr "Εμφάνιση ενημερώσεων Snap"
-
-#: src/app.py:537
-msgid "Show Flatpak updates"
-msgstr "Εμφάνιση ενημερώσεων Flatpak"
-
-#: src/app.py:577
-msgid "Preferences saved."
-msgstr "Οι προτιμήσεις αποθηκεύτηκαν."
-
-#: src/app.py:640
 msgid ""
 "Website\n"
 "\n"
-"    https://github.com/flux-abyss/bodhi-update-manager"
+"https://github.com/flux-abyss/bodhi-update-manager"
 msgstr ""
 "Ιστότοπος\n"
 "\n"
 "    https://github.com/flux-abyss/bodhi-update-manager"
 
-#: src/app.py:645
+#: bodhi_update/dialogs.py:49
+#, fuzzy
 msgid ""
 "Credits\n"
 "\n"
-"    Lead Developer:\n"
-"        Joseph “flux.abyss” Wiley\n"
+"Lead Developer:\n"
+"    Joseph “flux.abyss” Wiley\n"
 "\n"
-"    Contributors:\n"
-"        Robert “ylee” Wiley\n"
-"        Diego “diekrz2” K."
+"Contributors:\n"
+"    Robert “ylee” Wiley\n"
+"    Diego “diekrz2” K."
 msgstr ""
 "Συντελεστές\n"
 "\n"
@@ -235,302 +307,124 @@ msgstr ""
 "        Robert “ylee” Wiley\n"
 "        Diego “diekrz2” K."
 
-#: src/app.py:655
+#: bodhi_update/dialogs.py:59
+#, fuzzy
 msgid ""
 "Copyright © 2026 Joseph “flux.abyss” Wiley\n"
 "\n"
-"    "
 msgstr ""
 "Πνευματικά δικαιώματα © 2026 Joseph “flux.abyss” Wiley\n"
 "\n"
 "    "
 
-#: src/app.py:663
+#: bodhi_update/dialogs.py:67
 msgid "Website"
 msgstr "Ιστότοπος"
 
-#: src/app.py:664
+#: bodhi_update/dialogs.py:68
 msgid "Credits"
 msgstr "Συντελεστές"
 
-#: src/app.py:665
+#: bodhi_update/dialogs.py:69
 msgid "License"
 msgstr "Άδεια"
 
-#: src/app.py:841
+#: bodhi_update/dialogs.py:206
+msgid "Backends"
+msgstr ""
+
+#: bodhi_update/hold_controller.py:146
+msgid "Locking package..."
+msgstr ""
+
+#: bodhi_update/hold_controller.py:146
+msgid "Unlocking package..."
+msgstr ""
+
+#: bodhi_update/hold_controller.py:157 bodhi_update/refresh_controller.py:163
+#, fuzzy
+msgid "Waiting for authorization..."
+msgstr "Αναμονή για πιστοποίηση..."
+
+#: bodhi_update/hold_controller.py:192
+msgid "apt-mark failed (unknown error)"
+msgstr ""
+
+#: bodhi_update/hold_controller.py:198
+#, python-format
+msgid "Package '%(name)s' is now held."
+msgstr ""
+
+#: bodhi_update/hold_controller.py:201
+#, python-format
+msgid "Package '%(name)s' is no longer held."
+msgstr ""
+
+#: bodhi_update/refresh_controller.py:84
+#, python-format
+msgid "%(current_status)s — Warning: %(message)s"
+msgstr "%(current_status)s — Προειδοποίηση: %(message)s"
+
+#: bodhi_update/refresh_controller.py:137
+#, python-format
+msgid "%(name)s get_updates failed. (%(exc)s)"
+msgstr ""
+
+#: bodhi_update/refresh_controller.py:145
+msgid "Package lists refreshed."
+msgstr "Οι λίστες πακέτων ανανεώθηκαν."
+
+#: bodhi_update/status_messages.py:25
 msgid "Restart required."
 msgstr "Απαιτείται επανεκκίνηση."
 
-#: src/app.py:841 src/app.py:1766
+#: bodhi_update/status_messages.py:25
 msgid "Ready"
 msgstr "Έτοιμο"
 
-#: src/app.py:874 src/app.py:1247 src/app.py:1504
-#, fuzzy
-msgid "Loading updates..."
-msgstr "Εγκατάσταση ενημερώσεων..."
-
-#: src/app.py:898
+#: bodhi_update/status_messages.py:31
 #, python-format
 msgid "%(message)s  Restart required."
 msgstr "%(message)s  Απαιτείται επανεκκίνηση."
 
-#: src/app.py:911
+#: bodhi_update/status_messages.py:46
 #, fuzzy
 msgid "System is up to date. No pending updates in cached package data."
 msgstr ""
 "Το σύστημα είναι ενημερωμένο. Εμφανίζονται τα αποθηκευμένα δεδομένα πακέτων."
 
-#: src/app.py:913
+#: bodhi_update/status_messages.py:48
 msgid "System is up to date."
 msgstr "Το σύστημα είναι ενημερωμένο."
 
-#: src/app.py:922 src/app.py:1023
+#: bodhi_update/status_messages.py:52 bodhi_update/status_messages.py:103
 msgid "Unknown"
 msgstr "Άγνωστο"
 
-#: src/app.py:926
-#, python-format
+#: bodhi_update/status_messages.py:57
+#, fuzzy, python-format
 msgid "%(count)d update available · Download: %(size)s"
-msgid_plural "%(count)d updates available · Download: %(size)s"
-msgstr[0] "%(count)d διαθέσιμη ενημέρωση · Λήψη: %(size)s"
-msgstr[1] "%(count)d διαθέσιμες ενημερώσεις · Λήψη: %(size)s"
+msgstr "%(count)d διαθέσιμη ενημέρωση · Λήψη: %(size)s"
 
-#: src/app.py:934
+#: bodhi_update/status_messages.py:67
 #, fuzzy, python-format
 msgid "%(message)s · Cached data — refresh to check for newer updates"
 msgstr "%(message)s · Προσωρινά αποθηκευμένα δεδομένα πακέτου"
 
-#: src/app.py:947
+#: bodhi_update/status_messages.py:71
 #, python-format
 msgid "%(message)s (includes %(extras)s)"
 msgstr "%(message)s (περιλαμβάνει %(extras)s)"
 
-#: src/app.py:958
+#: bodhi_update/status_messages.py:78
 #, python-format
 msgid "%(n)d held/blocked package hidden"
-msgid_plural "%(n)d held/blocked packages hidden"
-msgstr[0] ""
-msgstr[1] ""
+msgstr ""
 
-#: src/app.py:1025
-#, python-format
+#: bodhi_update/status_messages.py:106
+#, fuzzy, python-format
 msgid "%(count)d update selected · Download: %(size)s"
-msgid_plural "%(count)d updates selected · Download: %(size)s"
-msgstr[0] "%(count)d ενημέρωση επιλεγμένη · Λήψη: %(size)s"
-msgstr[1] "%(count)d ενημερώσεις επιλεγμένες · Λήψη: %(size)s"
-
-#: src/app.py:1060
-msgid "Unhold package"
-msgstr ""
-
-#: src/app.py:1060
-#, fuzzy
-msgid "Hold package"
-msgstr "Πακέτο"
-
-#: src/app.py:1112 src/app.py:1352 src/app.py:1386
-msgid "System package"
-msgstr "Πακέτο συστήματος"
-
-#: src/app.py:1132
-msgid "Locking package..."
-msgstr ""
-
-#: src/app.py:1132
-msgid "Unlocking package..."
-msgstr ""
-
-#: src/app.py:1143 src/app.py:1566 src/app.py:1671 src/app.py:1912
-#, fuzzy
-msgid "Waiting for authorization..."
-msgstr "Αναμονή για πιστοποίηση..."
-
-#: src/app.py:1172
-msgid "apt-mark failed (unknown error)"
-msgstr ""
-
-#: src/app.py:1176
-#, python-format
-msgid "Package '%(name)s' is now held."
-msgstr ""
-
-#: src/app.py:1178
-#, python-format
-msgid "Package '%(name)s' is no longer held."
-msgstr ""
-
-#: src/app.py:1337
-#, fuzzy
-msgid "Held package"
-msgstr "Πακέτο συστήματος"
-
-#: src/app.py:1346
-msgid "Blocked by held package or dependency constraints"
-msgstr ""
-
-#: src/app.py:1369
-msgid "N/A"
-msgstr "Δ/Υ"
-
-#: src/app.py:1431
-msgid "Failed to read cached package information."
-msgstr "Αποτυχία ανάγνωσης προσωρινά αποθηκευμένων πληροφοριών πακέτου."
-
-#: src/app.py:1452
-#, python-format
-msgid "Refresh finished. %d updates. Success: %s"
-msgstr "Η ανανέωση ολοκληρώθηκε. %d ενημερώσεις. Επιτυχία: %s"
-
-#: src/app.py:1469
-#, python-format
-msgid "%(current_status)s — Warning: %(message)s"
-msgstr "%(current_status)s — Προειδοποίηση: %(message)s"
-
-#: src/app.py:1526
-msgid "Package lists refreshed."
-msgstr "Οι λίστες πακέτων ανανεώθηκαν."
-
-#: src/app.py:1530
-#, python-format
-msgid "Finished querying backends. Total updates: %d"
-msgstr "Ολοκληρώθηκε η αναζήτηση στα backends. Σύνολο ενημερώσεων: %d"
-
-#: src/app.py:1593
-msgid "This may take a few minutes."
-msgstr "Αυτό μπορεί να πάρει μερικά λεπτά."
-
-#: src/app.py:1595 src/app.py:1596
-msgid "Installing updates..."
-msgstr "Εγκατάσταση ενημερώσεων..."
-
-#: src/app.py:1600 src/app.py:1627 src/app.py:1667 src/app.py:1786
-#: src/app.py:1981
-msgid "Hide Details"
-msgstr "Απόκρυψη λεπτομερειών"
-
-#: src/app.py:1616
-#, python-format
-msgid "Spawn failed: %s"
-msgstr "Αποτυχία εκκίνησης: %s"
-
-#: src/app.py:1621 src/app.py:1752 src/app.py:1778
-msgid "Failed"
-msgstr "Απέτυχε"
-
-#: src/app.py:1623
-msgid "Failed to start installation. See Details below."
-msgstr "Αποτυχία εκκίνησης εγκατάστασης. Δείτε τις λεπτομέρειες παρακάτω."
-
-#: src/app.py:1628
-msgid "Failed to start installation."
-msgstr "Αποτυχία εκκίνησης εγκατάστασης."
-
-#: src/app.py:1631
-#, python-format
-msgid "Install process spawned (pid %s)."
-msgstr "Η διαδικασία εγκατάστασης ξεκίνησε (pid %s)."
-
-#: src/app.py:1659
-msgid ""
-"Enter your password in the terminal below. For security, nothing will appear "
-"while typing."
-msgstr ""
-"Εισάγετε τον κωδικό σας στο τερματικό παρακάτω. Για λόγους ασφαλείας, δεν θα "
-"εμφανίζεται τίποτα κατά την πληκτρολόγηση."
-
-#: src/app.py:1663
-msgid "Terminal auth in use — revealing VTE for password entry."
-msgstr ""
-"Ενεργός έλεγχος ταυτότητας τερματικού — εμφάνιση VTE για εισαγωγή κωδικού."
-
-#: src/app.py:1714
-#, python-format
-msgid "Starting installation: %s"
-msgstr "Έναρξη εγκατάστασης: %s"
-
-#: src/app.py:1715
-#, python-format
-msgid "Command: %s"
-msgstr "Εντολή: %s"
-
-#: src/app.py:1749 src/app.py:1756
-#, python-format
-msgid "Installing %(deb_name)s..."
-msgstr "Εγκατάσταση %(deb_name)s..."
-
-#: src/app.py:1754
-#, python-format
-msgid "Validation failed: %(exc)s"
-msgstr "Αποτυχία επικύρωσης: %(exc)s"
-
-#: src/app.py:1759
-msgid "Installation completed successfully."
-msgstr "Η εγκατάσταση ολοκληρώθηκε με επιτυχία."
-
-#: src/app.py:1764
-msgid "Complete"
-msgstr "Ολοκληρώθηκε"
-
-#: src/app.py:1765
-msgid "Updates installed successfully."
-msgstr "Οι ενημερώσεις εγκαταστάθηκαν με επιτυχία."
-
-#: src/app.py:1773
-#, python-format
-msgid "Installation failed with exit code: %s"
-msgstr "Η εγκατάσταση απέτυχε με κωδικό εξόδου: %s"
-
-#: src/app.py:1780
-#, python-format
-msgid "Update failed. Exit code: %(exit_code)s. See Details below."
-msgstr ""
-"Η ενημέρωση απέτυχε. Κωδικός εξόδου: %(exit_code)s. Δείτε τις λεπτομέρειες "
-"παρακάτω."
-
-#: src/app.py:1787
-#, python-format
-msgid "Update failed. Exit code: %(exit_code)s"
-msgstr "Η ενημέρωση απέτυχε. Κωδικός εξόδου: %(exit_code)s"
-
-#: src/app.py:1816
-msgid "No privilege tool found. Please reboot manually."
-msgstr ""
-"Δεν βρέθηκε εργαλείο δικαιωμάτων. Παρακαλώ κάντε επανεκκίνηση χειροκίνητα."
-
-#: src/app.py:1824
-#, python-format
-msgid "Failed to initiate reboot: %(exc)s"
-msgstr "Αποτυχία έναρξης επανεκκίνησης: %(exc)s"
-
-#: src/app.py:1920
-msgid "Starting background refresh for updates."
-msgstr "Έναρξη φρεσκαρίσματος ενημερώσεων στο παρασκήνιο."
-
-#: src/app.py:1938
-msgid "Primary backend (APT) is not configured."
-msgstr "Ο κύριος πίσω τερματισμός (APT) δεν έχει ρυθμιστεί."
-
-#: src/app.py:1942
-msgid ""
-"Installing from multiple package sources simultaneously is not yet "
-"supported. Please select packages from one source type only."
-msgstr ""
-"Η εγκατάσταση από πολλαπλές πηγές πακέτων ταυτόχρονα δεν υποστηρίζεται "
-"ακόμη. Παρακαλώ επιλέξτε πακέτα από έναν μόνο τύπο πηγής."
-
-#: src/app.py:1952
-#, python-format
-msgid "Requested installation for unknown backend: %(backend_id)s"
-msgstr "Ζητήθηκε εγκατάσταση για άγνωστο πίσω τερματισμό: %(backend_id)s"
-
-#: src/app.py:1965
-msgid "No packages selected."
-msgstr "Δεν έχουν επιλεγεί πακέτα."
-
-#: src/app.py:1975
-msgid "Installing selected updates..."
-msgstr "Γίνεται εγκατάσταση των επιλεγμένων ενημερώσεων..."
+msgstr "%(count)d ενημέρωση επιλεγμένη · Λήψη: %(size)s"
 
 #: data/applications//bodhi-update-manager.in:6
 #: data/applications//bodhi-update-manager-tray.in:6
@@ -544,6 +438,96 @@ msgstr ""
 #: data/polkit/org.bodhi.updatemanager.policy.in.h:2
 msgid "Authentication is required to install or update packages."
 msgstr ""
+
+#~ msgid "Show Flatpak updates"
+#~ msgstr "Εμφάνιση ενημερώσεων Flatpak"
+
+#, python-format
+#~ msgid "Refresh finished. %d updates. Success: %s"
+#~ msgstr "Η ανανέωση ολοκληρώθηκε. %d ενημερώσεις. Επιτυχία: %s"
+
+#, python-format
+#~ msgid "Finished querying backends. Total updates: %d"
+#~ msgstr "Ολοκληρώθηκε η αναζήτηση στα backends. Σύνολο ενημερώσεων: %d"
+
+#~ msgid "This may take a few minutes."
+#~ msgstr "Αυτό μπορεί να πάρει μερικά λεπτά."
+
+#~ msgid "Installing updates..."
+#~ msgstr "Εγκατάσταση ενημερώσεων..."
+
+#, python-format
+#~ msgid "Spawn failed: %s"
+#~ msgstr "Αποτυχία εκκίνησης: %s"
+
+#~ msgid "Failed to start installation. See Details below."
+#~ msgstr "Αποτυχία εκκίνησης εγκατάστασης. Δείτε τις λεπτομέρειες παρακάτω."
+
+#~ msgid "Failed to start installation."
+#~ msgstr "Αποτυχία εκκίνησης εγκατάστασης."
+
+#, python-format
+#~ msgid "Install process spawned (pid %s)."
+#~ msgstr "Η διαδικασία εγκατάστασης ξεκίνησε (pid %s)."
+
+#~ msgid ""
+#~ "Enter your password in the terminal below. For security, nothing will "
+#~ "appear while typing."
+#~ msgstr ""
+#~ "Εισάγετε τον κωδικό σας στο τερματικό παρακάτω. Για λόγους ασφαλείας, δεν "
+#~ "θα εμφανίζεται τίποτα κατά την πληκτρολόγηση."
+
+#~ msgid "Terminal auth in use — revealing VTE for password entry."
+#~ msgstr ""
+#~ "Ενεργός έλεγχος ταυτότητας τερματικού — εμφάνιση VTE για εισαγωγή κωδικού."
+
+#, python-format
+#~ msgid "Starting installation: %s"
+#~ msgstr "Έναρξη εγκατάστασης: %s"
+
+#, python-format
+#~ msgid "Command: %s"
+#~ msgstr "Εντολή: %s"
+
+#~ msgid "Installation completed successfully."
+#~ msgstr "Η εγκατάσταση ολοκληρώθηκε με επιτυχία."
+
+#~ msgid "Complete"
+#~ msgstr "Ολοκληρώθηκε"
+
+#~ msgid "Updates installed successfully."
+#~ msgstr "Οι ενημερώσεις εγκαταστάθηκαν με επιτυχία."
+
+#, python-format
+#~ msgid "Installation failed with exit code: %s"
+#~ msgstr "Η εγκατάσταση απέτυχε με κωδικό εξόδου: %s"
+
+#, python-format
+#~ msgid "Update failed. Exit code: %(exit_code)s. See Details below."
+#~ msgstr ""
+#~ "Η ενημέρωση απέτυχε. Κωδικός εξόδου: %(exit_code)s. Δείτε τις "
+#~ "λεπτομέρειες παρακάτω."
+
+#, python-format
+#~ msgid "Update failed. Exit code: %(exit_code)s"
+#~ msgstr "Η ενημέρωση απέτυχε. Κωδικός εξόδου: %(exit_code)s"
+
+#~ msgid "Starting background refresh for updates."
+#~ msgstr "Έναρξη φρεσκαρίσματος ενημερώσεων στο παρασκήνιο."
+
+#~ msgid "Primary backend (APT) is not configured."
+#~ msgstr "Ο κύριος πίσω τερματισμός (APT) δεν έχει ρυθμιστεί."
+
+#~ msgid ""
+#~ "Installing from multiple package sources simultaneously is not yet "
+#~ "supported. Please select packages from one source type only."
+#~ msgstr ""
+#~ "Η εγκατάσταση από πολλαπλές πηγές πακέτων ταυτόχρονα δεν υποστηρίζεται "
+#~ "ακόμη. Παρακαλώ επιλέξτε πακέτα από έναν μόνο τύπο πηγής."
+
+#, python-format
+#~ msgid "Requested installation for unknown backend: %(backend_id)s"
+#~ msgstr "Ζητήθηκε εγκατάσταση για άγνωστο πίσω τερματισμό: %(backend_id)s"
 
 #~ msgid "Checking for updates..."
 #~ msgstr "Γίνεται έλεγχος για ενημερώσεις..."
