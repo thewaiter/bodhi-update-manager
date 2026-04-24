@@ -1,7 +1,6 @@
 data/applications/bodhi-update-manager.desktop usr/share/applications/
 data/applications/bodhi-update-manager-tray.desktop etc/xdg/autostart
 data/bin/bodhi-update-manager usr/bin/
-data/bin/bodhi-update-manager-tray usr/lib/bodhi-update-manager/
 data/icons/bodhi-update-manager.png usr/share/icons/hicolor/256x256/apps/
 data/libexec/bodhi-update-manager-root usr/libexec/
 data/polkit/org.bodhi.updatemanager.policy usr/share/polkit-1/actions/
