@@ -138,9 +138,9 @@ msgid "System"
 msgstr "Systém"
 
 #: bodhi_update/app.py:499
-#, fuzzy, python-format
+#, python-format
 msgid "Show %(name)s updates"
-msgstr "Zobraziť Snap aktualizácie"
+msgstr "Zobraziť %(name) aktualizácie"
 
 #: bodhi_update/app.py:509
 msgid "Show notifications"
@@ -271,7 +271,6 @@ msgstr ""
 "Ak nie, pozrite si https://www.gnu.org/licenses/"
 
 #: bodhi_update/dialogs.py:44
-#, fuzzy
 msgid ""
 "Website\n"
 "\n"
@@ -279,10 +278,9 @@ msgid ""
 msgstr ""
 "Webová stránka\n"
 "\n"
-"    https://github.com/flux-abyss/bodhi-update-manager"
+"https://github.com/flux-abyss/bodhi-update-manager"
 
 #: bodhi_update/dialogs.py:49
-#, fuzzy
 msgid ""
 "Credits\n"
 "\n"
@@ -295,12 +293,12 @@ msgid ""
 msgstr ""
 "Autori\n"
 "\n"
-"    Hlavný vývojár:\n"
-"        Joseph „flux.abyss“ Wiley\n"
+"Hlavný vývojár:\n"
+"    Joseph „flux.abyss“ Wiley\n"
 "\n"
-"    Přispěvatelé:\n"
-"        Robert „ylee“ Wiley\n"
-"        Diego „diekrz2“ K."
+"Prispievatelia:\n"
+"    Robert „ylee“ Wiley\n"
+"    Diego „diekrz2“ K."
 
 #: bodhi_update/dialogs.py:59
 msgid ""
@@ -322,7 +320,7 @@ msgstr "Licencia"
 
 #: bodhi_update/dialogs.py:206
 msgid "Backends"
-msgstr ""
+msgstr "Zdroje aktualizácií"
 
 #: bodhi_update/hold_controller.py:146
 msgid "Locking package..."
@@ -358,7 +356,7 @@ msgstr "%(current_status)s — Upozornenie: %(message)s"
 #: bodhi_update/refresh_controller.py:137
 #, python-format
 msgid "%(name)s get_updates failed. (%(exc)s)"
-msgstr ""
+msgstr "%(name)s get_updates zlyhalo. (%(exc)s)"
 
 #: bodhi_update/refresh_controller.py:145
 msgid "Package lists refreshed."
@@ -391,15 +389,15 @@ msgid "Unknown"
 msgstr "Neznáme"
 
 #: bodhi_update/status_messages.py:57
-#, fuzzy, python-format
+#, python-format
 msgid "%(count)d update available · Download: %(size)s"
-msgstr "%(count)d aktualizácia dostupná · Stiahnuť: %(size)s"
+msgstr "%(count)d dostupných aktualizácií · Stiahnuť: %(size)s"
 
 #: bodhi_update/status_messages.py:67
 #, python-format
 msgid "%(message)s · Cached data — refresh to check for newer updates"
 msgstr ""
-"%(message)s · Uložené údaje — obnovte pre kontrolu novších aktualizácií"
+"%(message)s · Uložené údaje — obnoviť pre kontrolu novších aktualizácií"
 
 #: bodhi_update/status_messages.py:71
 #, python-format
@@ -407,14 +405,14 @@ msgid "%(message)s (includes %(extras)s)"
 msgstr "%(message)s (zahŕňa %(extras)s)"
 
 #: bodhi_update/status_messages.py:78
-#, fuzzy, python-format
+#, python-format
 msgid "%(n)d held/blocked package hidden"
-msgstr "%(n)d podržaný/blokovaný balík skrytý"
+msgstr "%(n)d podržaný/blokovaný balíček skrytý"
 
 #: bodhi_update/status_messages.py:106
-#, fuzzy, python-format
+#, python-format
 msgid "%(count)d update selected · Download: %(size)s"
-msgstr "%(count)d aktualizácia vybraná · Stiahnuť: %(size)s"
+msgstr "%(count)d vybraných aktualizácií · Stiahnuť: %(size)s"
 
 #: data/applications//bodhi-update-manager.in:6
 #: data/applications//bodhi-update-manager-tray.in:6
@@ -429,89 +427,3 @@ msgstr "Spustiť pomocný nástroj Správcu aktualizácií s oprávneniami"
 msgid "Authentication is required to install or update packages."
 msgstr "Na inštaláciu alebo aktualizáciu balíkov je potrebné overenie"
 
-#~ msgid "Show Flatpak updates"
-#~ msgstr "Zobraziť Flatpak aktualizácie"
-
-#, python-format
-#~ msgid "Refresh finished. %d updates. Success: %s"
-#~ msgstr "Obnovenie dokončené. %d aktualizácií. Úspech: %s"
-
-#, python-format
-#~ msgid "Finished querying backends. Total updates: %d"
-#~ msgstr "Dotazovanie backendov dokončené. Celkom aktualizácií: %d"
-
-#~ msgid "This may take a few minutes."
-#~ msgstr "Môže to trvať niekoľko minút."
-
-#~ msgid "Installing updates..."
-#~ msgstr "Inštalujú sa aktualizácie..."
-
-#, python-format
-#~ msgid "Spawn failed: %s"
-#~ msgstr "Spustenie zlyhalo: %s"
-
-#~ msgid "Failed to start installation. See Details below."
-#~ msgstr "Inštalácia sa nezahájila. Pozri podrobnosti nižšie."
-
-#~ msgid "Failed to start installation."
-#~ msgstr "Inštalácia sa nezahájila."
-
-#, python-format
-#~ msgid "Install process spawned (pid %s)."
-#~ msgstr "Spustený proces inštalácie (pid %s)."
-
-#~ msgid ""
-#~ "Enter your password in the terminal below. For security, nothing will "
-#~ "appear while typing."
-#~ msgstr ""
-#~ "Zadajte svoje heslo v termináli. Kvôli bezpečnosti sa nič nezobrazuje "
-#~ "počas písania."
-
-#~ msgid "Terminal auth in use — revealing VTE for password entry."
-#~ msgstr "Prebieha autorizácia - zadajte heslo v termináli."
-
-#, python-format
-#~ msgid "Starting installation: %s"
-#~ msgstr "Spúšťa sa inštalácia: %s"
-
-#, python-format
-#~ msgid "Command: %s"
-#~ msgstr "Príkaz: %s"
-
-#~ msgid "Installation completed successfully."
-#~ msgstr "Inštalácia bola úspešne dokončená."
-
-#~ msgid "Complete"
-#~ msgstr "Dokončené"
-
-#~ msgid "Updates installed successfully."
-#~ msgstr "Aktualizácie boli úspešne nainštalované."
-
-#, python-format
-#~ msgid "Installation failed with exit code: %s"
-#~ msgstr "Inštalácia zlyhala s návratovým kódom: %s"
-
-#, python-format
-#~ msgid "Update failed. Exit code: %(exit_code)s. See Details below."
-#~ msgstr "Aktualizácia zlyhala. Kód: %(exit_code)s. Pozri podrobnosti nižšie."
-
-#, python-format
-#~ msgid "Update failed. Exit code: %(exit_code)s"
-#~ msgstr "Aktualizácia zlyhala. Kód: %(exit_code)s"
-
-#~ msgid "Starting background refresh for updates."
-#~ msgstr "Spúšťa sa obnovenie aktualizácií na pozadí."
-
-#~ msgid "Primary backend (APT) is not configured."
-#~ msgstr "Primárny backend (APT) nie je nakonfigurovaný."
-
-#~ msgid ""
-#~ "Installing from multiple package sources simultaneously is not yet "
-#~ "supported. Please select packages from one source type only."
-#~ msgstr ""
-#~ "Inštalácia z viacerých zdrojov balíkov súčasne zatiaľ nie je podporovaná. "
-#~ "Vyberte balíky len z jedného typu zdroja."
-
-#, python-format
-#~ msgid "Requested installation for unknown backend: %(backend_id)s"
-#~ msgstr "Požadovaná inštalácia pre neznámy backend: %(backend_id)s"
