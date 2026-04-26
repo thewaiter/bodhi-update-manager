@@ -1,7 +1,7 @@
 #!/usr/bin/sh
 #
 # unify_locales:
-#	
+#
 
 # Generate translated desktop files  from desktop.in files
 msgfmt \
