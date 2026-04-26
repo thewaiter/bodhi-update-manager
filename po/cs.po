@@ -140,7 +140,7 @@ msgstr "Systém"
 #: bodhi_update/app.py:499
 #, python-format
 msgid "Show %(name)s updates"
-msgstr "Zobrazit %(name) aktualizace"
+msgstr "Zobrazit %(name)s aktualizace"
 
 #: bodhi_update/app.py:509
 msgid "Show notifications"
@@ -358,7 +358,7 @@ msgstr "%(current_status)s — Varování: %(message)s"
 #: bodhi_update/refresh_controller.py:137
 #, python-format
 msgid "%(name)s get_updates failed. (%(exc)s)"
-msgstr ""
+msgstr "%(name)s get_updates selhalo. (%(exc)s)"
 
 #: bodhi_update/refresh_controller.py:145
 msgid "Package lists refreshed."

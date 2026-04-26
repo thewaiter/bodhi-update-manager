@@ -140,7 +140,7 @@ msgstr "Systém"
 #: bodhi_update/app.py:499
 #, python-format
 msgid "Show %(name)s updates"
-msgstr "Zobraziť %(name) aktualizácie"
+msgstr "Zobraziť %(name)s aktualizácie"
 
 #: bodhi_update/app.py:509
 msgid "Show notifications"
