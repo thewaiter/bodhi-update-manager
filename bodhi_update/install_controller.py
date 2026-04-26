@@ -7,6 +7,9 @@ import os
 import random
 from gettext import gettext as _
 
+import gi  # noqa: E402
+gi.require_version("Vte", "2.91") 
+
 from gi.repository import GLib, Vte
 
 from bodhi_update.utils import find_privilege_tool
