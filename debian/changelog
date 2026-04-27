@@ -5,7 +5,7 @@ bodhi-update-manager (0.1-3) unstable; urgency=medium
   * Tray entry: Exec=bodhi-update-manager-tray, Icon=bodhi-update-manager
   * Localization added
 
- -- Joseph Wiley <flux.abyss@proton.me>  Sun, 23 Mar 2026 00:58:00 -0400
+ -- Joseph Wiley <flux.abyss@proton.me>  Mon, 23 Mar 2026 00:58:00 -0400
 
 bodhi-update-manager (0.1-2) unstable; urgency=medium
 
