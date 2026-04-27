@@ -6,7 +6,7 @@ import logging
 import os
 import random
 import threading
-from gettext import gettext as _
+from gettext import bindtextdomain, gettext as _, textdomain
 
 from gi.repository import GLib
 
@@ -14,6 +14,10 @@ from bodhi_update.backends import get_registry
 from bodhi_update.models import CONSTRAINT_NORMAL, UpdateItem
 
 log = logging.getLogger(__name__)
+
+APP_NAME = "bodhi-update-manager"
+bindtextdomain(APP_NAME, "/usr/share/locale")
+textdomain(APP_NAME)
 
 
 class RefreshController:

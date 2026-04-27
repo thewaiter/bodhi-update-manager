@@ -7,7 +7,7 @@ import os
 import random
 import subprocess
 import threading
-from gettext import gettext as _
+from gettext import bindtextdomain, gettext as _, textdomain
 
 from gi.repository import GLib
 
@@ -17,6 +17,10 @@ from bodhi_update.models import CONSTRAINT_NORMAL
 from bodhi_update.utils import format_size
 
 log = logging.getLogger(__name__)
+
+APP_NAME = "bodhi-update-manager"
+bindtextdomain(APP_NAME, "/usr/share/locale")
+textdomain(APP_NAME)
 
 
 class HoldController:
@@ -195,9 +199,9 @@ class HoldController:
                 return
 
             if hold:
-                status = _("Package '%(name)s' is now held.") % {"name": pkg_name}
+                status = N_("Package '%(name)s' is now held.") % {"name": pkg_name}
             else:
-                status = _(
+                status = N_(
                     "Package '%(name)s' is no longer held."
                 ) % {"name": pkg_name}
 
