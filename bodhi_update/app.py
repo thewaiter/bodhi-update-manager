@@ -37,7 +37,7 @@ from bodhi_update.status_messages import (  # noqa: E402
     with_restart_suffix,
 )
 from bodhi_update.utils import (  # noqa: E402
-    find_privilege_tool, format_size, reboot_required,
+    find_privilege_tool, format_size, get_pkg_severity, reboot_required,
 )
 
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
@@ -752,15 +752,13 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         )
         self.set_status(format_update_count_status(count, total_bytes, opts))
 
-        from bodhi_update.tray import _pkg_severity  # noqa: PLC0415
-
         severity = "low"
         actionable_count = 0
         for row in self.store:
             if row[Col.HELD] in (CONSTRAINT_HELD, CONSTRAINT_BLOCKED):
                 continue
             actionable_count += 1
-            value = _pkg_severity(
+            value = get_pkg_severity(
                 row[Col.RAW_NAME],
                 row[Col.CATEGORY],
                 row[Col.BACKEND],

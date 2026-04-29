@@ -37,25 +37,6 @@ from gi.repository import GLib, Gtk  # noqa: E402
 if TYPE_CHECKING:
     from bodhi_update.app import UpdateManagerApplication
 
-# Keep this list small: core platform plumbing only.
-_MEDIUM_PREFIXES = (
-    "linux-",
-    "systemd",
-    "libc",
-    "glibc",
-    "dbus",
-    "openssl",
-    "gnupg",
-    "apt",
-    "dpkg",
-    "bash",
-    "coreutils",
-    "util-linux",
-    "sudo",
-    "moksha",
-    "bodhi-",
-)
-
 
 def _read_pref(key: str, default: bool = True) -> bool:
     """Read a single boolean preference from the shared prefs file."""
@@ -151,7 +132,7 @@ class TrayIcon:
     def _toggle_window(self) -> None:
         """Toggle window visibility.
 
-        When opening the window while the badge indicates pending updates,
+        When opening the window while updates are pending,
         schedule a background refresh so the visible data matches the tray
         state.  The window is always shown immediately using cached data.
         """

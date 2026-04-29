@@ -1,4 +1,4 @@
-"""Small utility helpers for display and system state checks."""
+"""Small utility helpers for display, system state checks, and severity classification."""
 
 from __future__ import annotations
 
@@ -34,3 +34,32 @@ def find_privilege_tool() -> str | None:
         if shutil.which(tool):
             return tool
     return None
+
+
+# Keep this list small: core platform plumbing only.
+_MEDIUM_PREFIXES = (
+    "linux-",
+    "systemd",
+    "libc",
+    "glibc",
+    "dbus",
+    "openssl",
+    "gnupg",
+    "apt",
+    "dpkg",
+    "bash",
+    "coreutils",
+    "util-linux",
+    "sudo",
+    "moksha",
+    "bodhi-",
+)
+
+
+def get_pkg_severity(name: str, category: str, backend: str) -> str:
+    """Return high, medium, or low severity for an update item."""
+    if category in ("security", "kernel"):
+        return "high"
+    if backend == "apt" and name.startswith(_MEDIUM_PREFIXES):
+        return "medium"
+    return "low"
