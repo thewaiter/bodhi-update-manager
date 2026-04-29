@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://github.com/flux-abyss/bodhi-update-manager/"
 "issues\n"
 "POT-Creation-Date: 2026-04-27 17:51-0400\n"
-"PO-Revision-Date: 2026-04-27 11:47+0100\n"
+"PO-Revision-Date: 2026-04-28 09:31+0100\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Bodhi Team\n"
 "Language: pt\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.9\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: bodhi_update/app.py:89 bodhi_update/dialogs.py:70
 #: data/applications//bodhi-update-manager.in:5
@@ -396,11 +396,11 @@ msgid "Unknown"
 msgstr "Desconhecido"
 
 #: bodhi_update/status_messages.py:60
-#, fuzzy, python-format
+#, python-format
 msgid "%(count)d update available · Download: %(size)s"
 msgid_plural "%(count)d updates available · Download: %(size)s"
 msgstr[0] "%(count)d atualização disponível · Transferência: %(size)s"
-msgstr[1] "%(count)d atualização disponível · Transferência: %(size)s"
+msgstr[1] "%(count)d atualizações disponíveis · Transferência: %(size)s"
 
 #: bodhi_update/status_messages.py:70
 #, python-format
@@ -415,18 +415,18 @@ msgid "%(message)s (includes %(extras)s)"
 msgstr "%(message)s (inclui %(extras)s)"
 
 #: bodhi_update/status_messages.py:81
-#, fuzzy, python-format
+#, python-format
 msgid "%(n)d held/blocked package hidden"
 msgid_plural "%(n)d held/blocked packages hidden"
 msgstr[0] "%(n)d pacote retido/bloqueado ocultado"
-msgstr[1] "%(n)d pacote retido/bloqueado ocultado"
+msgstr[1] "%(n)d pacotes retidos/bloqueados ocultados"
 
 #: bodhi_update/status_messages.py:109
-#, fuzzy, python-format
+#, python-format
 msgid "%(count)d update selected · Download: %(size)s"
 msgid_plural "%(count)d updates selected · Download: %(size)s"
 msgstr[0] "%(count)d atualização selecionada · Transferência: %(size)s"
-msgstr[1] "%(count)d atualização selecionada · Transferência: %(size)s"
+msgstr[1] "%(count)d atualizações selecionadas · Transferência: %(size)s"
 
 #: data/applications//bodhi-update-manager.in:7
 #: data/applications//bodhi-update-manager-tray.in:7
@@ -435,7 +435,7 @@ msgstr "Instala atualizações do sistema e pacotes locais para o Bodhi Linux"
 
 #: data/polkit/org.bodhi.updatemanager.policy.in.h:1
 msgid "Run the Update Manager privileged helper"
-msgstr "Execute o auxiliar com privilégios do Gestor de Atualizações"
+msgstr "Executar a ferramenta auxiliar Gestor de Atualizações com permissões"
 
 #: data/polkit/org.bodhi.updatemanager.policy.in.h:2
 msgid "Authentication is required to install or update packages."
