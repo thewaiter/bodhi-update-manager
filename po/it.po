@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/flux-abyss/bodhi-update-manager/"
 "issues\n"
-"POT-Creation-Date: 2026-04-24 06:43-0400\n"
+"POT-Creation-Date: 2026-04-27 17:51-0400\n"
 "PO-Revision-Date: 2026-04-08 17:34+0200\n"
 "Last-Translator: diekrz2 <diekrz2@bodhilinux.com>\n"
 "Language-Team: Bodhi Team\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: bodhi_update/app.py:89 bodhi_update/dialogs.py:66
+#: bodhi_update/app.py:89 bodhi_update/dialogs.py:70
 #: data/applications//bodhi-update-manager.in:5
 #: data/applications//bodhi-update-manager-tray.in:5
 msgid "Update Manager"
@@ -68,7 +68,7 @@ msgstr "Mostra descrizioni"
 msgid "Help"
 msgstr "Aiuto"
 
-#: bodhi_update/app.py:222 bodhi_update/dialogs.py:74
+#: bodhi_update/app.py:222 bodhi_update/dialogs.py:78
 msgid "About"
 msgstr "Info"
 
@@ -161,8 +161,8 @@ msgstr "Applica"
 msgid "Preferences saved."
 msgstr "Preferenze salvate."
 
-#: bodhi_update/app.py:687 bodhi_update/refresh_controller.py:40
-#: bodhi_update/refresh_controller.py:117
+#: bodhi_update/app.py:687 bodhi_update/refresh_controller.py:44
+#: bodhi_update/refresh_controller.py:121
 msgid "Loading updates..."
 msgstr "Carico gli aggiornamenti..."
 
@@ -183,7 +183,7 @@ msgid "Blocked by held package or dependency constraints"
 msgstr "Bloccato da un pacchetto trattenuto o da una dipendenza"
 
 #: bodhi_update/app.py:934 bodhi_update/app.py:974
-#: bodhi_update/hold_controller.py:124
+#: bodhi_update/hold_controller.py:128
 msgid "System package"
 msgstr "Pacchetto sistema"
 
@@ -230,7 +230,7 @@ msgstr "Installo pacchetti selezionati..."
 msgid "Hide Details"
 msgstr "Nascondi dettagli"
 
-#: bodhi_update/dialogs.py:17
+#: bodhi_update/dialogs.py:21
 msgid ""
 "Update Manager\n"
 "\n"
@@ -241,7 +241,7 @@ msgstr ""
 "Un manager di aggiornamenti grafico e leggero per distribuzioni basate su "
 "Debian."
 
-#: bodhi_update/dialogs.py:23
+#: bodhi_update/dialogs.py:27
 msgid ""
 "This program is free software: you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
@@ -271,7 +271,7 @@ msgstr ""
 "insieme a questo programma. In caso contrario, vedere <https://www.gnu.org/"
 "licenses/>."
 
-#: bodhi_update/dialogs.py:44
+#: bodhi_update/dialogs.py:48
 #, fuzzy
 msgid ""
 "Website\n"
@@ -282,7 +282,7 @@ msgstr ""
 "\n"
 "    https://github.com/flux-abyss/bodhi-update-manager"
 
-#: bodhi_update/dialogs.py:49
+#: bodhi_update/dialogs.py:53
 #, fuzzy
 msgid ""
 "Credits\n"
@@ -303,7 +303,7 @@ msgstr ""
 "        Robert “ylee” Wiley\n"
 "        Diego “diekrz2” K."
 
-#: bodhi_update/dialogs.py:59
+#: bodhi_update/dialogs.py:63
 #, fuzzy
 msgid ""
 "Copyright © 2026 Joseph “flux.abyss” Wiley\n"
@@ -313,117 +313,123 @@ msgstr ""
 "\n"
 "    "
 
-#: bodhi_update/dialogs.py:67
+#: bodhi_update/dialogs.py:71
 msgid "Website"
 msgstr "Sito web"
 
-#: bodhi_update/dialogs.py:68
+#: bodhi_update/dialogs.py:72
 msgid "Credits"
 msgstr "Riconoscimenti"
 
-#: bodhi_update/dialogs.py:69
+#: bodhi_update/dialogs.py:73
 msgid "License"
 msgstr "Licenza"
 
-#: bodhi_update/dialogs.py:206
+#: bodhi_update/dialogs.py:211
 msgid "Backends"
 msgstr ""
 
-#: bodhi_update/hold_controller.py:146
+#: bodhi_update/hold_controller.py:150
 msgid "Locking package..."
 msgstr "Blocco il pacchetto..."
 
-#: bodhi_update/hold_controller.py:146
+#: bodhi_update/hold_controller.py:150
 msgid "Unlocking package..."
 msgstr "Sblocco il pacchetto..."
 
-#: bodhi_update/hold_controller.py:157 bodhi_update/refresh_controller.py:163
+#: bodhi_update/hold_controller.py:161 bodhi_update/refresh_controller.py:167
 msgid "Waiting for authorization..."
 msgstr "In attesa dell'autenticazione..."
 
-#: bodhi_update/hold_controller.py:192
+#: bodhi_update/hold_controller.py:196
 msgid "apt-mark failed (unknown error)"
 msgstr "contrassegna apt fallita (errore sconosciuto)"
 
-#: bodhi_update/hold_controller.py:198
+#: bodhi_update/hold_controller.py:202
 #, python-format
 msgid "Package '%(name)s' is now held."
 msgstr "Il pacchetto '%(name)s' è ora trattenuto."
 
-#: bodhi_update/hold_controller.py:201
+#: bodhi_update/hold_controller.py:205
 #, python-format
 msgid "Package '%(name)s' is no longer held."
 msgstr "Il pacchetto '%(name)s' non è più trattenuto."
 
-#: bodhi_update/refresh_controller.py:84
+#: bodhi_update/refresh_controller.py:88
 #, python-format
 msgid "%(current_status)s — Warning: %(message)s"
 msgstr "%(current_status)s — Attenzione: %(message)s"
 
-#: bodhi_update/refresh_controller.py:137
+#: bodhi_update/refresh_controller.py:141
 #, python-format
 msgid "%(name)s get_updates failed. (%(exc)s)"
 msgstr ""
 
-#: bodhi_update/refresh_controller.py:145
+#: bodhi_update/refresh_controller.py:149
 msgid "Package lists refreshed."
 msgstr "Lista pacchetti ricaricata."
 
-#: bodhi_update/status_messages.py:25
+#: bodhi_update/status_messages.py:28
 msgid "Restart required."
 msgstr "Riavvio necessario."
 
-#: bodhi_update/status_messages.py:25
+#: bodhi_update/status_messages.py:28
 msgid "Ready"
 msgstr "Pronto"
 
-#: bodhi_update/status_messages.py:31
+#: bodhi_update/status_messages.py:34
 #, python-format
 msgid "%(message)s  Restart required."
 msgstr "%(message)s  Riavvio richiesto."
 
-#: bodhi_update/status_messages.py:46
+#: bodhi_update/status_messages.py:49
 msgid "System is up to date. No pending updates in cached package data."
 msgstr ""
 "Il sistema è aggiornato. Non ci sono aggiornamenti sospesi tra i dati in "
 "cache."
 
-#: bodhi_update/status_messages.py:48
+#: bodhi_update/status_messages.py:51
 msgid "System is up to date."
 msgstr "Il sistema è aggiornato."
 
-#: bodhi_update/status_messages.py:52 bodhi_update/status_messages.py:103
+#: bodhi_update/status_messages.py:55 bodhi_update/status_messages.py:106
 msgid "Unknown"
 msgstr "Sconosciuto"
 
-#: bodhi_update/status_messages.py:57
+#: bodhi_update/status_messages.py:60
 #, fuzzy, python-format
 msgid "%(count)d update available · Download: %(size)s"
-msgstr "%(count)d aggiornamento disponibile · Da scaricare: %(size)s"
+msgid_plural "%(count)d updates available · Download: %(size)s"
+msgstr[0] "%(count)d aggiornamento disponibile · Da scaricare: %(size)s"
+msgstr[1] "%(count)d aggiornamento disponibile · Da scaricare: %(size)s"
 
-#: bodhi_update/status_messages.py:67
+#: bodhi_update/status_messages.py:70
 #, python-format
 msgid "%(message)s · Cached data — refresh to check for newer updates"
 msgstr ""
 "%(message)s · Dati in cache — aggiorna per verificare nuovi aggiornamenti"
 
-#: bodhi_update/status_messages.py:71
+#: bodhi_update/status_messages.py:74
 #, python-format
 msgid "%(message)s (includes %(extras)s)"
 msgstr "%(message)s (include %(extras)s)"
 
-#: bodhi_update/status_messages.py:78
+#: bodhi_update/status_messages.py:81
 #, fuzzy, python-format
 msgid "%(n)d held/blocked package hidden"
-msgstr "%(n)d pacchetto trattenuto/bloccato nascosto"
+msgid_plural "%(n)d held/blocked packages hidden"
+msgstr[0] "%(n)d pacchetto trattenuto/bloccato nascosto"
+msgstr[1] "%(n)d pacchetto trattenuto/bloccato nascosto"
 
-#: bodhi_update/status_messages.py:106
+#: bodhi_update/status_messages.py:109
 #, fuzzy, python-format
 msgid "%(count)d update selected · Download: %(size)s"
-msgstr "%(count)d aggiornamento selezionato · Da scaricare: %(size)s"
+msgid_plural "%(count)d updates selected · Download: %(size)s"
+msgstr[0] "%(count)d aggiornamento selezionato · Da scaricare: %(size)s"
+msgstr[1] "%(count)d aggiornamento selezionato · Da scaricare: %(size)s"
 
-#: data/applications//bodhi-update-manager.in:6
-#: data/applications//bodhi-update-manager-tray.in:6
+#: data/applications//bodhi-update-manager.in:7
+#: data/applications//bodhi-update-manager-tray.in:7
 msgid "Install system updates and local packages for Bodhi Linux"
 msgstr "Installa gli aggiornamenti e pacchetti locali per Bodhi Linux"
 

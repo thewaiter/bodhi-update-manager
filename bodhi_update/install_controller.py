@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import os
 import random
-from gettext import gettext as _
+from gettext import bindtextdomain, gettext as _, textdomain
 
 import gi  # noqa: E402
 gi.require_version("Vte", "2.91") 
@@ -15,6 +15,10 @@ from gi.repository import GLib, Vte
 from bodhi_update.utils import find_privilege_tool
 
 log = logging.getLogger(__name__)
+
+APP_NAME = "bodhi-update-manager"
+bindtextdomain(APP_NAME, "/usr/share/locale")
+textdomain(APP_NAME)
 
 # ---------------------------------------------------------------------------
 # Installed-helper path resolution

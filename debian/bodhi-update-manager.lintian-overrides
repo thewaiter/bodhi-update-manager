@@ -1,0 +1,2 @@
+bodhi-update-manager: ored-depends-on-obsolete-package
+bodhi-update-manager: no-manual-page [usr/bin/bodhi-update-manager]

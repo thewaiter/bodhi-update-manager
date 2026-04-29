@@ -22,7 +22,7 @@ POLICY_TEMPLATE="data/polkit/org.bodhi.updatemanager.policy.in"
 DESKTOP_OUTPUT="$APP_DIR/bodhi-update-manager.desktop"
 XDG_OUTPUT="$APP_DIR/bodhi-update-manager-tray.desktop"
 POLICY_OUTPUT="data/polkit/org.bodhi.updatemanager.policy"
-VERSION=$(PYTHONPATH=bodhi_update python3 -c 'from bodhi_update._version import __version__; print(__version__)')
+VERSION=$(PYTHONPATH=. python3 -c 'from bodhi_update._version import __version__; print(__version__)')
 ISSUES="https://github.com/flux-abyss/bodhi-update-manager/issues"
 
 mapfile -t langs < <(grep -vE '^\s*($|#)' "$TRANSLATION_DIR/LINGUAS")
@@ -33,7 +33,7 @@ xgettext \
   --language=Python \
   --from-code=UTF-8 \
   --keyword=_ \
-  --keyword=N_ \
+  --keyword=N_:1,2 \
   --keyword=ngettext:1,2 \
   -o "$POT_FILE" \
   --files-from="$FILE_LIST"
@@ -114,6 +114,6 @@ intltool-merge -x "$TRANSLATION_DIR" \
     "$POLICY_OUTPUT" > /dev/null 2>&1
 
 # Remove backup po files
-rm "$TRANSLATION_DIR"/*.po~ > /dev/null 2>&1
+rm -f "$TRANSLATION_DIR"/*.po~ > /dev/null 2>&1
 
 echo -e "\nLocalization Update Complete"

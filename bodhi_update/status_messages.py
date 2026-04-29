@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from gettext import gettext as _, ngettext as N_
+from gettext import bindtextdomain, gettext as _, ngettext as N_, textdomain
 from typing import Iterable
-
 from bodhi_update.models import CONSTRAINT_BLOCKED, CONSTRAINT_HELD
 from bodhi_update.utils import format_size, reboot_required
+
+APP_NAME = "bodhi-update-manager"
+bindtextdomain(APP_NAME, "/usr/share/locale")
+textdomain(APP_NAME)
 
 
 @dataclass
