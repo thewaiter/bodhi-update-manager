@@ -1149,7 +1149,10 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
             self.set_status(message)
             return
 
-        self.refresh_controller.start_refresh()
+        try:
+            self.refresh_controller.start_refresh()
+        except AttributeError:
+            log.error("Refresh controller not available")
 
     def on_install_selected(self,
                             _button: Gtk.Button | Gtk.MenuItem | None) -> None:
