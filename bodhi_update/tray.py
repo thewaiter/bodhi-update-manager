@@ -84,6 +84,7 @@ class TrayIcon:
         self._indicator = None
         self._poll_source_id: int | None = None
         self._last_count: int = 0  # most recent count from set_update_count
+        self._shown: bool = False
 
         menu = self._build_menu()
 
@@ -127,12 +128,6 @@ class TrayIcon:
     # Actions
     # ------------------------------------------------------------------
 
-    def _show_window(self) -> None:
-        """Lazily create the window (if needed) and make it visible."""
-        win = self._app.get_or_create_window()
-        win.show_all()
-        win.present()
-
     def _toggle_window(self) -> None:
         """Toggle window visibility.
 
@@ -141,13 +136,18 @@ class TrayIcon:
         state.  The window is always shown immediately using cached data.
         """
         win = self._app.get_or_create_window()
-        if win.get_visible():
+        if win.get_visible() and self._shown:
+            log.debug("toogle window hide")
             win.hide()
         else:
+            log.debug("toogle window show: last count = %d", self._last_count)
+            win = self._app.get_or_create_window()
             win.show_all()
             win.present()
-            if self._last_count > 0:
-                GLib.idle_add(self._maybe_trigger_refresh, win)
+            self._shown = True
+            # Fixme: Do we want or need this. Maybe on first use only? or not at all?
+            # if self._last_count > 0:
+            #     GLib.idle_add(self._maybe_trigger_refresh, win)
 
     # pylint: disable=no-self-use; FIXME
     def _maybe_trigger_refresh(self, win: object) -> bool:
@@ -159,11 +159,12 @@ class TrayIcon:
 
     def _check_updates(self) -> None:
         """Show the window and trigger an update check."""
-        win = self._app.get_or_create_window()
-        if not win.get_visible():
-            win.show_all()
-            win.present()
-        win.on_check_updates(None)
+        log.debug("check updates")
+        win = self._app.get_or_create_window(no_cache=True)
+        win.show_all()
+        win.present()
+        self._shown = True
+        GLib.idle_add(win.on_check_updates, None)
 
     def _quit(self) -> None:
         """Quit the application, releasing the hold() if in tray-only mode."""
@@ -187,6 +188,9 @@ class TrayIcon:
 
         Runs on a daemon thread; posts indicator update back to the main loop.
         """
+        # Fixme: 1. this is a lot of code to wrap a try block around.
+        #           Should be more specific on points of failure.
+        #        2. should add log.debug msgs are excepts.
         try:
             initialize_registry()  # idempotent
             count = 0
@@ -235,7 +239,7 @@ class TrayIcon:
         else:
             tooltip = "Update Manager - Updates available"
 
-        # self._indicator.set_icon_full(self._ICON_NAME, tooltip)
+        self._indicator.set_icon_full(self._ICON_NAME, tooltip)
 
     # ------------------------------------------------------------------
     # Lifecycle

@@ -88,8 +88,13 @@ def clamp(value: int, lo: int, hi: int) -> int:
 class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attributes
     """Main application window: update list, install screen, preferences, and tray hooks."""
 
-    def __init__(self, deb_path: str | None = None) -> None:
+    def __init__(
+        self,
+        deb_path: str | None = None,
+        no_cache: bool = False,
+    ) -> None:
         super().__init__(title=_("Update Manager"))
+        self._no_cache = no_cache
         self._apply_adaptive_window_size()
         self.set_icon_name("bodhi-update-manager")
         self.set_position(Gtk.WindowPosition.CENTER)
@@ -108,8 +113,8 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         self.main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         self.add(self.main_box)
         self.show_all()
-
-        GLib.idle_add(self._build_full_ui, deb_path)
+        self._build_full_ui(deb_path)
+        #GLib.idle_add(self._build_full_ui, deb_path)
 
     def _build_full_ui(self, deb_path: str | None) -> bool:
         """Build all widgets and wire signals. Deferred via GLib.idle_add; returns False."""
@@ -134,7 +139,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
         self.refresh_controller = RefreshController(self)
         self.hold_controller = HoldController(self)
         self._build_status()
-
+        log.debug("Build ui start")
         if deb_path is not None:
             # .deb mode: skip the update list and go straight to the install screen.
             self.show_all()
@@ -142,12 +147,25 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
             self.reboot_info_bar.hide()
             self._launch_deb_install(deb_path)
         else:
+            log.debug("Build ui else %d", self._no_cache)
             self.show_all()
             self.install_details_revealer.set_reveal_child(False)
             self.reboot_info_bar.hide()
-            self.set_updates_loading(True)
-            threading.Thread(target=self._load_cached_updates_on_startup,
-                             daemon=True).start()
+
+            if self._no_cache:
+                self.updates_stack.set_visible_child_name("list")
+                self.set_status(ready_status_text())
+                self._update_action_sensitivity()
+            else:
+                log.debug("Build ui default")
+                #self.show_all()
+                self.install_details_revealer.set_reveal_child(False)
+                self.reboot_info_bar.hide()
+                self.set_updates_loading(True)
+                threading.Thread(
+                    target=self._load_cached_updates_on_startup,
+                    daemon=True,
+                ).start()
 
         return False
 
@@ -1142,6 +1160,7 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
 
     def on_check_updates(self, _button: Gtk.Button | None) -> None:
         """Trigger a privileged refresh and reload the update list."""
+        log.debug("on Check updates")
         if self.refresh_in_progress or self.install_in_progress:
             return
 
@@ -1150,10 +1169,8 @@ class UpdateManagerWindow(Gtk.Window):  # pylint: disable=too-many-instance-attr
             self.set_status(message)
             return
 
-        try:
-            self.refresh_controller.start_refresh()
-        except AttributeError:
-            log.error("Refresh controller not available")
+        self.refresh_controller.start_refresh()
+
 
     def on_install_selected(self,
                             _button: Gtk.Button | Gtk.MenuItem | None) -> None:
@@ -1263,12 +1280,16 @@ class UpdateManagerApplication(Gtk.Application):
         win.show_all()
         win.present()
 
-    def get_or_create_window(self) -> "UpdateManagerWindow":
-        """Return the existing window, creating and wiring it up if needed."""
+    def get_or_create_window(
+        self,
+        no_cache: bool = False,
+    ) -> "UpdateManagerWindow":
         if self._window is None:
-            self._window = UpdateManagerWindow(deb_path=self._deb_path)
+            self._window = UpdateManagerWindow(
+                deb_path=self._deb_path,
+                no_cache=no_cache,
+            )
             self._window.set_application(self)
-            # Intercept delete-event: hide instead of destroy while tray is active.
             self._window.connect("delete-event", self._on_window_delete)
         return self._window
 
