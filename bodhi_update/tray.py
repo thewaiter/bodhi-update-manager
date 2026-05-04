@@ -82,6 +82,7 @@ class TrayIcon:
         """Initialise the tray icon and schedule the first background poll."""
         self._app = app
         self._indicator = None
+        self._poll_running: bool = False
         self._poll_source_id: int | None = None
         self._last_count: int = 0  # most recent count from set_update_count
         self._shown: bool = False
@@ -179,11 +180,23 @@ class TrayIcon:
     def _on_poll_timer(self) -> bool:
         """Timer callback: start a daemon thread to query cached updates."""
         if _read_pref("show_notifications"):
-            threading.Thread(target=self._poll_worker, daemon=True).start()
-        # Re-arm: one-shot source reschedules itself after each poll.
+            if not getattr(self, "_poll_running", False):
+                self._poll_running = True
+                threading.Thread(target=self._poll_worker_wrapper, daemon=True).start()
+        # Reschedules after each poll.
         self._poll_source_id = GLib.timeout_add_seconds(self._POLL_INTERVAL,
                                                         self._on_poll_timer)
-        return False  # remove the current one-shot source
+        return False
+
+    def _poll_worker_wrapper(self):
+        """Thread entry point for polling.
+
+           Guarantees _poll_running is cleared on exit, even if an error occurs.
+        """
+        try:
+            self._poll_worker()
+        finally:
+            self._poll_running = False
 
     def _poll_worker(self) -> None:
         """Read cached update state from backends (no refresh/privilege tool).
