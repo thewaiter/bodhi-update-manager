@@ -7,7 +7,7 @@ import os
 import shutil
 
 APP_NAME = "bodhi-update-manager"
-log = logging.getLogger("APP_NAME")
+log = logging.getLogger(APP_NAME)
 
 _SYSTEM_PREFIX = f"/usr/lib/"
 REBOOT_REQUIRED_PATH = "/var/run/reboot-required"

@@ -46,7 +46,7 @@ APP_NAME = "bodhi-update-manager"
 
 logging.basicConfig(level=logging.DEBUG,
                     format="%(levelname)-5s [%(filename)s:%(lineno)d] %(message)s")
-log = logging.getLogger("APP_NAME")
+log = logging.getLogger(APP_NAME)
 
 bindtextdomain(APP_NAME, "/usr/share/locale")
 textdomain(APP_NAME)

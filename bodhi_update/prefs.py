@@ -8,7 +8,7 @@ import os
 from typing import Any
 
 APP_NAME = "bodhi-update-manager"
-log = logging.getLogger("APP_NAME")
+log = logging.getLogger(APP_NAME)
 
 DEFAULT_PREFS: dict[str, Any] = {
     "show_descriptions": True,
