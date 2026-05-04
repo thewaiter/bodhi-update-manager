@@ -97,7 +97,10 @@ class TrayIcon:
             appindicator.IndicatorStatus.ACTIVE)
         self._indicator.set_menu(menu)
 
-        GLib.timeout_add_seconds(self._INITIAL_DELAY, self._on_poll_timer)
+        self._poll_source_id = GLib.timeout_add_seconds(
+            self._INITIAL_DELAY,
+            self._on_poll_timer,
+        )
 
     # ------------------------------------------------------------------
     # Menu construction
