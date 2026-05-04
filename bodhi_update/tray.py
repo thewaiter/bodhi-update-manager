@@ -39,7 +39,7 @@ if TYPE_CHECKING:
     from bodhi_update.app import UpdateManagerApplication
 
 APP_NAME = "bodhi-update-manager"
-log = logging.getLogger("APP_NAME")
+log = logging.getLogger(APP_NAME)
 
 
 def _read_pref(key: str, default: bool = True) -> bool:
